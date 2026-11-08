@@ -1,0 +1,40 @@
+name: pmap
+themes:
+  - processus
+summary: Montre la carte mémoire d’un processus.
+explanation: >-
+  pmap PID liste les zones mémoire : code, bibliothèques, tas, pile. pmap -x ajoute la
+  taille résidente. On s’en sert pour voir quelle bibliothèque est chargée ou pourquoi
+  un processus grossit. Il faut le droit de lire /proc/PID/maps. Ce n’est pas un
+  profilage dans le temps : relancez-le pour comparer.
+subcommands:
+  - name: "-x"
+    summary: Ajoute la taille résidente de chaque zone.
+    explanation: >-
+      `pmap` lit `/proc/PID/maps`. Il faut le droit de lire ce fichier. Relancez-le pour
+      comparer : ce n’est pas un suivi continu.
+    examples:
+      - title: PID 1
+        command: sudo pmap -x 1
+        comment: Code, bibliothèques, tas et pile.
+see_also:
+  - ps
+  - top
+  - free
+examples:
+  - title: Carte du processus 1
+    command: sudo pmap -x 1
+    comment: Détaille les zones de PID 1, avec la colonne résidente.
+  - title: Total seulement
+    command: pmap -d 1 | tail -n 1
+    comment: La dernière ligne résume. Le détail est au-dessus.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: procps
+overrides:
+  alpine:
+    note: Paquet procps, pas dans BusyBox.

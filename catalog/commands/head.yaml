@@ -1,0 +1,43 @@
+name: head
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Affiche le début d’un fichier.
+explanation: >-
+  head fichier montre les dix premières lignes. -n 20 en demande vingt, -n -5 montre
+  tout sauf les cinq dernières sur les coreutils GNU. -c limite en octets. head ne suit
+  pas un fichier qui grandit : c’est tail -f.
+subcommands:
+  - name: "-n"
+    summary: Limite le nombre de lignes.
+    explanation: >-
+      `head` montre dix lignes par défaut. `-n 20` en demande vingt. `-c` limite en
+      octets. `-n -5`, en GNU, montre tout sauf les cinq dernières.
+    examples:
+      - title: Vingt lignes
+        command: head -n 20 /etc/passwd
+        comment: Le début du fichier, vingt lignes au plus.
+see_also:
+  - tail
+  - less
+  - cat
+examples:
+  - title: Dix premières lignes
+    command: head /etc/passwd
+    comment: Affiche le début du fichier, dix lignes par défaut.
+  - title: Vingt lignes
+    command: head -n 20 /var/log/syslog
+    comment: >-
+      Sur un système sans syslog fichier, le chemin peut être ailleurs : journalctl lit
+      le journal systemd.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

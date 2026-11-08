@@ -1,0 +1,50 @@
+name: top
+themes:
+  - processus
+summary: Affiche en continu les processus qui consomment le plus.
+explanation: >-
+  top rafraîchit un écran : charge, mémoire, puis les processus. P trie par CPU, M par
+  mémoire, k envoie un signal, q quitte. -b -n 1 produit un instantané exploitable dans
+  un tube, sans l’écran interactif. top lit le système au moment du rafraîchissement ;
+  un pic très court peut lui échapper. htop est un autre programme, à installer à part,
+  et ne fait pas partie de cette fiche.
+subcommands:
+  - name: "-b"
+    summary: Un instantané en texte, sans l’écran interactif.
+    explanation: >-
+      `-b -n 1` écrit une fois et s’arrête. Dans l’écran, `P` trie par CPU, `M` par
+      mémoire, `q` quitte.
+    examples:
+      - title: Une passe
+        command: top -b -n 1 | head -n 20
+        comment: Les premières lignes, puis la commande s’arrête.
+  - name: "-p"
+    summary: Ne suit qu’un PID.
+    explanation: >-
+      `-p` répète le PID pour en suivre plusieurs. `-u` limite à un utilisateur. `-d`
+      change le délai entre deux rafraîchissements.
+    examples:
+      - title: Un processus
+        command: top -p 1
+        comment: Suit PID 1. q quitte.
+see_also:
+  - ps
+  - free
+  - uptime
+examples:
+  - title: Écran interactif
+    command: top
+    comment: q quitte. P et M changent le tri pendant que l’écran tourne.
+  - title: Un seul passage
+    command: top -b -n 1 | head -n 20
+    comment: Écrit un instantané en texte et s’arrête. Utile dans un script ou un journal.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox plus simple. Le paquet procps apporte le top de procps.

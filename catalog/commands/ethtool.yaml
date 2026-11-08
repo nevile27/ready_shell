@@ -1,0 +1,42 @@
+name: ethtool
+themes:
+  - reseau
+summary: Affiche et règle les paramètres d’une carte Ethernet.
+explanation: >-
+  ethtool eth0 montre vitesse, duplex et lien. ethtool -S eth0 compte les erreurs et les
+  paquets. -i identifie le pilote. Changer une vitesse à la main est rare : la
+  négociation automatique fait mieux. Le nom de l’interface vient de ip link. Le paquet
+  n’est pas toujours installé sur un poste minimal.
+subcommands:
+  - name: lien
+    summary: Vitesse, duplex et détection du câble.
+    explanation: >-
+      `ethtool eth0` montre le lien. Le nom vient de `ip link`. « Link detected: yes »
+      dit que le câble est vu.
+    examples:
+      - title: État
+        command: ethtool eth0
+        comment: Remplacez eth0 par un nom réel.
+  - name: "-S"
+    summary: Compteurs d’erreurs du pilote.
+    explanation: >-
+      `-i` identifie le pilote. Changer une vitesse à la main est rare : la négociation
+      automatique fait mieux.
+    examples:
+      - title: Compteurs
+        command: ethtool -S eth0
+        comment: Erreurs et paquets perdus vus par la carte.
+see_also:
+  - ip
+  - iw
+examples:
+  - title: Lien
+    command: ethtool eth0
+    comment: >-
+      Remplacez eth0 par un nom vu dans ip -br link. « Link detected: yes » dit que le
+      câble est vu.
+  - title: Compteurs
+    command: ethtool -S eth0
+    comment: Erreurs, drops, et statistiques du pilote. Utile quand le lien est là mais lent.
+status: courante
+package: ethtool

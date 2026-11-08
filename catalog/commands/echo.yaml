@@ -1,0 +1,46 @@
+name: echo
+themes:
+  - shell
+summary: Écrit ses arguments, suivis d’un saut de ligne.
+explanation: >-
+  echo affiche du texte. Son option -n et l’interprétation de \n ne sont pas portables :
+  bash, dash et ash ne font pas exactement la même chose. Pour un script qui doit sortir
+  un format précis, printf est le bon outil. echo reste lisible pour un message simple
+  au terminal.
+pitfalls:
+  - echo -e et echo -n divergent entre les shells. Un script POSIX utilise printf.
+subcommands:
+  - name: "-n"
+    summary: N’ajoute pas de saut de ligne.
+    explanation: >-
+      `echo -n` laisse le curseur en fin de texte. Dash, bash et ash ne traitent pas
+      `-n` de la même façon. Pour un script, `printf` est fiable.
+    examples:
+      - title: Sans saut
+        command: printf '%s' "suite"
+        comment: Forme portable. echo -n n’est pas identique partout.
+  - name: "-e"
+    summary: Interprète les séquences chez certains bash.
+    explanation: >-
+      `echo -e` comprend `\n` dans bash, pas dans dash. Un script POSIX utilise `printf
+      '%s\n'`.
+    examples:
+      - title: Saut de ligne fiable
+        command: printf '%s\n' "une" "deux"
+        comment: Deux lignes, quel que soit le /bin/sh.
+see_also:
+  - printf
+examples:
+  - title: Message simple
+    command: "echo \"Répertoire : $PWD\""
+    comment: Affiche le texte entre guillemets, variables développées par le shell.
+  - title: Plusieurs lignes fiables
+    command: printf '%s\n' "une" "deux"
+    comment: Préférez printf dès qu’il faut contrôler les sauts de ligne. Voir la fiche printf.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

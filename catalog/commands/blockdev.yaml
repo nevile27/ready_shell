@@ -1,0 +1,51 @@
+name: blockdev
+themes:
+  - disques
+summary: Lit ou règle des attributs d’un périphérique bloc.
+explanation: >-
+  blockdev --getsize64 /dev/sdb écrit la taille en octets. --getsz donne les secteurs de
+  512 octets, ce qui remplace les anciennes options fdisk -s et sfdisk --show-size.
+  --getro dit si le périphérique est marqué lecture seule. --flushbufs pousse les
+  tampons. Ce n’est pas un outil de partitionnement.
+subcommands:
+  - name: "--getsize64"
+    summary: Taille du périphérique en octets.
+    explanation: >-
+      `--getsz` donne les secteurs de 512 octets et remplace les anciennes options
+      `fdisk -s` et `sfdisk --show-size`.
+    examples:
+      - title: Octets
+        command: sudo blockdev --getsize64 /dev/sdb
+        comment: Un entier.
+  - name: "--getro"
+    summary: Dit si le périphérique est marqué en lecture seule.
+    explanation: >-
+      `--getro` écrit 1 ou 0. `--flushbufs` pousse les tampons. Ce n’est pas un outil de
+      partitionnement.
+    examples:
+      - title: Lecture seule
+        command: sudo blockdev --getro /dev/sdb
+        comment: 1 si le disque est marqué en lecture seule.
+see_also:
+  - lsblk
+  - fdisk
+  - sfdisk
+examples:
+  - title: Taille en octets
+    command: sudo blockdev --getsize64 /dev/sdb
+    comment: Un entier. Divisez par 1024 trois fois pour obtenir des gibioctets.
+  - title: Lecture seule
+    command: sudo blockdev --getro /dev/sdb
+    comment: 1 si le périphérique est marqué en lecture seule, 0 sinon.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

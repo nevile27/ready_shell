@@ -1,0 +1,54 @@
+name: df
+themes:
+  - disques
+  - fichiers
+tags:
+  - coreutils
+summary: Affiche l’espace libre des systèmes de fichiers montés.
+explanation: >-
+  df liste chaque montage avec sa taille, l’espace utilisé et l’espace disponible. -h
+  rend les tailles lisibles, -T ajoute le type, -x tmpfs retire les systèmes en mémoire.
+  df interroge le montage, pas un répertoire non monté. Un disque plein à 100 % peut
+  encore accepter des écritures root grâce aux blocs réservés d’ext4 : la colonne
+  Disponible est alors nulle pour les autres utilisateurs.
+subcommands:
+  - name: "-h"
+    summary: Tailles lisibles des systèmes montés.
+    explanation: >-
+      `df -h` montre taille, utilisé et disponible. `-T` ajoute le type. Un disque ext4
+      peut réserver des blocs à root : Disponible est alors nul pour les autres avant
+      100 %.
+    examples:
+      - title: Lisible
+        command: df -hT
+        comment: Type et tailles de chaque montage.
+  - name: "-x"
+    summary: Ignore un type de système de fichiers.
+    explanation: >-
+      `-x tmpfs` retire les systèmes en mémoire. `-i` montre les inodes au lieu des
+      blocs. Un chemin en argument ne montre que le montage qui le contient.
+    examples:
+      - title: Sans la mémoire
+        command: df -h -x tmpfs -x devtmpfs
+        comment: Les disques, pas les systèmes de fichiers virtuels.
+see_also:
+  - du
+  - findmnt
+  - mount
+examples:
+  - title: Espace lisible
+    command: df -hT
+    comment: Taille, type et point de montage de chaque système de fichiers.
+  - title: Un chemin précis
+    command: df -h /var
+    comment: Ne montre que le système de fichiers qui contient /var.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

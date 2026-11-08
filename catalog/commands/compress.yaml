@@ -1,0 +1,46 @@
+name: compress
+themes:
+  - archives
+summary: Compression historique .Z. Remplacée par gzip, xz ou zstd.
+explanation: >-
+  compress fichier produisait fichier.Z, un format des années 1980. Les systèmes actuels
+  ne l’installent pas. On le croise encore sur de très vieilles archives. gzip lit
+  parfois ces fichiers via zcat, et le paquet ncompress, quand le dépôt le propose
+  encore, ne sert qu’à les ouvrir. Un fichier neuf se compresse avec gzip, xz ou zstd.
+subcommands:
+  - name: "-d"
+    summary: Ancien format .Z. La forme actuelle est gzip.
+    explanation: >-
+      `compress` produisait un `.Z`. Les systèmes actuels ne l’installent pas. `gzip -k`
+      crée un `.gz`. `zcat` lit souvent encore un vieux `.Z`.
+    examples:
+      - title: Format actuel
+        command: gzip -c /etc/hostname > /tmp/hote.gz
+        comment: Un .gz, pas un .Z.
+see_also:
+  - gzip
+  - xz
+  - zstd
+replaced_by: gzip
+examples:
+  - title: Format actuel
+    command: gzip -k /etc/hostname
+    comment: Remplace compress. Le résultat est un .gz, pas un .Z.
+  - title: Lire un ancien .Z si l’outil est là
+    command: zcat ancien.Z
+    comment: >-
+      gzip sait souvent décompresser le format .Z. Le fichier doit être une vraie
+      archive historique.
+status: obsolète
+package:
+  debian: ncompress
+  redhat: ncompress
+  suse: ncompress
+  arch: ncompress
+  alpine: ncompress
+overrides:
+  alpine:
+    status: absente
+    note: >-
+      Pas dans le système. Une archive .Z se lit, si besoin, après installation d’un
+      outil qui connaît le format.

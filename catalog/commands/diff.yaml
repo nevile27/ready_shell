@@ -1,0 +1,52 @@
+name: diff
+themes:
+  - texte
+summary: Compare deux fichiers et décrit leurs différences.
+explanation: >-
+  diff ancien nouveau écrit les changements qui font passer de l’un à l’autre. -u
+  produit le format unifié, celui que patch sait relire et que les revues de code
+  montrent. -r compare des répertoires. Un code de retour 0 signifie identique, 1
+  différent, 2 une erreur. diff -q se contente de dire si les fichiers diffèrent, sans
+  le détail.
+subcommands:
+  - name: "-u"
+    summary: Différence au format unifié.
+    explanation: >-
+      `-u` est le format que `patch` relit. `-r` compare des répertoires. Le code 0
+      signifie identique, 1 différent, 2 une erreur.
+    examples:
+      - title: Unifié
+        command: diff -u /etc/hosts /etc/hosts
+        comment: "Aucune sortie et un code 0 : c’est le même fichier."
+  - name: "-q"
+    summary: Dit seulement si les fichiers diffèrent.
+    explanation: >-
+      `-q` ne liste pas les lignes. `-N` traite un fichier manquant comme vide, en GNU.
+      `-w` ignore les différences d’espaces.
+    examples:
+      - title: Oui ou non
+        command: diff -q /etc/hostname /etc/hosts
+        comment: Dit qu’ils diffèrent, sans le détail.
+see_also:
+  - cmp
+  - patch
+  - comm
+examples:
+  - title: Différence unifiée
+    command: diff -u /etc/hosts /etc/hosts
+    comment: "Aucune sortie et un code 0 : les deux fichiers sont le même."
+  - title: Juste oui ou non
+    command: diff -q /etc/hostname /etc/hosts
+    comment: Dit que les fichiers diffèrent, sans lister les lignes.
+status: courante
+package:
+  debian: diffutils
+  redhat: diffutils
+  suse: diffutils
+  arch: diffutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      Applet BusyBox courte. Le paquet diffutils apporte la version GNU, dont -u et -r
+      complets.

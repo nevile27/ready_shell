@@ -1,0 +1,41 @@
+name: source
+themes:
+  - shell
+summary: Exécute un fichier dans le shell courant. Le point « . » est la forme POSIX.
+explanation: >-
+  source script.sh et . script.sh lisent le fichier dans le shell actuel : les variables
+  et les cd qu’il fait restent en place. Un script lancé par ./script.sh, lui, tourne
+  dans un processus séparé et n’a aucun effet durable sur le shell appelant. source est
+  un mot de bash et zsh. Le point est la forme POSIX, celle que dash et ash acceptent.
+pitfalls:
+  - >-
+    source d’un fichier non fiable exécute son contenu avec vos droits. Ne sourcez pas
+    un téléchargement sans l’avoir lu.
+subcommands:
+  - name: fichier
+    summary: Exécute le fichier dans le shell courant.
+    explanation: >-
+      `source fichier` et `. fichier` laissent les variables et les `cd` en place.
+      `source` est un mot de bash. Le point est la forme que dash et ash acceptent.
+    examples:
+      - title: Forme portable
+        command: . "$HOME/.profile"
+        comment: Charge le fichier dans le shell actuel.
+see_also:
+  - exec
+  - export
+  - sh
+examples:
+  - title: Forme portable
+    command: . "$HOME/.profile"
+    comment: Charge le fichier dans le shell courant. Valable avec sh, dash et ash.
+  - title: Forme bash
+    command: source ~/.bashrc
+    comment: Recharge la configuration interactive de bash. dash refusera le mot source.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

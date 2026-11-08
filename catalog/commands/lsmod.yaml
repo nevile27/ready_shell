@@ -1,0 +1,36 @@
+name: lsmod
+themes:
+  - disques
+summary: Liste les modules chargés dans le noyau.
+explanation: >-
+  lsmod lit /proc/modules et montre le nom, la taille et le nombre d’utilisateurs de
+  chaque module. Un compteur non nul signifie qu’un autre module ou un périphérique s’en
+  sert encore. lsmod ne charge ni ne retire rien. Pour le détail d’un module, modinfo ;
+  pour le charger, modprobe.
+subcommands:
+  - name: liste
+    summary: Nom, taille et utilisateurs de chaque module.
+    explanation: >-
+      `lsmod` lit /proc/modules. Un compteur non nul signifie qu’un autre module ou un
+      périphérique s’en sert. Il ne charge rien.
+    examples:
+      - title: Modules
+        command: lsmod
+        comment: Trois colonnes.
+see_also:
+  - modprobe
+  - sysctl
+examples:
+  - title: Modules chargés
+    command: lsmod
+    comment: "Trois colonnes : nom, taille, utilisateurs."
+  - title: Un module précis
+    command: lsmod | awk '$1 == "ext4" { print }'
+    comment: Ne garde que la ligne ext4 si le système de fichiers est compilé en module.
+status: courante
+package:
+  debian: kmod
+  redhat: kmod
+  suse: kmod
+  arch: kmod
+  alpine: kmod

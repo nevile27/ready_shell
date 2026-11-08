@@ -1,0 +1,56 @@
+name: resize2fs
+themes:
+  - disques
+summary: Agrandit ou rétrécit un système ext.
+explanation: >-
+  resize2fs /dev/sdb1 occupe toute la partition. Pour agrandir, on élargit d’abord la
+  partition, puis on appelle resize2fs, souvent à chaud sur ext4. Pour rétrécir, on
+  démonte, on rétrécit le système de fichiers, puis seulement ensuite la partition :
+  l’ordre inverse coupe des données. resize2fs ne déplace pas une partition et ne sait
+  pas parler XFS.
+pitfalls:
+  - >-
+    Rétrécir la partition avant le système de fichiers détruit la fin du système.
+    resize2fs d’abord, partition ensuite.
+subcommands:
+  - name: agrandir
+    summary: Occupe toute la partition déjà élargie.
+    explanation: >-
+      `resize2fs` sans taille agrandit le ext jusqu’à la fin de la partition. On élargit
+      d’abord la partition, puis le système de fichiers. Souvent possible à chaud sur
+      ext4.
+    examples:
+      - title: Remplir
+        command: sudo resize2fs /dev/sdb1
+        comment: Le ext grandit. La partition doit déjà être plus grande.
+  - name: rétrécir
+    summary: Réduit le système à une taille donnée.
+    explanation: >-
+      On démonte, on rétrécit le système, puis seulement ensuite la partition. L’ordre
+      inverse coupe des données. `resize2fs` ne sait pas parler XFS.
+    examples:
+      - title: Taille
+        command: sudo resize2fs /dev/sdb1 20G
+        comment: Le système est démonté. 20G doit tenir dans la partition.
+    pitfalls:
+      - Rétrécir la partition avant le système de fichiers détruit la fin du système.
+see_also:
+  - tune2fs
+  - parted
+  - e2fsck
+examples:
+  - title: Occuper toute la partition
+    command: sudo resize2fs /dev/sdb1
+    comment: Agrandit le ext jusqu’à la fin de la partition déjà élargie.
+  - title: Taille précise, démonté
+    command: sudo resize2fs /dev/sdb1 20G
+    comment: >-
+      Rétrécit à 20 Gio. Le système est démonté, et la partition doit rester assez
+      grande ensuite.
+status: courante
+package:
+  debian: e2fsprogs
+  redhat: e2fsprogs
+  suse: e2fsprogs
+  arch: e2fsprogs
+  alpine: e2fsprogs

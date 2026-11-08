@@ -1,0 +1,16 @@
+{
+  "name": "ready-shell",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-catalog.mjs && vite build",
+    "dev": "node scripts/build-catalog.mjs && vite"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "js-yaml": "^4.1.0",
+    "minisearch": "^7.1.2",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,60 @@
+name: history
+themes:
+  - shell
+summary: Affiche ou réécrit l’historique des commandes de bash.
+explanation: >-
+  history liste les commandes numérotées de la session et du fichier HISTFILE, en
+  général ~/.bash_history. history -d N retire une entrée, utile pour un secret tapé par
+  erreur. L’expansion !! répète la commande précédente et n’existe que dans un shell
+  interactif. ash d’Alpine a un historique plus limité, propre à BusyBox.
+pitfalls:
+  - >-
+    Une commande avec un mot de passe reste dans l’historique tant qu’on ne l’efface
+    pas. history -d retire la ligne, puis history -w réécrit le fichier.
+subcommands:
+  - name: nombre
+    summary: Affiche les dernières commandes.
+    explanation: >-
+      `history 20` écrit vingt numéros. `!!` répète la précédente, seulement dans un
+      shell interactif.
+    examples:
+      - title: Vingt lignes
+        command: history 20
+        comment: Les dernières entrées, avec leur numéro.
+  - name: "-d"
+    summary: Retire une entrée de la liste en mémoire.
+    explanation: >-
+      `history -d numéro` oublie une ligne, par exemple un secret. `history -w` réécrit
+      ensuite le fichier.
+    examples:
+      - title: Oublier la dernière
+        command: history -d -1
+        comment: Retire la dernière entrée. history -w l’oublie aussi sur disque.
+  - name: "-w"
+    summary: Écrit l’historique sur disque.
+    explanation: >-
+      `history -w` remplace le fichier `HISTFILE`, en général `~/.bash_history`, par la
+      liste en mémoire.
+    examples:
+      - title: Enregistrer
+        command: history -w
+        comment: Le fichier d’historique reflète la session.
+see_also:
+  - bash
+  - set
+examples:
+  - title: Dernières commandes
+    command: history 20
+    comment: Affiche les vingt dernières entrées avec leur numéro.
+  - title: Oublier la dernière
+    command: history -d -1
+    comment: >-
+      Retire la dernière entrée de la liste en mémoire. Écrivez le fichier avec history
+      -w si vous voulez l’oublier sur disque.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

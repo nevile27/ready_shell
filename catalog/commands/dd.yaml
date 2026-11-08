@@ -1,0 +1,60 @@
+name: dd
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Copie des blocs bruts d’un fichier ou d’un périphérique vers un autre.
+explanation: >-
+  dd if=source of=destination lit la source par blocs et les écrit tels quels. bs fixe
+  la taille de bloc, status=progress montre l’avancement sur les coreutils GNU. On s’en
+  sert pour une image disque ou une clé USB. Une erreur dans of= écrase le périphérique
+  visé sans corbeille. Pour copier un fichier ordinaire, cp suffit et se trompe moins.
+pitfalls:
+  - >-
+    Vérifiez deux fois of=. dd if=image.iso of=/dev/sda remplace tout le disque sda, pas
+    un fichier.
+subcommands:
+  - name: if
+    summary: Choisit la source des blocs.
+    explanation: >-
+      `if=` est l’entrée, `of=` la sortie. `bs=` la taille de bloc. `status=progress`
+      montre l’avancement sur les coreutils GNU. Pour un fichier ordinaire, `cp` se
+      trompe moins.
+    examples:
+      - title: Petite copie
+        command: dd if=/etc/hostname of=/tmp/hostname.copy status=progress
+        comment: Copie ce fichier et affiche la progression.
+    pitfalls:
+      - Une erreur dans of= écrase le périphérique visé. Vérifiez le nom deux fois.
+  - name: conv
+    summary: Transforme les blocs pendant la copie.
+    explanation: >-
+      `conv=fsync` force l’écriture physique avant de revenir. `conv=sparse` ne écrit
+      pas les blocs entièrement nuls. `count=` limite le nombre de blocs.
+    examples:
+      - title: Synchroniser
+        command: dd if=/etc/hostname of=/tmp/hostname.sync conv=fsync
+        comment: Ne revient qu’une fois les données poussées.
+see_also:
+  - cp
+  - wipefs
+  - sync
+examples:
+  - title: Copie avec avancement
+    command: dd if=/etc/os-release of=/tmp/os-release.copy status=progress
+    comment: Copie un petit fichier et affiche la progression. Sans danger sur cette source.
+  - title: Compter les octets
+    command: dd if=/etc/hostname of=/dev/null status=none
+    comment: >-
+      Lit le fichier et jette le contenu. Le résumé va sur l’erreur si status n’est pas
+      none.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

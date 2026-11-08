@@ -1,0 +1,45 @@
+name: yum
+themes:
+  - paquets
+summary: >-
+  Ancien gestionnaire de Red Hat. Sur RHEL 10 et Fedora 45, c’est une compatibilité vers
+  dnf.
+explanation: >-
+  yum install nom fonctionne encore souvent parce que le paquet yum ou un lien appelle
+  dnf. Les options ne sont pas toutes équivalentes, et la documentation actuelle montre
+  dnf. Écrire yum dans un script neuf entretient un nom retiré du rôle principal depuis
+  RHEL 8. SUSE n’utilise pas yum : c’est zypper. Debian, Arch et Alpine n’ont pas cette
+  commande.
+subcommands:
+  - name: install
+    summary: Ancien nom, qui appelle dnf.
+    explanation: >-
+      `yum install` fonctionne encore souvent parce qu’il délègue à `dnf`. Les commandes
+      neuves appellent `dnf`. SUSE utilise `zypper`.
+    examples:
+      - title: Forme actuelle
+        command: sudo dnf install curl
+        comment: Remplace yum install curl.
+see_also:
+  - dnf
+  - rpm
+replaced_by: dnf
+examples:
+  - title: Forme actuelle
+    command: sudo dnf install curl
+    comment: Remplace yum install curl.
+    families:
+      - redhat
+  - title: Ancien nom
+    command: yum --version
+    comment: >-
+      Peut afficher une version DNF, preuve que le nom n’est plus le programme
+      d’origine.
+    families:
+      - redhat
+status: absente
+overrides:
+  redhat:
+    status: obsolète
+    package: dnf
+    note: Le nom peut encore exister et déléguer à dnf. Les commandes neuves appellent dnf.

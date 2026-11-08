@@ -1,0 +1,47 @@
+name: pkill
+themes:
+  - processus
+summary: Envoie un signal aux processus dont le nom correspond à un motif.
+explanation: >-
+  pkill motif sélectionne comme pgrep, puis envoie SIGTERM. -f compare à la ligne de
+  commande complète, pas seulement au nom court. -u user limite à un utilisateur. -x
+  exige le nom exact. C’est plus précis que killall quand plusieurs commandes partagent
+  un préfixe. Le motif est une expression rationnelle.
+subcommands:
+  - name: "-x"
+    summary: Exige le nom exact.
+    explanation: >-
+      `pkill` envoie SIGTERM aux processus choisis comme `pgrep`. `-x` évite qu’un
+      préfixe ne suffise. `-u` limite à un utilisateur.
+    examples:
+      - title: Nom exact
+        command: pkill -x sleep
+        comment: Seulement les processus qui s’appellent sleep.
+  - name: "-f"
+    summary: Compare à la ligne de commande complète.
+    explanation: Sans `-f`, seul le nom court est vu. Le motif est une expression rationnelle.
+    examples:
+      - title: Ligne complète
+        command: pkill -f 'sleep 30'
+        comment: Vise les commandes dont la ligne contient sleep 30.
+see_also:
+  - pgrep
+  - kill
+  - killall
+examples:
+  - title: Correspondance exacte
+    command: pkill -x sleep
+    comment: SIGTERM aux processus dont le nom est exactement sleep.
+  - title: Ligne de commande
+    command: pkill -f 'sleep 30'
+    comment: Vise les commandes dont la ligne complète contient sleep 30.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: procps
+overrides:
+  alpine:
+    note: Paquet procps. BusyBox fournit killall, pas toujours pkill.

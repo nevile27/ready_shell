@@ -1,0 +1,56 @@
+name: localectl
+themes:
+  - services
+summary: Affiche et règle la locale et la disposition du clavier.
+explanation: >-
+  localectl status montre la locale des messages et la carte de clavier. set-locale
+  LANG=fr_FR.UTF-8 change la langue par défaut du système, à condition que la locale
+  soit générée. set-keymap fr pose le clavier console. Ce n’est pas la variable LANG
+  d’une seule session : c’est le réglage que les prochaines connexions héritent.
+subcommands:
+  - name: status
+    summary: Locale et clavier du système.
+    explanation: >-
+      `localectl status` montre LANG et la carte du clavier. Ce n’est pas la variable
+      d’une seule session.
+    examples:
+      - title: Réglage
+        command: localectl status
+        comment: Langue et clavier.
+  - name: set-locale
+    summary: Change la langue par défaut.
+    explanation: >-
+      La locale doit déjà être générée. `list-locales` montre celles qui le sont. Sur
+      Debian, `/etc/locale.gen` prépare les autres.
+    examples:
+      - title: Lister
+        command: localectl list-locales
+        comment: Les locales déjà disponibles.
+see_also:
+  - timedatectl
+  - hostnamectl
+examples:
+  - title: Réglage actuel
+    command: localectl status
+    comment: LANG, LC_* et clavier.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Liste des locales
+    command: localectl list-locales
+    comment: >-
+      Celles déjà générées. Une absente se génère avant d’être choisie, via
+      /etc/locale.gen sur Debian.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

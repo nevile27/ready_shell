@@ -1,0 +1,43 @@
+name: csplit
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Découpe un fichier à des lignes qui correspondent à un motif.
+explanation: >-
+  csplit coupe là où une expression apparaît, pas à un nombre de lignes fixe. csplit
+  fichier '/^#/' '{*}' découpe à chaque ligne qui commence par #. Les morceaux
+  s’appellent xx00, xx01, sauf changement de préfixe. C’est un outil GNU du paquet
+  coreutils, absent de BusyBox.
+subcommands:
+  - name: motif
+    summary: Coupe là où une expression apparaît.
+    explanation: >-
+      `csplit` n’est pas dans BusyBox. `'{*}'` répète la coupe. Les morceaux s’appellent
+      xx00, xx01, sauf changement de préfixe avec `-f`.
+    examples:
+      - title: Sur les commentaires
+        command: csplit -f /tmp/h- /etc/hosts '/^#/' '{*}'
+        comment: "Un morceau à chaque ligne qui commence par #."
+see_also:
+  - split
+  - sed
+examples:
+  - title: Couper au motif
+    command: csplit -f /tmp/part- -n 2 /etc/passwd '/^bin/' '{*}'
+    comment: Crée des morceaux à partir de chaque ligne qui commence par bin, si elle existe.
+  - title: Préfixe explicite
+    command: csplit -f /tmp/h- /etc/hosts '/^#/' '{*}'
+    comment: >-
+      Les fichiers commencent par /tmp/h-. '{*}' répète la coupe autant de fois que
+      possible.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: Pas dans BusyBox. Le paquet coreutils le fournit.

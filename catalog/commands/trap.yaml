@@ -1,0 +1,48 @@
+name: trap
+themes:
+  - shell
+summary: Déclenche une commande à la réception d’un signal.
+explanation: >-
+  trap 'commande' SIGNAL enregistre une action. EXIT court à la sortie du shell, INT sur
+  Ctrl+C, TERM à l’arrêt demandé. trap - SIGNAL retire le piège. On s’en sert pour
+  effacer un fichier temporaire quoi qu’il arrive. Le piège vit dans le shell qui l’a
+  posé, pas dans les enfants déjà lancés.
+subcommands:
+  - name: EXIT
+    summary: Lance une commande à la fin du shell.
+    explanation: >-
+      `trap '…' EXIT` sert à effacer un fichier temporaire quoi qu’il arrive. Le piège
+      vit dans le shell qui l’a posé.
+    examples:
+      - title: Nettoyer
+        command: tmp=$(mktemp) && trap 'rm -f "$tmp"' EXIT
+        comment: Le fichier disparaît quand le shell se termine.
+  - name: INT
+    summary: Réagit à Ctrl+C.
+    explanation: >-
+      `trap '' INT` ignore l’interruption. `trap - INT` rétablit le comportement
+      habituel. `trap 'commande' INT` lance cette commande à la place.
+    examples:
+      - title: Ignorer
+        command: trap '' INT
+        comment: Ctrl+C ne coupe plus ce shell. trap - INT annule cela.
+see_also:
+  - kill
+  - exit
+  - mktemp
+examples:
+  - title: Nettoyer à la sortie
+    command: tmp=$(mktemp) && trap 'rm -f "$tmp"' EXIT
+    comment: >-
+      Le fichier temporaire disparaît quand le shell se termine, même après une erreur
+      si le trap est déjà posé.
+  - title: Ignorer Ctrl+C
+    command: trap '' INT
+    comment: Le shell ignore SIGINT. trap - INT rétablit le comportement habituel.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

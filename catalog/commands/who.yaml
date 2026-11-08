@@ -1,0 +1,47 @@
+name: who
+themes:
+  - utilisateurs
+tags:
+  - coreutils
+summary: Liste les sessions ouvertes sur la machine.
+explanation: >-
+  who lit utmp et montre utilisateur, terminal et heure de connexion. who am i désigne
+  la session de ce terminal. Ce n’est pas la liste des comptes existants : un compte
+  sans session n’apparaît pas. Les services sans terminal n’y sont pas non plus.
+subcommands:
+  - name: sessions
+    summary: Liste les connexions en cours.
+    explanation: >-
+      `who` lit utmp. Un compte sans session n’apparaît pas. `who am i` désigne ce
+      terminal.
+    examples:
+      - title: Toutes
+        command: who
+        comment: Utilisateur, terminal et heure.
+  - name: "-b"
+    summary: Date du dernier démarrage.
+    explanation: >-
+      `-b` ne garde que le boot. `-q` ne garde que les noms et le nombre. `last` voit
+      l’historique.
+    examples:
+      - title: Démarrage
+        command: who -b
+        comment: Quand le système a été démarré.
+see_also:
+  - w
+  - users
+  - last
+examples:
+  - title: Sessions
+    command: who
+    comment: Une ligne par connexion en cours.
+  - title: Cette session
+    command: who am i
+    comment: La ligne qui correspond au terminal où la commande est lancée.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

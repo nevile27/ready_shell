@@ -1,0 +1,48 @@
+name: cfdisk
+themes:
+  - disques
+summary: Éditeur de partitions en écran, au-dessus des mêmes tables que fdisk.
+explanation: >-
+  cfdisk ouvre une interface plein écran pour créer et détruire des partitions. Il écrit
+  quand vous demandez l’enregistrement. C’est le même fond qu’fdisk, plus facile à
+  regarder, moins adapté à un script. Les serveurs sans terminal riche peuvent s’en
+  passer : fdisk -l et sfdisk suffisent.
+subcommands:
+  - name: écran
+    summary: Édite la table en plein écran.
+    explanation: >-
+      `cfdisk` écrit quand vous demandez l’enregistrement. Pour un script, `sfdisk` est
+      plus prévisible. Pour seulement voir, `lsblk` ne risque rien.
+    examples:
+      - title: Ouvrir
+        command: sudo cfdisk /dev/sdb
+        comment: >-
+          Ne le lancez pas sur le disque du système si vous ne savez pas quelle
+          partition retirer.
+see_also:
+  - fdisk
+  - sfdisk
+  - parted
+examples:
+  - title: Ouvrir un disque
+    command: sudo cfdisk /dev/sdb
+    comment: >-
+      Écran interactif. Ne le lancez pas sur le disque qui porte le système si vous ne
+      savez pas quelle partition retirer.
+  - title: Lecture seule équivalente
+    command: lsblk
+    comment: >-
+      Pour seulement voir les partitions, lsblk ne risque rien et n’a pas besoin d’un
+      écran cfdisk.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

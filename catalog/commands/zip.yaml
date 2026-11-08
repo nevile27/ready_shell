@@ -1,0 +1,31 @@
+name: zip
+themes:
+  - archives
+summary: Crée une archive .zip, lue aussi hors du monde Unix.
+explanation: >-
+  zip archive.zip fichier ajoute le fichier. -r descend dans un répertoire. L’archive
+  n’est pas un tar : les droits Unix et les liens ne sont pas tous conservés de la même
+  façon. unzip extrait. Pour une sauvegarde d’administration, tar conserve mieux
+  propriétaires et liens. zip sert à échanger avec un système qui n’a pas tar.
+subcommands:
+  - name: "-r"
+    summary: Range un répertoire dans une archive .zip.
+    explanation: >-
+      `zip` s’échange hors du monde Unix. Les droits et les liens ne sont pas tous
+      conservés comme avec `tar`. `unzip` extrait.
+    examples:
+      - title: Répertoire
+        command: zip -r /tmp/ssh.zip /etc/ssh
+        comment: Crée l’archive. Les chemins commencent en général par etc/ssh.
+see_also:
+  - unzip
+  - tar
+examples:
+  - title: Un répertoire
+    command: zip -r /tmp/ssh.zip /etc/ssh
+    comment: Crée l’archive. Les chemins stockés commencent en général par etc/ssh.
+  - title: Lister
+    command: unzip -l /tmp/ssh.zip
+    comment: Montre le contenu sans extraire. unzip fait la lecture.
+status: courante
+package: zip

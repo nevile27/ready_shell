@@ -1,0 +1,46 @@
+name: rc-update
+themes:
+  - services
+summary: Ajoute ou retire un service OpenRC d’un runlevel.
+explanation: >-
+  rc-update add sshd default lance sshd au démarrage d’Alpine. rc-update del sshd
+  default le retire. rc-update show liste les services par runlevel. default est le
+  runlevel habituel. C’est l’équivalent Alpine de systemctl enable. Les autres familles
+  de ce catalogue ne s’en servent pas.
+subcommands:
+  - name: add
+    summary: Ajoute un service au démarrage.
+    explanation: >-
+      `rc-update add sshd default` le lance avec le runlevel default. `show` liste les
+      services par runlevel. `del` retire.
+    examples:
+      - title: Activer
+        command: doas rc-update add sshd default
+        comment: sshd démarrera avec default.
+  - name: show
+    summary: Liste les services et leurs runlevels.
+    explanation: "`show` ne modifie rien. `default` est le runlevel habituel d’une machine Alpine."
+    examples:
+      - title: Liste
+        command: rc-update show
+        comment: Services et runlevels.
+see_also:
+  - rc-service
+  - systemctl
+  - chkconfig
+examples:
+  - title: Activer au démarrage
+    command: doas rc-update add sshd default
+    comment: sshd démarrera avec le runlevel default.
+    families:
+      - alpine
+  - title: Liste
+    command: rc-update show
+    comment: Services et runlevels. Rien n’est modifié.
+    families:
+      - alpine
+status: absente
+overrides:
+  alpine:
+    status: spécifique
+    package: openrc

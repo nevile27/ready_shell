@@ -1,0 +1,56 @@
+name: declare
+themes:
+  - shell
+summary: Déclare une variable bash, un tableau ou un attribut.
+explanation: >-
+  declare -i fixe un entier, declare -a un tableau indexé, declare -A un tableau
+  associatif, declare -r une constante, declare -x exporte. Dans une fonction, declare
+  rend la variable locale, comme local. dash ne connaît ni declare ni les tableaux. Pour
+  un script POSIX, une variable simple suffit.
+subcommands:
+  - name: "-a"
+    summary: Crée un tableau indexé.
+    explanation: >-
+      `declare -a` réserve un tableau bash. `ports[0]` est le premier élément. Dans une
+      fonction, `declare` rend la variable locale. Dash n’a ni `declare` ni les
+      tableaux.
+    examples:
+      - title: Tableau
+        command: declare -a ports=(22 80 443)
+        comment: ports[0] vaut 22.
+  - name: "-A"
+    summary: Crée un tableau associatif.
+    explanation: >-
+      `declare -A` indexe par des chaînes, pas par des nombres. C’est du bash. `declare
+      -p nom` montre le type et la valeur.
+    examples:
+      - title: Associatif
+        command: declare -A couleur=([ok]=vert [err]=rouge)
+        comment: couleur[ok] vaut vert.
+  - name: "-r"
+    summary: Rend la variable constante.
+    explanation: >-
+      `-r` interdit la réaffectation. `-x` exporte en même temps si on l’ajoute.
+      `declare -p` relit la déclaration.
+    examples:
+      - title: Constante
+        command: declare -rx APP_ENV=production
+        comment: Empêche la réaffectation et publie la variable.
+see_also:
+  - export
+  - unset
+  - set
+examples:
+  - title: Tableau indexé
+    command: declare -a ports=(22 80 443)
+    comment: Crée un tableau bash. ports[0] vaut 22.
+  - title: Constante exportée
+    command: declare -rx APP_ENV=production
+    comment: Empêche la réaffectation dans ce shell et publie la variable.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

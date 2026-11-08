@@ -1,0 +1,40 @@
+name: popd
+themes:
+  - shell
+summary: Revient au répertoire empilé par pushd.
+explanation: >-
+  popd retire le sommet de la pile des répertoires et s’y place. Sans pushd préalable,
+  il échoue. popd +N retire l’entrée N sans forcément s’y déplacer. Comme pushd, c’est
+  une extension bash.
+subcommands:
+  - name: sommet
+    summary: Revient au répertoire empilé dessous.
+    explanation: "`popd` retire le sommet et s’y place. Sans `pushd` préalable, il échoue."
+    examples:
+      - title: Revenir
+        command: popd
+        comment: Quitte le répertoire courant pour celui d’en dessous.
+  - name: +N
+    summary: Retire une entrée sans forcément s’y déplacer.
+    explanation: "`popd +N` enlève l’entrée N de la pile. Les numéros sont ceux de `dirs -v`."
+    examples:
+      - title: Retirer une entrée
+        command: popd +1
+        comment: La pile perd cet étage. Le répertoire courant peut rester le même.
+see_also:
+  - pushd
+  - cd
+examples:
+  - title: Revenir
+    command: popd
+    comment: Quitte le répertoire courant pour celui qui était empilé dessous.
+  - title: Aller-retour
+    command: pushd /etc && pwd && popd
+    comment: Affiche /etc puis revient au répertoire de départ.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

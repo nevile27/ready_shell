@@ -1,0 +1,41 @@
+name: pstree
+themes:
+  - processus
+summary: Dessine l’arbre des processus.
+explanation: >-
+  pstree part de PID 1 et montre qui a lancé qui. -p ajoute les PID, -u les
+  utilisateurs, -s PID ne garde que les ancêtres de ce processus. Un service qui
+  double-fork disparaît de l’arbre comme enfant de son lanceur et se raccroche à init ou
+  à systemd. pstree ne remplace pas ps pour les colonnes de CPU.
+subcommands:
+  - name: "-p"
+    summary: Ajoute les PID dans l’arbre.
+    explanation: >-
+      `pstree` part de PID 1 et montre qui a lancé qui. `-u` ajoute les utilisateurs.
+      `-s PID` ne garde que les ancêtres.
+    examples:
+      - title: Avec PID
+        command: pstree -p
+        comment: Les numéros entre parenthèses.
+see_also:
+  - ps
+  - top
+examples:
+  - title: Arbre avec PID
+    command: pstree -p
+    comment: Toute la session et les démons, avec les numéros entre parenthèses.
+  - title: Ancêtres d’un PID
+    command: pstree -sp 1
+    comment: >-
+      Montre PID 1 et ce qu’il a sous lui au premier niveau selon l’option. -s 1 limite
+      à la chaîne vers init.
+status: courante
+package:
+  debian: psmisc
+  redhat: psmisc
+  suse: psmisc
+  arch: psmisc
+  alpine: psmisc
+overrides:
+  alpine:
+    note: Paquet psmisc, absent d’une image BusyBox minimale.

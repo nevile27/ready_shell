@@ -1,0 +1,65 @@
+name: date
+themes:
+  - shell
+tags:
+  - coreutils
+summary: Affiche ou règle l’horloge civile du système.
+explanation: >-
+  date écrit la date et l’heure selon la locale. Un format se donne avec + , par exemple
+  +%Y-%m-%d. date -u affiche l’heure UTC. Régler l’horloge à la main avec date -s
+  demande les droits d’administration et se fait rare : les systèmes actuels
+  synchronisent l’heure avec chrony ou systemd-timesyncd. date -d est une extension GNU
+  pour calculer une date relative ; BusyBox ne l’a pas.
+subcommands:
+  - name: +format
+    summary: Écrit la date selon un format.
+    explanation: >-
+      Le format suit un `+`. `%Y-%m-%d` est l’année, le mois et le jour. `%H:%M:%S` est
+      l’heure. Les quotes protègent les espaces.
+    examples:
+      - title: Jour
+        command: date +%F
+        comment: Écrit 2026-11-08, ou la date du jour.
+  - name: "-u"
+    summary: Affiche l’heure UTC.
+    explanation: >-
+      `date -u` ignore le fuseau local. On l’associe à un format pour un horodatage
+      d’échange.
+    examples:
+      - title: UTC
+        command: date -u +%Y-%m-%dT%H:%M:%SZ
+        comment: Un instant en UTC, avec le suffixe Z.
+  - name: "-d"
+    summary: Calcule une date, version GNU.
+    explanation: >-
+      `date -d yesterday` est une extension GNU. L’applet BusyBox d’Alpine ne l’a pas
+      sans le paquet coreutils. `-s` règle l’horloge et demande l’administrateur.
+    examples:
+      - title: Veille
+        command: date -d yesterday +%F
+        comment: La date de la veille. Réservé aux coreutils GNU.
+see_also:
+  - timedatectl
+  - chronyc
+  - hwclock
+examples:
+  - title: Horodatage ISO
+    command: date -u +%Y-%m-%dT%H:%M:%SZ
+    comment: Écrit l’instant UTC, par exemple 2026-11-08T15:04:00Z.
+  - title: Hier, version GNU
+    command: date -d yesterday +%F
+    comment: >-
+      Calcule la veille. Sur Alpine BusyBox, cette option n’existe pas sans le paquet
+      coreutils.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      L’applet BusyBox connaît un sous-ensemble de formats. Le paquet coreutils apporte
+      la date GNU complète.

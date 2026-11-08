@@ -1,0 +1,65 @@
+name: mount
+themes:
+  - disques
+summary: Attache un système de fichiers à un répertoire.
+explanation: >-
+  `mount` attache un système de fichiers à un répertoire, ou liste les montages. Un
+  montage lancé à la main disparaît au redémarrage : la ligne durable est dans `fstab`.
+  `findmnt` relit la situation plus clairement que `mount` sans argument.
+subcommands:
+  - name: "-o"
+    summary: Monte un périphérique, avec des options.
+    explanation: >-
+      `mount /dev/sdb1 /mnt` attache la partition. Le répertoire doit exister. Le type
+      se devine souvent tout seul. `-t ext4` l’impose. `-o ro` monte en lecture seule,
+      `-o noexec` interdit d’y lancer des programmes. Il faut en pratique les droits
+      d’administration, sauf ligne `user` dans fstab.
+    examples:
+      - title: Monter
+        command: sudo mount /dev/sdb1 /mnt
+        comment: Le contenu est ensuite visible dans /mnt.
+      - title: Lecture seule
+        command: sudo mount -o ro /dev/sdb1 /mnt
+        comment: Les écritures sont refusées.
+  - name: "-a"
+    summary: Applique les lignes de fstab qui ne sont pas encore montées.
+    explanation: >-
+      `-a` lit /etc/fstab et monte ce qui manque. `-t ext4` ne traite que ce type. Une
+      ligne fausse s’arrête ou s’affiche selon l’option. On vérifie le fichier avec
+      `findmnt --verify` avant de compter dessus au démarrage.
+    examples:
+      - title: Tout fstab
+        command: sudo mount -a
+        comment: Monte les entrées absentes. Celles déjà en place ne bougent pas.
+  - name: "--bind"
+    summary: Fait apparaître un répertoire à un second endroit.
+    explanation: >-
+      `--bind` ne monte pas un disque : il donne un deuxième chemin au même répertoire.
+      `--rbind` inclut les montages déjà présents dessous. Utile dans un chroot ou pour
+      exposer un dossier sans le copier. `umount` sur le second chemin détache le lien,
+      pas les données.
+    examples:
+      - title: Second chemin
+        command: sudo mount --bind /var/log /mnt
+        comment: Lire /mnt lit /var/log. umount /mnt retire ce second chemin.
+see_also:
+  - umount
+  - findmnt
+  - fstab
+examples:
+  - title: Monter
+    command: sudo mount /dev/sdb1 /mnt
+    comment: Le répertoire /mnt doit exister. ls /mnt montre alors le système de fichiers.
+  - title: Lecture seule
+    command: sudo mount -o ro /dev/sdb1 /mnt
+    comment: Les écritures sont refusées. Utile pour regarder un disque douteux.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet util-linux apporte le mount complet, dont -o plus riche.

@@ -1,0 +1,36 @@
+name: ssh-copy-id
+themes:
+  - reseau
+summary: Installe votre clé publique dans authorized_keys du compte distant.
+explanation: >-
+  ssh-copy-id user@hote ajoute la clé publique par défaut au fichier authorized_keys
+  distant. Il demande encore le mot de passe une fois. -i choisit une autre clé
+  publique. Ensuite ssh passe par la clé. La commande n’est pas un moyen de contourner
+  une machine à laquelle vous n’avez pas déjà le droit de vous connecter.
+subcommands:
+  - name: "-i"
+    summary: Installe une clé publique dans authorized_keys.
+    explanation: >-
+      `ssh-copy-id` demande encore le mot de passe une fois. `-i` choisit la clé.
+      Ensuite `ssh` passe par elle.
+    examples:
+      - title: Installer
+        command: ssh-copy-id -i "$HOME/.ssh/id_ed25519.pub" user@hote
+        comment: Ajoute cette clé au compte distant.
+see_also:
+  - ssh
+  - ssh-keygen
+examples:
+  - title: Installer la clé
+    command: ssh-copy-id user@hote
+    comment: Ajoute ~/.ssh/id_ed25519.pub ou la clé par défaut au compte distant.
+  - title: Clé explicite
+    command: ssh-copy-id -i "$HOME/.ssh/id_ed25519.pub" user@hote
+    comment: N’installe que cette clé publique.
+status: courante
+package:
+  debian: openssh-client
+  redhat: openssh-clients
+  suse: openssh-clients
+  arch: openssh
+  alpine: openssh-client

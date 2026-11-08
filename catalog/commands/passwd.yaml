@@ -1,0 +1,49 @@
+name: passwd
+themes:
+  - utilisateurs
+summary: Change le mot de passe d’un compte.
+explanation: >-
+  passwd demande l’ancien mot de passe puis le nouveau. passwd user, par
+  l’administrateur, en pose un sans connaître l’ancien. -l verrouille, -u déverrouille,
+  -S résume l’état. Le mot de passe n’est pas stocké en clair : la ligne dans
+  /etc/shadow porte un condensat. passwd ne change pas une clé SSH. Un compte verrouillé
+  par ! ou * dans shadow ne se connecte pas par mot de passe.
+subcommands:
+  - name: compte
+    summary: Change un mot de passe.
+    explanation: >-
+      `passwd` sans argument vise votre compte et demande l’ancien. `passwd user`, par
+      l’administrateur, n’a pas besoin de l’ancien.
+    examples:
+      - title: Le sien
+        command: passwd
+        comment: Interactif. Rien n’est écrit pendant la frappe.
+  - name: "-l"
+    summary: Verrouille le mot de passe.
+    explanation: >-
+      `-l` empêche la connexion par mot de passe. `-u` déverrouille. `-S` résume l’état.
+      Une clé SSH peut encore fonctionner.
+    examples:
+      - title: Verrou
+        command: sudo passwd -l ada
+        comment: Le mot de passe ne permet plus d’entrer.
+see_also:
+  - chage
+  - useradd
+  - getent
+examples:
+  - title: Son propre mot de passe
+    command: passwd
+    comment: Interactif. Rien n’est écrit à l’écran pendant la frappe.
+  - title: Verrouiller un compte
+    command: sudo passwd -l ada
+    comment: >-
+      Empêche la connexion par mot de passe. Une clé SSH déjà autorisée peut encore
+      fonctionner.
+status: courante
+package:
+  debian: passwd
+  redhat: passwd
+  suse: passwd
+  arch: shadow
+  alpine: shadow

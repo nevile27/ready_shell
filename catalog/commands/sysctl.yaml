@@ -1,0 +1,50 @@
+name: sysctl
+themes:
+  - disques
+  - reseau
+summary: Lit ou écrit un paramètre du noyau.
+explanation: >-
+  sysctl net.ipv4.ip_forward lit une valeur. sysctl -w net.ipv4.ip_forward=1 la change
+  jusqu’au prochain démarrage. Pour la garder, on écrit la clé dans
+  /etc/sysctl.d/fichier.conf et on recharge avec sysctl --system. La liste complète est
+  sysctl -a. Ce ne sont pas des réglages de service : ils concernent le noyau en cours
+  d’exécution.
+subcommands:
+  - name: "-a"
+    summary: Liste les paramètres du noyau.
+    explanation: >-
+      `sysctl clé` lit une valeur. `-w clé=valeur` la change jusqu’au prochain
+      démarrage. Le fichier durable est dans /etc/sysctl.d.
+    examples:
+      - title: Routage
+        command: sysctl net.ipv4.ip_forward
+        comment: 0 si la machine ne route pas IPv4.
+  - name: "--system"
+    summary: Relit les fichiers de configuration.
+    explanation: >-
+      `--system` applique /etc/sysctl.conf et /etc/sysctl.d. Les clés invalides sont
+      signalées.
+    examples:
+      - title: Recharger
+        command: sudo sysctl --system
+        comment: Les réglages des fichiers deviennent actifs.
+see_also:
+  - ulimit
+  - ip
+examples:
+  - title: Lire le routage
+    command: sysctl net.ipv4.ip_forward
+    comment: 0 si la machine ne route pas IPv4, 1 si elle le fait.
+  - title: Recharger les fichiers
+    command: sudo sysctl --system
+    comment: Relit /etc/sysctl.conf et /etc/sysctl.d. Les clés invalides sont signalées.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: procps
+overrides:
+  alpine:
+    note: Paquet procps, ou busybox sysctl selon l’image. Les clés du noyau sont les mêmes.

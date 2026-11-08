@@ -1,0 +1,48 @@
+name: rc-service
+themes:
+  - services
+summary: Démarre et arrête un service OpenRC. C’est la commande d’Alpine.
+explanation: >-
+  rc-service sshd status interroge le service, start le lance, stop l’arrête, restart le
+  relance. Les scripts vivent dans /etc/init.d. Le démarrage automatique se règle avec
+  rc-update, pas avec enable. Les familles systemd n’ont pas rc-service. Les noms de
+  services Alpine ne sont pas les noms d’unités systemd.
+subcommands:
+  - name: status
+    summary: État d’un service OpenRC.
+    explanation: >-
+      `rc-service sshd status` interroge le script dans /etc/init.d. `start`, `stop` et
+      `restart` agissent. Le démarrage automatique se règle avec `rc-update`, pas avec
+      enable.
+    examples:
+      - title: État
+        command: rc-service sshd status
+        comment: Dit si le service est démarré.
+  - name: restart
+    summary: Relance le service.
+    explanation: "`restart` enchaîne stop et start. L’élévation habituelle sur Alpine est `doas`."
+    examples:
+      - title: Relancer
+        command: doas rc-service sshd restart
+        comment: Le démon repart.
+see_also:
+  - rc-update
+  - systemctl
+  - service
+examples:
+  - title: État
+    command: rc-service sshd status
+    comment: Dit si le service OpenRC est démarré.
+    families:
+      - alpine
+  - title: Relancer
+    command: doas rc-service sshd restart
+    comment: Relance le démon. doas est l’élévation habituelle sur Alpine.
+    families:
+      - alpine
+status: absente
+overrides:
+  alpine:
+    status: spécifique
+    package: openrc
+    note: Interface des services. systemctl n’est pas utilisé.

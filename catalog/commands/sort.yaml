@@ -1,0 +1,53 @@
+name: sort
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Trie des lignes.
+explanation: >-
+  sort fichier trie selon la locale, ce qui peut mélanger chiffres et ponctuation.
+  LC_ALL=C sort impose l’ordre des octets, stable d’une machine à l’autre. -n trie
+  numériquement, -h comprend les tailles 1K et 2M sur GNU, -u retire les doublons une
+  fois trié, -k2 trie sur le deuxième champ, -t: fixe le séparateur. -r inverse. sort -c
+  se contente de vérifier qu’un fichier est déjà trié.
+subcommands:
+  - name: "-n"
+    summary: Trie des nombres, pas du texte.
+    explanation: >-
+      Sans `-n`, 10 passe avant 2. `-h` comprend 1K et 2M sur GNU. `-r` inverse.
+      `LC_ALL=C` fixe l’ordre des octets.
+    examples:
+      - title: Nombres
+        command: sort -n nombres.txt
+        comment: 2 avant 10. Le fichier doit exister.
+  - name: "-k"
+    summary: Trie sur un champ.
+    explanation: >-
+      `-t:` choisit le séparateur. `-k3,3n` trie numériquement sur le troisième champ
+      seulement. `-u` retire les doublons une fois trié. `-c` vérifie qu’un fichier est
+      déjà trié.
+    examples:
+      - title: Par UID
+        command: "sort -t: -k3,3n /etc/passwd"
+        comment: Les comptes du plus petit UID au plus grand.
+see_also:
+  - uniq
+  - join
+  - comm
+examples:
+  - title: Ordre des octets
+    command: LC_ALL=C sort /etc/passwd
+    comment: Trie indépendamment de la langue du compte. Utile avant join ou comm.
+  - title: Par UID
+    command: "sort -t: -k3,3n /etc/passwd"
+    comment: Trie numériquement sur le troisième champ.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

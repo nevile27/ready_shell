@@ -1,0 +1,49 @@
+name: basename
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Retire le répertoire d’un chemin.
+explanation: >-
+  basename /var/log/syslog écrit syslog. Un second argument retire aussi un suffixe :
+  basename fichier.txt .txt écrit fichier. Pour le répertoire parent, c’est dirname.
+  Dans bash, le paramètre ${chemin##*/} fait le même travail sans lancer de processus.
+subcommands:
+  - name: nom
+    summary: Retire le répertoire.
+    explanation: >-
+      `basename /var/log/syslog` écrit syslog. Dans bash, `${chemin##*/}` fait le même
+      travail sans processus.
+    examples:
+      - title: Nom seul
+        command: basename /etc/os-release
+        comment: Écrit os-release.
+  - name: suffixe
+    summary: Retire aussi une terminaison.
+    explanation: >-
+      Le second argument n’est retiré que s’il est exactement à la fin. `dirname` donne
+      le répertoire parent.
+    examples:
+      - title: Sans .log
+        command: basename /var/log/syslog.log .log
+        comment: Écrit syslog.
+see_also:
+  - dirname
+  - realpath
+examples:
+  - title: Nom seul
+    command: basename /etc/os-release
+    comment: Écrit os-release.
+  - title: Sans le suffixe
+    command: basename /var/log/syslog.log .log
+    comment: Écrit syslog. Le suffixe n’est retiré que s’il est exactement à la fin.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

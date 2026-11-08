@@ -1,0 +1,50 @@
+name: nl
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Numérote les lignes d’un fichier.
+explanation: >-
+  nl fichier écrit chaque ligne précédée de son numéro. -ba numérote aussi les lignes
+  vides, ce que le défaut ne fait pas. -n rz cadre le numéro à droite avec des zéros.
+  cat -n est plus direct quand il suffit d’un numéro devant chaque ligne, vide ou non.
+subcommands:
+  - name: "-ba"
+    summary: Numérote aussi les lignes vides.
+    explanation: >-
+      Par défaut, `nl` saute les lignes vides. `-ba` les compte. `cat -n` numérote tout,
+      plus directement.
+    examples:
+      - title: Tout
+        command: nl -ba /etc/hostname
+        comment: Le numéro, y compris si des lignes sont vides.
+  - name: "-n"
+    summary: Choisit le format du numéro.
+    explanation: >-
+      `-n rz` cadre à droite avec des zéros. `-w` fixe la largeur. `-s` change le
+      séparateur après le numéro.
+    examples:
+      - title: Zéros
+        command: nl -n rz -w 3 /etc/hostname
+        comment: Un numéro sur trois caractères, complété par des zéros.
+see_also:
+  - cat
+  - wc
+examples:
+  - title: Numéroter
+    command: nl /etc/hostname
+    comment: Écrit le numéro puis le contenu.
+  - title: Y compris les lignes vides
+    command: nl -ba fichier.txt
+    comment: Compte aussi les lignes qui ne contiennent rien.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    package: coreutils
+    note: Pas dans BusyBox. Le paquet coreutils le fournit. cat -n couvre le cas simple.

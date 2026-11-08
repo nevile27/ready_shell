@@ -1,0 +1,42 @@
+name: lsof
+themes:
+  - processus
+summary: Liste les fichiers ouverts par les processus.
+explanation: >-
+  lsof montre fichiers, sockets et bibliothèques tenus ouverts. lsof -p PID limite à un
+  processus, lsof +D /var cherche qui occupe un répertoire, lsof -i :22 qui écoute ou
+  parle sur le port 22. Un fichier supprimé mais encore ouvert apparaît avec (deleted)
+  et continue d’occuper de l’espace jusqu’à la fermeture. La commande a souvent besoin
+  de droits d’administration pour voir les processus des autres.
+subcommands:
+  - name: "-i"
+    summary: Qui utilise un port.
+    explanation: >-
+      `lsof -i :22` montre les processus sur le port 22. `-p PID` limite à un processus.
+      Un fichier supprimé encore ouvert apparaît avec (deleted).
+    examples:
+      - title: Port 22
+        command: sudo lsof -i :22
+        comment: Les processus SSH liés à ce port.
+  - name: +D
+    summary: Qui a un fichier ouvert sous un répertoire.
+    explanation: >-
+      `+D` parcourt le répertoire. `fuser` est plus direct pour un point de montage
+      occupé.
+    examples:
+      - title: Un PID
+        command: sudo lsof -p 1
+        comment: Tout ce que le processus 1 garde ouvert.
+see_also:
+  - fuser
+  - ss
+  - ps
+examples:
+  - title: Qui écoute sur le port 22
+    command: sudo lsof -i :22
+    comment: Liste les processus SSH liés à ce port, en TCP ou UDP.
+  - title: Fichiers d’un PID
+    command: sudo lsof -p 1
+    comment: Tout ce que le processus 1 garde ouvert.
+status: courante
+package: lsof

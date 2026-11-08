@@ -1,0 +1,37 @@
+name: exit
+themes:
+  - shell
+summary: Termine le shell avec un code de retour.
+explanation: >-
+  exit 0 signale la réussite, exit 1 un échec. Sans argument, exit reprend le code de la
+  dernière commande. Dans un script, c’est la fin du processus. Dans un shell
+  interactif, c’est la fin de la session. Dans une fonction sourcée, exit quitte aussi
+  le shell appelant : pour sortir seulement de la fonction, il faut return.
+subcommands:
+  - name: code
+    summary: Termine le shell avec un code de retour.
+    explanation: >-
+      `exit 0` annonce la réussite, `exit 1` un échec. Sans nombre, `exit` reprend le
+      code de la dernière commande. Dans une fonction sourcée, `exit` quitte aussi le
+      shell appelant.
+    examples:
+      - title: Échec
+        command: exit 1
+        comment: Le script ou le shell s’arrête avec le code 1.
+see_also:
+  - trap
+  - wait
+examples:
+  - title: Échec explicite
+    command: grep -q '^root:' /etc/passwd || exit 1
+    comment: Le script s’arrête avec le code 1 si la ligne n’est pas trouvée.
+  - title: Réussite
+    command: exit 0
+    comment: Termine le script en annonçant que tout s’est bien passé.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

@@ -1,0 +1,38 @@
+name: groupadd
+themes:
+  - utilisateurs
+summary: Crée un groupe.
+explanation: >-
+  groupadd dev crée le groupe dev avec le prochain GID libre. -g 2000 impose le numéro.
+  Un groupe n’est pas un compte : on y place des utilisateurs avec usermod -aG. Sur
+  Debian, addgroup est le frontal correspondant. groupadd échoue si le nom existe déjà.
+subcommands:
+  - name: nom
+    summary: Crée un groupe.
+    explanation: >-
+      `groupadd dev` prend le prochain GID. `-g` impose le numéro. `-r` choisit un GID
+      système. Le groupe ne devient utile qu’une fois des membres ajoutés avec `usermod
+      -aG`.
+    examples:
+      - title: Groupe
+        command: sudo groupadd dev
+        comment: Le nom dev peut ensuite servir à chown et usermod.
+see_also:
+  - groupdel
+  - usermod
+  - addgroup
+  - getent
+examples:
+  - title: Nouveau groupe
+    command: sudo groupadd dev
+    comment: Le nom dev devient utilisable dans chown et usermod.
+  - title: GID choisi
+    command: sudo groupadd -g 1500 build
+    comment: Utile pour retrouver le même numéro sur plusieurs machines.
+status: courante
+package:
+  debian: passwd
+  redhat: shadow-utils
+  suse: shadow
+  arch: shadow
+  alpine: shadow

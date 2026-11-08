@@ -1,0 +1,66 @@
+name: fdisk
+themes:
+  - disques
+summary: Lit ou modifie la table des partitions, en mode interactif.
+explanation: >-
+  fdisk -l liste les tables sans rien écrire. Sans -l, fdisk ouvre un menu sur un disque
+  : g crée une table GPT, n une partition, p affiche, w écrit. Les versions actuelles de
+  fdisk savent gérer le GPT, pas seulement le MBR. Pour un script, sfdisk est plus
+  prévisible. Écrire une table sur le mauvais disque efface les partitions. On ne
+  partitionne pas un disque qui contient le système en cours sans savoir ce qu’on
+  retire.
+pitfalls:
+  - w enregistre immédiatement. Tant que vous n’avez pas tapé w, q quitte sans écrire.
+subcommands:
+  - name: "-l"
+    summary: Lit les tables sans ouvrir le menu.
+    explanation: >-
+      `fdisk -l` n’écrit rien sur le disque. Les versions actuelles savent lire le GPT,
+      pas seulement le MBR.
+    examples:
+      - title: Lire
+        command: sudo fdisk -l
+        comment: Disques et partitions.
+  - name: menu
+    summary: Ouvre l’éditeur de la table.
+    explanation: >-
+      Dans le menu, `p` affiche, `n` crée, `g` prépare un GPT, `w` écrit, `q` sort sans
+      écrire. `w` est immédiat.
+    examples:
+      - title: Ouvrir un disque de test
+        command: sudo fdisk /dev/sdb
+        comment: Uniquement si sdb peut être repartitionné. q sort sans écrire.
+    pitfalls:
+      - w enregistre tout de suite. Tant que w n’est pas tapé, q n’écrit rien.
+see_also:
+  - sfdisk
+  - parted
+  - lsblk
+deprecated_options:
+  - option: "-s"
+    since: util-linux, option historique
+    replacement: blockdev --getsz
+    why: >-
+      La taille en secteurs n’est pas le rôle de fdisk. -s reste parfois accepté et ne
+      doit plus servir dans un script.
+examples:
+  - title: Lire sans modifier
+    command: sudo fdisk -l
+    comment: Affiche les disques et leurs partitions. N’ouvre pas le menu.
+  - title: Menu sur un disque de test
+    command: sudo fdisk /dev/sdb
+    comment: >-
+      Uniquement si sdb est le disque que vous acceptez de repartitionner. p affiche, q
+      sort sans écrire.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

@@ -1,0 +1,37 @@
+name: nslookup
+themes:
+  - reseau
+summary: Interroge le DNS. La commande est toujours livrée ; dig est plus clair.
+explanation: >-
+  nslookup nom interroge le résolveur et écrit l’adresse. Le mode interactif s’ouvre si
+  l’on lance nslookup sans argument. BIND a autrefois marqué l’outil comme déprécié,
+  puis l’a maintenu : sur les versions actuelles il est livré avec dig et host, il n’est
+  pas retiré. Sa sortie est moins stable à lire dans un script que dig +short. On le
+  garde pour les habitudes, pas comme format d’échange.
+subcommands:
+  - name: requête
+    summary: Interroge le résolveur et écrit l’adresse.
+    explanation: >-
+      `nslookup` est toujours livré avec `dig` et `host`. Sa sortie est moins stable
+      dans un script que `dig +short`. Le mode interactif s’ouvre sans argument.
+    examples:
+      - title: Une requête
+        command: nslookup exemple.fr
+        comment: Le serveur utilisé, puis les adresses.
+see_also:
+  - dig
+  - host
+examples:
+  - title: Une requête
+    command: nslookup exemple.fr
+    comment: Affiche le serveur utilisé puis les adresses.
+  - title: Forme à préférer dans un script
+    command: dig +short exemple.fr
+    comment: Une adresse par ligne, sans texte autour.
+status: courante
+package:
+  debian: bind9-dnsutils
+  redhat: bind-utils
+  suse: bind-utils
+  arch: bind
+  alpine: bind-tools

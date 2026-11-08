@@ -1,0 +1,47 @@
+name: wait
+themes:
+  - shell
+summary: Attend la fin d’un processus lancé par ce shell.
+explanation: >-
+  wait bloque jusqu’à la fin des enfants lancés en arrière-plan, puis renvoie leur code
+  de sortie. wait PID vise un processus précis. wait -n, en bash, revient dès que l’un
+  des enfants se termine. Un PID qui n’est pas un enfant du shell ne peut pas être
+  attendu ainsi : il faut une boucle sur ps ou sur /proc.
+subcommands:
+  - name: pid
+    summary: Attend un enfant précis.
+    explanation: >-
+      `wait` sans argument attend tous les enfants. `wait $!` attend le dernier lancé en
+      arrière-plan. Un PID qui n’est pas un enfant de ce shell ne peut pas être attendu
+      ainsi.
+    examples:
+      - title: Dernier arrière-plan
+        command: sleep 1 & wait $!
+        comment: Revient quand sleep se termine, avec son code.
+  - name: "-n"
+    summary: Revient dès qu’un enfant se termine.
+    explanation: >-
+      `wait -n` est du bash. Il est utile quand plusieurs tâches tournent et que l’on
+      veut traiter la première qui finit.
+    examples:
+      - title: Le premier fini
+        command: wait -n
+        comment: Bloque jusqu’à la fin d’un seul enfant, pas de tous.
+see_also:
+  - jobs
+  - trap
+  - kill
+examples:
+  - title: Attendre tout le monde
+    command: wait
+    comment: Bloque jusqu’à la fin de tous les enfants en arrière-plan de ce shell.
+  - title: Attendre un PID
+    command: sleep 5 & wait $!
+    comment: $! est le PID du dernier arrière-plan. wait renvoie le code de sleep.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

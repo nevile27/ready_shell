@@ -1,0 +1,48 @@
+name: nft
+themes:
+  - reseau
+summary: Administre le pare-feu nftables du noyau.
+explanation: >-
+  `nft` administre nftables, le filtre de paquets du noyau. On écrit les règles dans un
+  fichier et on le charge, plutôt que d’empiler des commandes. `iptables` sur les
+  systèmes actuels n’est souvent qu’une traduction vers ce filtre.
+subcommands:
+  - name: list ruleset
+    summary: Affiche toutes les tables, chaînes et règles chargées.
+    explanation: >-
+      `list ruleset` écrit l’ensemble actif. `list table inet filter` n’en montre
+      qu’une. La lecture ne modifie rien. Une sortie vide signifie qu’aucun service n’a
+      chargé de règles, pas que le noyau est incapable d’en avoir.
+    examples:
+      - title: Tout voir
+        command: sudo nft list ruleset
+        comment: Le jeu chargé. Peut être long si un frontal a beaucoup écrit.
+  - name: "-f"
+    summary: Charge un fichier de règles.
+    explanation: >-
+      `-f` remplace ou ajoute selon ce que le fichier contient. `-c -f` vérifie la
+      syntaxe sans charger. On vérifie d’abord, on charge ensuite. Un fichier qui vide
+      la table peut couper l’accès à une machine distante : on le prépare depuis la
+      console.
+    examples:
+      - title: Vérifier
+        command: sudo nft -c -f /etc/nftables.conf
+        comment: Contrôle le fichier. Les règles actives ne changent pas.
+      - title: Charger
+        command: sudo nft -f /etc/nftables.conf
+        comment: Applique le fichier. Le chemin exact dépend de la famille.
+see_also:
+  - iptables
+  - ufw
+  - firewall-cmd
+examples:
+  - title: Règles actives
+    command: sudo nft list ruleset
+    comment: Tout le jeu chargé. Vide si aucun service de pare-feu n’a rien installé.
+  - title: Vérifier un fichier
+    command: sudo nft -c -f /etc/nftables.conf
+    comment: >-
+      Contrôle la syntaxe sans charger les règles. Le chemin du fichier varie selon la
+      famille.
+status: courante
+package: nftables

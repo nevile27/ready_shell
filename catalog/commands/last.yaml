@@ -1,0 +1,48 @@
+name: last
+themes:
+  - utilisateurs
+summary: Liste les connexions passées.
+explanation: >-
+  last lit wtmp et montre qui s’est connecté, d’où, et pendant combien de temps. last -n
+  10 limite le nombre de lignes, last reboot ne garde que les démarrages. Un système
+  sans journal wtmp, fréquent dans un conteneur, n’a rien à montrer. last n’est pas le
+  journal d’authentification : les échecs sont dans le journal (journalctl ou
+  /var/log/auth.log).
+subcommands:
+  - name: "-n"
+    summary: Limite le nombre de connexions affichées.
+    explanation: >-
+      `last` lit wtmp. Un conteneur sans ce journal n’a rien à montrer. Les échecs de
+      connexion sont dans le journal d’authentification, pas ici.
+    examples:
+      - title: Dix
+        command: last -n 10
+        comment: Les sessions les plus récentes.
+  - name: reboot
+    summary: Ne garde que les démarrages.
+    explanation: "`last reboot` liste les boots. `last user` ne garde qu’un compte."
+    examples:
+      - title: Boots
+        command: last reboot
+        comment: Quand la machine a été démarrée.
+see_also:
+  - who
+  - journalctl
+  - lastlog
+examples:
+  - title: Dix dernières connexions
+    command: last -n 10
+    comment: Les sessions les plus récentes, de la plus nouvelle à la plus ancienne.
+  - title: Démarrages
+    command: last reboot
+    comment: Quand la machine a été démarrée, d’après wtmp.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: Paquet util-linux. L’historique dépend de wtmp, parfois absent d’un conteneur.

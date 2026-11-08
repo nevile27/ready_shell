@@ -1,0 +1,51 @@
+name: dig
+themes:
+  - reseau
+summary: Interroge le DNS et montre la réponse complète.
+explanation: >-
+  dig exemple.fr affiche la question, les drapeaux et les enregistrements. dig
+  exemple.fr MX ne demande que le courrier, dig +short exemple.fr ne garde que les
+  adresses. @8.8.8.8 interroge un résolveur précis au lieu de celui de la machine. dig
+  +trace suit la délégation depuis la racine. Le paquet n’est pas toujours dans l’image
+  minimale. Pour ce que la machine résout vraiment, getent hosts passe par nsswitch, pas
+  seulement par le DNS.
+subcommands:
+  - name: +short
+    summary: N’écrit que les réponses, sans le préambule.
+    explanation: >-
+      `dig nom` montre question, drapeaux et enregistrements. `+short` ne garde que les
+      adresses. Le type se donne après le nom : `A`, `MX`, `NS`.
+    examples:
+      - title: Adresses
+        command: dig +short exemple.fr A
+        comment: Une adresse par ligne.
+  - name: "@serveur"
+    summary: Interroge un résolveur précis.
+    explanation: >-
+      Sans `@`, dig utilise le résolveur de la machine. `+trace` suit la délégation
+      depuis la racine. `getent hosts` passe par nsswitch, pas seulement par le DNS.
+    examples:
+      - title: Un résolveur
+        command: dig @1.1.1.1 +short exemple.fr
+        comment: Comparez avec la même commande sans @.
+see_also:
+  - host
+  - nslookup
+  - resolvectl
+  - getent
+examples:
+  - title: Adresses seules
+    command: dig +short exemple.fr A
+    comment: >-
+      Une adresse par ligne, sans le préambule. Remplacez l’exemple par un nom que vous
+      dépannez.
+  - title: Un résolveur imposé
+    command: dig @1.1.1.1 +short exemple.fr
+    comment: Compare la réponse de ce résolveur à celle de la machine, obtenue sans @.
+status: courante
+package:
+  debian: bind9-dnsutils
+  redhat: bind-utils
+  suse: bind-utils
+  arch: bind
+  alpine: bind-tools

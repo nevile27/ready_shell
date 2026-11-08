@@ -1,0 +1,62 @@
+name: shred
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Écrase le contenu d’un fichier avant de pouvoir le supprimer.
+explanation: >-
+  shred réécrit l’emplacement du fichier plusieurs fois pour rendre l’ancienne donnée
+  plus difficile à relire sur un disque dur magnétique. Sur un SSD, une carte mémoire ou
+  un système de fichiers journalisé avec copie sur écriture, les blocs réécrits ne sont
+  souvent pas les blocs d’origine : shred ne tient alors pas sa promesse. -u supprime le
+  fichier ensuite. Pour un secret sur un support moderne, le chiffrement du disque
+  compte plus qu’un écrasement.
+pitfalls:
+  - >-
+    shred ne garantit pas l’effacement sur SSD, ni si le fichier a des instantanés ou
+    des liens durs ailleurs.
+subcommands:
+  - name: "-u"
+    summary: Écrase le contenu puis supprime le nom.
+    explanation: >-
+      `shred` réécrit un fichier régulier. Sur un SSD ou un système à copie sur
+      écriture, les blocs réécrits ne sont souvent pas ceux d’origine.
+    examples:
+      - title: Écraser et supprimer
+        command: shred -u /tmp/secret.txt
+        comment: Le fichier doit exister et être régulier.
+    pitfalls:
+      - >-
+        shred ne garantit pas l’effacement sur SSD, ni s’il reste un instantané ou un
+        lien dur.
+  - name: "-n"
+    summary: Choisit le nombre de passages.
+    explanation: >-
+      Le défaut est plusieurs passages. `-n 1` n’en fait qu’un. `-z` termine par des
+      zéros pour masquer le fait que le fichier a été broyé.
+    examples:
+      - title: Un passage puis des zéros
+        command: shred -n 1 -z /tmp/secret.txt
+        comment: Réécrit une fois, puis met des zéros. Le nom reste.
+see_also:
+  - rm
+  - dd
+examples:
+  - title: Écraser puis supprimer
+    command: shred -u /tmp/secret.txt
+    comment: >-
+      Réécrit le fichier et retire son nom. Le fichier doit être régulier, pas un
+      répertoire.
+  - title: Écraser sans supprimer
+    command: shred /tmp/secret.txt
+    comment: Remplace le contenu. Le nom reste, la taille aussi.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: Pas dans BusyBox. Fourni par le paquet coreutils.

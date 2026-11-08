@@ -1,0 +1,59 @@
+name: chmod
+themes:
+  - fichiers
+  - utilisateurs
+tags:
+  - coreutils
+summary: Change les droits d’accès d’un fichier.
+explanation: >-
+  chmod 644 fichier donne lecture et écriture au propriétaire, lecture aux autres. chmod
+  u+x ajoute l’exécution au propriétaire sans toucher au reste. u, g et o visent
+  propriétaire, groupe et autres ; a vise tout le monde. -R descend dans un répertoire.
+  Les droits d’un lien symbolique se changent sur la cible, pas sur le lien lui-même.
+  chmod ne change pas le propriétaire : c’est chown.
+pitfalls:
+  - >-
+    chmod -R 777 ouvre un répertoire à tout le monde en écriture. Ce n’est pas un
+    correctif. Donnez le droit minimal qui débloque le service.
+subcommands:
+  - name: symbolique
+    summary: Ajoute ou retire un droit sans toucher aux autres.
+    explanation: >-
+      `u` est le propriétaire, `g` le groupe, `o` les autres, `a` tout le monde. `+`
+      ajoute, `-` retire, `=` pose. `-R` descend dans un répertoire.
+    examples:
+      - title: Exécutable
+        command: chmod u+x outil.sh
+        comment: Le propriétaire peut lancer ./outil.sh.
+  - name: octal
+    summary: Pose les neuf droits d’un coup.
+    explanation: >-
+      `644` est lecture-écriture pour le propriétaire, lecture pour les autres. `755`
+      ajoute l’exécution. `chmod` ne change pas le propriétaire : c’est `chown`.
+    examples:
+      - title: Fichier privé
+        command: chmod 600 "$HOME/.ssh/id_ed25519"
+        comment: Lecture et écriture pour le seul propriétaire, si la clé existe.
+    pitfalls:
+      - chmod -R 777 ouvre un répertoire à tout le monde. Donnez le droit minimal.
+see_also:
+  - chown
+  - umask
+  - stat
+examples:
+  - title: Script exécutable
+    command: chmod u+x outil.sh
+    comment: Le propriétaire peut lancer ./outil.sh. Les autres droits restent inchangés.
+  - title: Fichier privé
+    command: chmod 600 "$HOME/cle"
+    comment: Lecture et écriture pour le propriétaire seulement.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

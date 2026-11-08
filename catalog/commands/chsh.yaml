@@ -1,0 +1,40 @@
+name: chsh
+themes:
+  - utilisateurs
+summary: Change le shell de connexion d’un compte.
+explanation: >-
+  chsh -s /bin/bash change votre shell. Le chemin doit figurer dans /etc/shells, sinon
+  la connexion peut être refusée. chsh -s /bin/bash ada, par l’administrateur, vise un
+  autre compte. Le shell déjà ouvert ne change pas : il faut une nouvelle session.
+  usermod -s fait la même modification sans passer par la liste /etc/shells de la même
+  façon selon les familles ; chsh est le plus strict.
+subcommands:
+  - name: "-s"
+    summary: Change le shell de connexion.
+    explanation: >-
+      Le chemin doit figurer dans `/etc/shells`. Le shell déjà ouvert ne change pas.
+      `chsh -l` liste les shells acceptés sur certaines versions.
+    examples:
+      - title: Bash
+        command: chsh -s /bin/bash
+        comment: Les prochaines connexions démarrent bash.
+see_also:
+  - usermod
+  - getent
+  - bash
+examples:
+  - title: Son shell
+    command: chsh -s /bin/bash
+    comment: Les prochaines connexions démarrent bash. /bin/bash doit être dans /etc/shells.
+  - title: Shells acceptés
+    command: chsh -l
+    comment: >-
+      Liste le contenu utile de /etc/shells. Certaines versions lisent le fichier
+      directement.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: shadow
+  alpine: shadow

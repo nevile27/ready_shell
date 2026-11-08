@@ -1,0 +1,42 @@
+name: fgrep
+themes:
+  - texte
+summary: Ancien nom de grep -F. GNU grep le signale comme obsolète depuis la version 3.8.
+explanation: >-
+  fgrep cherche une chaîne fixe, pas une expression rationnelle. C’est grep -F. Le nom
+  est obsolète depuis GNU grep 3.8 et produit un avertissement. -F est le bon choix
+  quand le motif vient d’une donnée et peut contenir des points ou des crochets : ils
+  restent des caractères ordinaires.
+subcommands:
+  - name: "-F"
+    summary: La forme actuelle est grep -F.
+    explanation: >-
+      `fgrep` cherche une chaîne fixe et avertit. `grep -F` laisse les crochets et les
+      points ordinaires.
+    examples:
+      - title: Chaîne fixe
+        command: grep -F '[ERROR]' journal.txt
+        comment: Les crochets ne forment pas une classe de caractères.
+see_also:
+  - grep
+  - egrep
+replaced_by: grep
+examples:
+  - title: Chaîne fixe
+    command: grep -F '[ERROR]' application.log
+    comment: >-
+      Les crochets ne forment pas une classe de caractères. Ils sont cherchés tels
+      quels.
+  - title: Ancienne forme
+    command: fgrep '[ERROR]' application.log
+    comment: Même recherche, plus un avertissement « obsolescent » sur GNU grep.
+status: obsolète
+package:
+  debian: grep
+  redhat: grep
+  suse: grep
+  arch: grep
+  alpine: grep
+overrides:
+  alpine:
+    note: Pas dans BusyBox. Le paquet grep GNU peut fournir le nom, avec avertissement.

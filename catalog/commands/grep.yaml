@@ -1,0 +1,84 @@
+name: grep
+themes:
+  - texte
+summary: Affiche les lignes qui correspondent à un motif.
+explanation: >-
+  `grep` écrit les lignes qui correspondent à un motif. Sans fichier, il lit l’entrée
+  standard. `-E` et `-F` remplacent les commandes obsolètes `egrep` et `fgrep`. Le motif
+  se cite pour que le shell ne l’interprète pas.
+subcommands:
+  - name: "-n"
+    summary: Ajoute le numéro de ligne.
+    explanation: >-
+      `-n` préfixe chaque ligne retenue par son numéro dans le fichier. `-H` force aussi
+      le nom du fichier, utile quand on n’en donne qu’un. `-c` ne garde que le nombre de
+      lignes, sans les afficher.
+    examples:
+      - title: Avec les numéros
+        command: grep -n root /etc/passwd
+        comment: Chaque ligne qui contient root, précédée de son numéro.
+  - name: "-E"
+    summary: "Motif étendu : parenthèses, alternative, quantifieurs."
+    explanation: >-
+      `-E` active les expressions rationnelles étendues. `|` sépare des alternatives,
+      les parenthèses groupent, `+` et `?` comptent. C’est le remplaçant d’`egrep`, qui
+      avertit depuis GNU grep 3.8. Le motif reste entre quotes simples.
+    examples:
+      - title: Une alternative
+        command: grep -E '^(root|daemon):' /etc/passwd
+        comment: "Lignes qui commencent par root: ou daemon:."
+  - name: "-F"
+    summary: Cherche une chaîne fixe, pas une expression.
+    explanation: >-
+      `-F` ne donne aucun sens spécial au point, à l’étoile ou aux crochets. C’est le
+      remplaçant de `fgrep`. On l’utilise dès que le motif vient d’une donnée : un
+      message d’erreur entre crochets resterait sinon une classe de caractères.
+    examples:
+      - title: Crochets littéraux
+        command: grep -F '[ERROR]' journal.txt
+        comment: Cherche les huit caractères, crochets compris.
+  - name: "-R"
+    summary: Parcourt un répertoire.
+    explanation: >-
+      `-R` descend dans les sous-répertoires et suit les liens. `-r` descend aussi, sans
+      suivre tous les liens selon les versions. `--include='*.conf'` limite les noms.
+      `-l` n’écrit que les fichiers qui ont au moins une ligne, pas les lignes
+      elles-mêmes. Pour choisir les fichiers avant de chercher, `find` puis `xargs`
+      reste plus précis.
+    examples:
+      - title: Dans les fichiers de configuration
+        command: grep -R --include='*.conf' -n Listen /etc
+        comment: Numéro de ligne, seulement dans les noms qui finissent par .conf.
+  - name: "-v"
+    summary: Garde les lignes qui ne correspondent pas.
+    explanation: >-
+      `-v` inverse la sélection. `-i` ignore la casse, et se combine avec `-v`. `-w`
+      exige un mot entier, pour ne pas prendre un motif au milieu d’un autre mot.
+    examples:
+      - title: Tout sauf les commentaires
+        command: grep -v '^#' /etc/fstab
+        comment: "Retire les lignes qui commencent par #. Les lignes vides restent."
+see_also:
+  - egrep
+  - fgrep
+  - sed
+  - find
+examples:
+  - title: Lignes qui contiennent un mot
+    command: grep -n root /etc/passwd
+    comment: Affiche chaque ligne de passwd qui contient root, avec son numéro.
+  - title: Expression étendue
+    command: grep -E '^(root|daemon):' /etc/passwd
+    comment: Le | et les parenthèses sont actifs grâce à -E. C’est le remplaçant d’egrep.
+status: courante
+package:
+  debian: grep
+  redhat: grep
+  suse: grep
+  arch: grep
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      Applet BusyBox. Le paquet grep apporte la version GNU, y compris -P si elle est
+      compilée.

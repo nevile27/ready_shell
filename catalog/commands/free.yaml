@@ -1,0 +1,46 @@
+name: free
+themes:
+  - processus
+summary: Résume la mémoire vive et l’espace d’échange.
+explanation: >-
+  free -h montre la RAM et le swap en unités lisibles. La colonne available, sur procps,
+  est celle qui dit ce qui peut encore servir aux applications : la mémoire en cache
+  n’est pas perdue, le noyau la rend s’il le faut. available absente d’un vieux free ou
+  d’un BusyBox très court : ne concluez pas qu’il n’y a plus de RAM parce que free est
+  bas et buff/cache est haut.
+subcommands:
+  - name: "-h"
+    summary: Mémoire et swap en unités lisibles.
+    explanation: >-
+      La colonne available, sur procps, dit ce qui peut encore servir. Le cache n’est
+      pas de la mémoire perdue.
+    examples:
+      - title: Lisible
+        command: free -h
+        comment: Regardez available plutôt que la seule colonne free.
+  - name: "-m"
+    summary: Nombres entiers en mébioctets.
+    explanation: >-
+      `-g` arrondit en gibioctets, trop gros pour comparer. `-s 2` répète la mesure
+      toutes les deux secondes.
+    examples:
+      - title: Mégioctets
+        command: free -m
+        comment: Des entiers, plus stables à comparer.
+see_also:
+  - vmstat
+  - top
+examples:
+  - title: Unités lisibles
+    command: free -h
+    comment: RAM et swap. Regardez available plutôt que la seule colonne free.
+  - title: En mébioctets
+    command: free -m
+    comment: Nombres entiers en Mio, plus stables à comparer qu’un affichage en Gio.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: busybox

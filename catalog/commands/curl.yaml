@@ -1,0 +1,44 @@
+name: curl
+themes:
+  - reseau
+summary: Transfère une URL. HTTP, HTTPS, et d’autres protocoles.
+explanation: >-
+  curl URL écrit le corps de la réponse. -I ne demande que les en-têtes, -o fichier
+  enregistre, -L suit les redirections, -f fait échouer le code de retour sur une erreur
+  HTTP. -s reste silencieux, -S montre quand même l’erreur. Pour un téléchargement
+  simple avec reprise, wget est parfois plus direct. curl ne vérifie pas un site au-delà
+  du certificat TLS : -k désactive cette vérification et ne doit pas devenir une
+  habitude.
+subcommands:
+  - name: "-I"
+    summary: Ne demande que les en-têtes.
+    explanation: >-
+      `-I` n’écrit pas le corps. `-s` se tait, `-S` montre quand même l’erreur. `-L`
+      suit les redirections. `-f` fait échouer le code sur une erreur HTTP.
+    examples:
+      - title: En-têtes
+        command: curl -sI https://example.com
+        comment: Le statut et les en-têtes.
+  - name: "-o"
+    summary: Enregistre le corps dans un fichier.
+    explanation: >-
+      `-O` utilise le nom distant. `-o` choisit le nom. `-k` désactive la vérification
+      du certificat et ne doit pas devenir une habitude.
+    examples:
+      - title: Fichier
+        command: curl -fsSL -o /tmp/page.html https://example.com
+        comment: Écrit la page. Échoue si le certificat ou le réseau est mauvais.
+see_also:
+  - wget
+  - ssh
+examples:
+  - title: En-têtes seulement
+    command: curl -sI https://example.com
+    comment: Affiche le statut HTTP et les en-têtes, sans le corps de la page.
+  - title: Enregistrer
+    command: curl -fsSL -o /tmp/page.html https://example.com
+    comment: >-
+      Échoue si le réseau ou le certificat est mauvais, et écrit la page dans le
+      fichier.
+status: courante
+package: curl

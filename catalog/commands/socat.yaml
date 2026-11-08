@@ -1,0 +1,43 @@
+name: socat
+themes:
+  - reseau
+summary: "Relie deux flux : sockets, fichiers, ports."
+explanation: >-
+  socat est l’outil général quand nc ne suffit plus. socat - TCP:hote:80 relie le
+  terminal à un port. socat TCP-LISTEN:9000,fork TCP:autre:80 relaie. La syntaxe est
+  plus longue que celle de nc et elle est la même d’une famille à l’autre. Le paquet
+  n’est pas dans l’installation minimale. Pour un simple test de port, nc ou ss
+  suffisent.
+subcommands:
+  - name: TCP
+    summary: Relie le terminal à un port.
+    explanation: >-
+      `socat - TCP:hôte:80` envoie le clavier vers le port et affiche la réponse. La
+      syntaxe est la même d’une famille à l’autre. Le paquet n’est pas dans
+      l’installation minimale.
+    examples:
+      - title: Port local
+        command: socat - TCP:127.0.0.1:22
+        comment: La bannière SSH. Ctrl+C coupe.
+  - name: LISTEN
+    summary: Écoute et relaie.
+    explanation: >-
+      `TCP-LISTEN` attend. `fork` accepte plusieurs clients. Pour un simple test de
+      port, `nc` ou `ss` suffisent.
+    examples:
+      - title: Relais
+        command: socat TCP-LISTEN:9001,fork TCP:127.0.0.1:22
+        comment: Le port 9001 renvoie vers le SSH local.
+see_also:
+  - nc
+  - curl
+  - ss
+examples:
+  - title: Connexion TCP
+    command: socat - TCP:127.0.0.1:22
+    comment: Relie le terminal au port local 22. Vous verrez la bannière SSH. Ctrl+C coupe.
+  - title: Relais local
+    command: socat TCP-LISTEN:9001,fork TCP:127.0.0.1:22
+    comment: Le port 9001 de cette machine renvoie vers le SSH local. À arrêter avec Ctrl+C.
+status: courante
+package: socat

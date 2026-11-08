@@ -1,0 +1,39 @@
+name: updatedb
+themes:
+  - fichiers
+summary: Reconstruit l’index utilisé par locate.
+explanation: >-
+  updatedb parcourt les systèmes de fichiers autorisés et réécrit la base de locate. Il
+  se lance d’habitude par un minuteur, une fois par jour. Le lancer à la main demande en
+  pratique les droits d’administration, parce que la base système est dans /var/lib. Les
+  chemins exclus se règlent dans le fichier de configuration de plocate, pas dans locate
+  lui-même.
+subcommands:
+  - name: index
+    summary: Reconstruit la base utilisée par locate.
+    explanation: >-
+      `updatedb` parcourt les systèmes de fichiers autorisés. Il se lance d’habitude une
+      fois par jour. La base système demande l’administrateur.
+    examples:
+      - title: Rafraîchir
+        command: sudo updatedb
+        comment: locate voit ensuite les fichiers récents de cet index.
+see_also:
+  - locate
+  - find
+examples:
+  - title: Rafraîchir l’index système
+    command: sudo updatedb
+    comment: >-
+      Reconstruit la base. locate voit ensuite les fichiers récents visibles par cet
+      index.
+  - title: Vérifier ensuite
+    command: locate -e /etc/os-release
+    comment: Doit retrouver le fichier si /etc est indexé.
+status: courante
+package:
+  debian: plocate
+  redhat: plocate
+  suse: plocate
+  arch: plocate
+  alpine: plocate

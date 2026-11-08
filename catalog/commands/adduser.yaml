@@ -1,0 +1,50 @@
+name: adduser
+themes:
+  - utilisateurs
+summary: >-
+  Crée un compte. Sur Debian c’est un frontal, sur Alpine une applet BusyBox : ce n’est
+  pas la même commande.
+explanation: >-
+  Sur Debian et Ubuntu, adduser ada pose les questions, crée le groupe du même nom, le
+  répertoire et le mot de passe. C’est un script Perl du paquet adduser, au-dessus de
+  useradd. Sur Alpine, adduser est l’applet BusyBox, plus courte, et c’est elle qu’on
+  trouve sur une image minimale. Red Hat, SUSE et Arch n’installent pas cette commande :
+  le socle y est useradd. Un script qui appelle adduser n’est pas portable.
+subcommands:
+  - name: compte
+    summary: Crée un compte, avec un programme différent selon la famille.
+    explanation: >-
+      Sur Debian, `adduser` pose les questions. Sur Alpine, c’est l’applet BusyBox :
+      `adduser -D` crée sans mot de passe interactif. Red Hat, SUSE et Arch utilisent
+      `useradd`.
+    examples:
+      - title: Debian
+        command: sudo adduser ada
+        comment: Questions, groupe, répertoire et mot de passe.
+see_also:
+  - useradd
+  - addgroup
+  - passwd
+examples:
+  - title: Debian et Ubuntu
+    command: sudo adduser ada
+    comment: Questions interactives, groupe personnel, répertoire et mot de passe.
+    families:
+      - debian
+  - title: Alpine
+    command: adduser -D ada
+    comment: >-
+      Crée ada sans mot de passe interactif. -D est l’option BusyBox, pas celle du
+      adduser Debian.
+    families:
+      - alpine
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: adduser
+    note: Frontal Perl. Les scripts qui doivent rester portables appellent useradd.
+  alpine:
+    status: spécifique
+    package: busybox
+    note: Applet BusyBox, options différentes du adduser Debian.

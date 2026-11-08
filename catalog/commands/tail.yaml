@@ -1,0 +1,49 @@
+name: tail
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Affiche la fin d’un fichier, ou suit son croissance.
+explanation: >-
+  tail fichier montre les dix dernières lignes. -n 50 en demande cinquante. -f reste
+  ouvert et affiche les lignes ajoutées ensuite, jusqu’à Ctrl+C. tail -F rouverte le
+  fichier s’il est remplacé, ce qui arrive quand un journal est tourné. Plusieurs
+  fichiers se suivent ensemble en répétant les noms.
+subcommands:
+  - name: "-n"
+    summary: Affiche la fin du fichier.
+    explanation: "`tail -n 30` écrit les trente dernières lignes. `-c` compte en octets."
+    examples:
+      - title: Fin
+        command: tail -n 30 /etc/passwd
+        comment: Les trente dernières lignes.
+  - name: "-f"
+    summary: Suit les lignes ajoutées.
+    explanation: >-
+      `-f` reste ouvert jusqu’à Ctrl+C. `-F` rouvre le fichier s’il est remplacé, ce qui
+      arrive quand un journal tourne.
+    examples:
+      - title: Suivre
+        command: tail -F /var/log/syslog
+        comment: Reste en place même si le fichier est recréé. Le chemin dépend de la famille.
+see_also:
+  - head
+  - journalctl
+  - less
+examples:
+  - title: Fin d’un fichier
+    command: tail -n 30 /etc/passwd
+    comment: Écrit les trente dernières lignes.
+  - title: Suivre un journal fichier
+    command: tail -F /var/log/messages
+    comment: Reste en place et suit le fichier même s’il est recréé. Ctrl+C arrête.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

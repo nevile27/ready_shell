@@ -1,0 +1,62 @@
+name: apt-key
+themes:
+  - paquets
+summary: Ajoutait une clé au trousseau global d’apt. Retiré de Debian 13 et d’Ubuntu 26.04.
+explanation: >-
+  apt-key add déposait une clé dans un trousseau commun : n’importe quel dépôt pouvait
+  être signé par n’importe quelle clé de ce trousseau. APT 3, celui de Debian 13 et
+  d’Ubuntu 26.04, ne livre plus la commande. Une clé de dépôt tiers se place dans
+  /etc/apt/keyrings, en fichier à part, et le dépôt la désigne avec Signed-By.
+  /etc/apt/trusted.gpg n’est plus consulté. Ubuntu 24.04 avait encore apt-key, avec un
+  avertissement ; ce n’est plus le cas de la LTS 26.04.
+subcommands:
+  - name: add
+    summary: Ancienne commande, retirée.
+    explanation: >-
+      `apt-key add` déposait une clé dans un trousseau commun. Debian 13 et Ubuntu 26.04
+      ne livrent plus la commande. La clé va dans `/etc/apt/keyrings` et le dépôt la
+      cite avec Signed-By.
+    examples:
+      - title: Déposer une clé
+        command: >-
+          curl -fsSL https://exemple.test/cle.gpg | sudo gpg --dearmor -o
+          /etc/apt/keyrings/exemple.gpg
+        comment: Le fichier ne sert qu’au dépôt qui le nomme. Vérifiez l’empreinte.
+see_also:
+  - apt
+  - gpg
+  - dpkg
+examples:
+  - title: Déposer une clé de dépôt
+    command: >-
+      sudo install -d -m 0755 /etc/apt/keyrings && curl -fsSL
+      https://exemple.test/cle.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/exemple.gpg
+    comment: >-
+      Le fichier ne sert qu’au dépôt qui le cite. Remplacez l’URL par celle du
+      fournisseur, et vérifiez l’empreinte annoncée.
+    families:
+      - debian
+  - title: Citer la clé dans le dépôt
+    command: >-
+      printf '%s\n' 'Types: deb' 'URIs: https://exemple.test/debian' 'Suites: trixie'
+      'Components: main' 'Signed-By: /etc/apt/keyrings/exemple.gpg' | sudo tee
+      /etc/apt/sources.list.d/exemple.sources
+    comment: >-
+      Format deb822. Un fichier .list avec signed-by= dans les options est l’autre forme
+      acceptée.
+    families:
+      - debian
+status: retirée
+overrides:
+  redhat:
+    status: absente
+    note: apt n’est pas le gestionnaire de cette famille.
+  suse:
+    status: absente
+    note: Les dépôts se signent avec rpm et zypper, pas avec apt-key.
+  arch:
+    status: absente
+    note: pacman a ses propres trousseaux dans /etc/pacman.d.
+  alpine:
+    status: absente
+    note: apk utilise ses propres clés, pas apt.

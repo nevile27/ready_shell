@@ -1,0 +1,65 @@
+name: hwclock
+themes:
+  - disques
+  - services
+summary: Lit ou règle l’horloge matérielle de la machine.
+explanation: >-
+  hwclock lit l’horloge de la carte mère, distincte de l’heure système que montre date.
+  hwclock --show l’affiche, --systohc copie l’heure du système vers l’horloge
+  matérielle, --hctosys fait l’inverse. Les machines actuelles laissent systemd ou
+  chrony s’en charger au démarrage. On ne mélange pas un réglage manuel et une
+  synchronisation réseau sans savoir qui a le dernier mot.
+subcommands:
+  - name: "--show"
+    summary: Lit l’horloge de la carte mère.
+    explanation: >-
+      `hwclock` n’est pas `date`. `--systohc` copie l’heure du système vers la carte.
+      `--hctosys` fait l’inverse. Les machines actuelles laissent systemd ou chrony s’en
+      charger.
+    examples:
+      - title: Lire
+        command: sudo hwclock --show
+        comment: L’heure matérielle.
+  - name: "--systohc"
+    summary: Copie l’heure système vers l’horloge matérielle.
+    explanation: >-
+      `--verbose` a remplacé `--debug` depuis util-linux 2.32. La version se demande
+      avec `-V`, pas `-v`.
+    examples:
+      - title: Écrire
+        command: sudo hwclock --systohc
+        comment: L’horloge matérielle reçoit l’heure actuelle du système.
+see_also:
+  - date
+  - timedatectl
+  - chronyc
+deprecated_options:
+  - option: "--debug"
+    since: util-linux 2.32
+    replacement: "--verbose"
+    why: "--debug a été renommé et peut être réutilisé plus tard pour autre chose."
+  - option: "-v"
+    since: util-linux 2.20
+    replacement: "-V"
+    why: >-
+      -v voulait dire version, puis a servi au mode bavard. La version se demande avec
+      -V.
+examples:
+  - title: Lire l’horloge matérielle
+    command: sudo hwclock --show
+    comment: Heure de la carte mère, pas forcément celle de date.
+  - title: Copier l’heure système
+    command: sudo hwclock --systohc
+    comment: Écrit l’heure actuelle du système dans l’horloge matérielle.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

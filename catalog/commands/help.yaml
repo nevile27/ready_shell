@@ -1,0 +1,44 @@
+name: help
+themes:
+  - shell
+summary: Aide intégrée de bash sur ses commandes internes.
+explanation: >-
+  help cd résume la commande interne cd, là où man cd peut montrer autre chose ou rien.
+  help sans argument liste les sujets. Ce n’est pas le manuel du système et dash ne l’a
+  pas. Pour un binaire, man ou l’option --help restent la documentation du projet.
+subcommands:
+  - name: nom
+    summary: Aide de bash sur une commande interne.
+    explanation: >-
+      `help cd` décrit le builtin. `man cd` peut montrer autre chose, ou rien. Dash n’a
+      pas `help`.
+    examples:
+      - title: Aide sur cd
+        command: help cd
+        comment: Les options de la commande interne cd.
+  - name: "-d"
+    summary: Une seule ligne de description.
+    explanation: >-
+      `help -d nom` tient en une ligne. `help -s` ne garde que la syntaxe. Sans
+      argument, `help` liste les sujets.
+    examples:
+      - title: Résumé
+        command: help -d cd
+        comment: Une phrase, pas le texte complet.
+see_also:
+  - type
+  - bash
+examples:
+  - title: Aide sur cd
+    command: help cd
+    comment: Décrit les options de la commande interne cd de ce bash.
+  - title: Liste des sujets
+    command: help
+    comment: Affiche les commandes internes documentées par bash lui-même.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

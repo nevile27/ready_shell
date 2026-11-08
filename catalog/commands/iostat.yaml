@@ -1,0 +1,41 @@
+name: iostat
+themes:
+  - processus
+  - disques
+summary: Affiche la charge des disques et du processeur.
+explanation: >-
+  iostat -xz 2 répète toutes les deux secondes un bilan CPU et disques. %util proche de
+  100 et await qui monte indiquent un disque saturé. Le paquet sysstat n’est pas
+  installé par défaut partout, et son service de collecte historique (sar) est un autre
+  usage du même paquet. La première ligne est encore une moyenne depuis le démarrage.
+subcommands:
+  - name: "-x"
+    summary: Statistiques étendues des disques.
+    explanation: >-
+      `iostat -xz 2` répète toutes les deux secondes. La première mesure est une moyenne
+      depuis le démarrage : regardez la suivante. Le paquet est sysstat.
+    examples:
+      - title: Deux échantillons
+        command: iostat -xz 2 2
+        comment: La seconde ligne porte sur les deux dernières secondes.
+see_also:
+  - vmstat
+  - df
+examples:
+  - title: Disques, deux échantillons
+    command: iostat -xz 2 2
+    comment: >-
+      Ignorez en partie la première mesure : la seconde porte sur les deux dernières
+      secondes.
+  - title: Un disque
+    command: iostat -x sda 1 1
+    comment: >-
+      Remplacez sda par le nom vu dans lsblk. Une seule mesure, moyenne depuis le
+      démarrage.
+status: courante
+package:
+  debian: sysstat
+  redhat: sysstat
+  suse: sysstat
+  arch: sysstat
+  alpine: sysstat

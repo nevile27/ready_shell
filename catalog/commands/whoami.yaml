@@ -1,0 +1,39 @@
+name: whoami
+themes:
+  - utilisateurs
+tags:
+  - coreutils
+summary: Écrit le nom d’utilisateur effectif.
+explanation: >-
+  whoami est un raccourci de id -un. Il ne liste pas les groupes et ne dit pas si vous
+  êtes passé par sudo : après sudo whoami, la réponse est root. Pour savoir qui a ouvert
+  la session, regardez who ou le journal, pas whoami dans un script lancé par un
+  service.
+subcommands:
+  - name: nom
+    summary: Écrit le nom d’utilisateur effectif.
+    explanation: >-
+      `whoami` est un raccourci de `id -un`. Après `sudo whoami`, la réponse est root.
+      Pour l’auteur de la connexion, `logname`.
+    examples:
+      - title: Effectif
+        command: whoami
+        comment: Le compte sous lequel la commande tourne.
+see_also:
+  - id
+  - who
+  - logname
+examples:
+  - title: Nom effectif
+    command: whoami
+    comment: Écrit le compte sous lequel la commande tourne.
+  - title: Même renseignement
+    command: id -un
+    comment: Identique, et id est le réflexe le plus portable dans un script.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

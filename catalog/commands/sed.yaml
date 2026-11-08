@@ -1,0 +1,65 @@
+name: sed
+themes:
+  - texte
+summary: Transforme un flux de texte ligne à ligne.
+explanation: >-
+  sed lit chaque ligne, y applique un script, et écrit le résultat. s/ancien/nouveau/
+  remplace la première occurrence, s/ancien/nouveau/g les remplace toutes. -n coupe la
+  sortie automatique, et p ne garde que les lignes demandées. -i modifie le fichier en
+  place : sur GNU sed, -i.bak sauve une copie, et la syntaxe -i '' de BSD n’est pas
+  celle de GNU. Une expression avec des slashs se délimite autrement : s|/var|/srv|.
+pitfalls:
+  - >-
+    sed -i sans copie de secours réécrit le fichier tout de suite. Sur un fichier
+    précieux, gardez -i.bak ou travaillez sur une copie.
+subcommands:
+  - name: s
+    summary: Remplace du texte, ligne à ligne.
+    explanation: >-
+      `s/ancien/nouveau/` ne change que la première occurrence. Le drapeau `g` les
+      change toutes. Un autre délimiteur évite d’échapper les slashs : `s|/var|/srv|`.
+    examples:
+      - title: Sur la sortie
+        command: sed 's/root/administrateur/' /etc/passwd
+        comment: Le fichier d’origine n’est pas modifié.
+  - name: "-n"
+    summary: N’écrit que ce que le script demande.
+    explanation: >-
+      `-n` coupe la sortie automatique. `p` réécrit les lignes voulues. `-n '1,5p'`
+      garde un intervalle.
+    examples:
+      - title: Cinq lignes
+        command: sed -n '1,5p' /etc/passwd
+        comment: Seules les lignes 1 à 5.
+  - name: "-i"
+    summary: Réécrit le fichier.
+    explanation: >-
+      `-i.bak` garde une copie sur GNU sed. La syntaxe `-i ''` de BSD n’est pas celle de
+      GNU. Sans copie, le fichier est remplacé tout de suite.
+    examples:
+      - title: Avec copie
+        command: sed -i.bak 's/ancien/nouveau/' fichier.txt
+        comment: fichier.txt change. fichier.txt.bak garde l’original.
+see_also:
+  - awk
+  - grep
+  - tr
+examples:
+  - title: Remplacer sur la sortie
+    command: sed 's/root/administrateur/' /etc/passwd
+    comment: >-
+      Écrit passwd en changeant la première occurrence de root sur chaque ligne. Le
+      fichier d’origine n’est pas modifié.
+  - title: Garder un intervalle
+    command: sed -n '1,5p' /etc/passwd
+    comment: N’écrit que les lignes 1 à 5.
+status: courante
+package:
+  debian: sed
+  redhat: sed
+  suse: sed
+  arch: sed
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet sed apporte la version GNU.

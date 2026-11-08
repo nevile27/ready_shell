@@ -1,0 +1,39 @@
+name: groups
+themes:
+  - utilisateurs
+tags:
+  - coreutils
+summary: Liste les groupes d’un utilisateur.
+explanation: >-
+  groups écrit les groupes du compte courant. groups ada interroge ada. La liste vient
+  du groupe principal et des groupes supplémentaires. Un groupe ajouté par usermod
+  n’apparaît dans la session déjà ouverte qu’après une nouvelle connexion, ou via newgrp
+  pour le groupe principal le temps d’un shell.
+subcommands:
+  - name: user
+    summary: Liste les groupes d’un compte.
+    explanation: >-
+      Sans argument, `groups` vise le compte courant. Un groupe ajouté par `usermod`
+      n’apparaît dans la session ouverte qu’après une nouvelle connexion.
+    examples:
+      - title: Les siens
+        command: groups
+        comment: Des noms séparés par des espaces.
+see_also:
+  - id
+  - usermod
+  - getent
+examples:
+  - title: Ses groupes
+    command: groups
+    comment: Noms séparés par des espaces.
+  - title: Un autre compte
+    command: groups ada
+    comment: Les groupes enregistrés pour ada, pas ceux d’une session en cours.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

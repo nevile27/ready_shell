@@ -1,0 +1,178 @@
+name: systemctl
+themes:
+  - services
+summary: Démarre, arrête et interroge les unités systemd.
+explanation: >-
+  `systemctl` pilote les unités systemd : services, sockets, minuteurs, cibles. L’action
+  est le premier mot. L’unité SSH s’appelle `ssh.service` sur Debian et Ubuntu,
+  `sshd.service` sur Red Hat, SUSE et Arch. Alpine n’utilise pas cette commande.
+subcommands:
+  - name: status
+    summary: Dit si l’unité tourne, et montre les dernières lignes de journal.
+    explanation: >-
+      `status` n’a pas besoin des droits d’administration pour lire. Il écrit l’état, le
+      PID, le démarrage automatique, puis un extrait du journal. `active (running)`
+      signifie que le processus est là. `inactive (dead)` signifie qu’il est arrêté.
+      `failed` signifie que le dernier démarrage n’a pas abouti. Ajoutez `--no-pager`
+      dans un script pour éviter que `less` bloque la sortie.
+    examples:
+      - title: SSH Debian et Ubuntu
+        command: systemctl status ssh.service
+        comment: L’unité s’appelle ssh.
+        families:
+          - debian
+      - title: SSH Red Hat, SUSE et Arch
+        command: systemctl status sshd.service
+        comment: L’unité s’appelle sshd.
+        families:
+          - redhat
+          - suse
+          - arch
+  - name: start
+    summary: Démarre l’unité maintenant, sans la rendre permanente.
+    explanation: >-
+      `start` lance le service pour cette session de fonctionnement. Au prochain
+      démarrage, il ne reviendra que s’il est aussi activé avec `enable`. Un échec se
+      lit avec `status` et `journalctl`, pas seulement avec le code de retour.
+    examples:
+      - title: Démarrer
+        command: sudo systemctl start ssh.service
+        comment: Sur Red Hat, SUSE et Arch, remplacez ssh.service par sshd.service.
+        families:
+          - debian
+  - name: stop
+    summary: Arrête l’unité maintenant.
+    explanation: >-
+      `stop` demande l’arrêt propre du service. Il ne retire pas le lien de démarrage :
+      au prochain boot, un service activé repartira. Pour qu’il ne reparte pas non plus
+      tout de suite si une socket ou une dépendance le réveille, voyez `mask`.
+    examples:
+      - title: Arrêter
+        command: sudo systemctl stop ssh.service
+        comment: Le processus s’arrête. enable, lui, n’est pas modifié.
+        families:
+          - debian
+  - name: restart
+    summary: Arrête puis relance l’unité.
+    explanation: >-
+      `restart` coupe le service et le démarre à nouveau. La coupure est réelle : les
+      connexions en cours tombent. Si l’unité sait recharger sa configuration sans
+      s’arrêter, `reload` est plus doux. `try-restart` ne fait rien quand le service est
+      déjà arrêté.
+    examples:
+      - title: Relancer
+        command: sudo systemctl restart ssh.service
+        comment: Les sessions SSH en cours sont coupées.
+        families:
+          - debian
+  - name: reload
+    summary: Demande à l’unité de relire sa configuration sans s’arrêter.
+    explanation: >-
+      `reload` n’existe que si le service l’a prévu. Sinon systemd répond que l’action
+      n’est pas supportée. `reload-or-restart` recharge quand c’est possible et
+      redémarre sinon. C’est souvent le bon geste après avoir modifié un fichier de
+      configuration.
+    examples:
+      - title: Recharger ou redémarrer
+        command: sudo systemctl reload-or-restart ssh.service
+        comment: Recharge si l’unité le permet, sinon la redémarre.
+        families:
+          - debian
+  - name: enable
+    summary: Relance l’unité aux prochains démarrages.
+    explanation: >-
+      `enable` crée le lien qui fait démarrer l’unité avec sa cible, en général
+      multi-user. Il ne la lance pas tout de suite : ajoutez `--now` pour l’activer et
+      la démarrer dans la même commande. `is-enabled` répond `enabled` ou `disabled`, en
+      un mot, ce qui se teste dans un script.
+    examples:
+      - title: Activer et démarrer
+        command: sudo systemctl enable --now ssh.service
+        comment: Le service tourne maintenant et reviendra au prochain boot.
+        families:
+          - debian
+      - title: Voir si c’est activé
+        command: systemctl is-enabled ssh.service
+        comment: Écrit enabled, disabled, ou un autre état, puis revient.
+        families:
+          - debian
+  - name: disable
+    summary: Retire le démarrage automatique.
+    explanation: >-
+      `disable` retire le lien de démarrage. Le service en cours continue jusqu’à un
+      `stop` ou un redémarrage de la machine. `--now` le désactive et l’arrête ensemble.
+    examples:
+      - title: Désactiver et arrêter
+        command: sudo systemctl disable --now ssh.service
+        comment: Plus de démarrage automatique, et le processus s’arrête.
+        families:
+          - debian
+  - name: mask
+    summary: Interdit le démarrage de l’unité, même à la main.
+    explanation: >-
+      `mask` pointe l’unité vers /dev/null. `start` échoue ensuite, et une dépendance ne
+      peut plus la réveiller. `unmask` rend l’unité démarrable. On s’en sert pour un
+      service qu’il ne faut vraiment plus lancer, pas pour un simple arrêt.
+    examples:
+      - title: Interdire
+        command: sudo systemctl mask ssh.service
+        comment: systemctl start échoue tant que unmask n’a pas été lancé.
+        families:
+          - debian
+      - title: Autoriser de nouveau
+        command: sudo systemctl unmask ssh.service
+        comment: L’unité redevient démarrable. Elle n’est pas lancée pour autant.
+  - name: list-units
+    summary: Liste les unités chargées, ou seulement celles en échec.
+    explanation: >-
+      `list-units` montre ce qui est en mémoire. `--type=service` ne garde que les
+      services, `--state=failed` ne garde que les échecs. `--all` inclut les unités
+      inactives. `list-unit-files` est l’autre liste : elle dit si chaque fichier est
+      enabled, disabled ou static, que l’unité tourne ou non.
+    examples:
+      - title: Services en échec
+        command: systemctl list-units --type=service --state=failed
+        comment: Vide si rien n’a échoué. Sinon, le nom de l’unité à lire avec status.
+      - title: Fichiers activés
+        command: systemctl list-unit-files --type=service --state=enabled
+        comment: Ce qui est prévu au démarrage, pas ce qui tourne à cet instant.
+  - name: cat
+    summary: Affiche le fichier d’unité réellement utilisé.
+    explanation: >-
+      `cat` écrit le contenu de l’unité et signale les surcharges dans /etc. C’est le
+      texte que systemd lit, pas une copie que vous auriez ouverte au mauvais endroit.
+      `edit` ouvre ensuite un fragment dans /etc/systemd/system pour surcharger une
+      directive sans modifier le fichier du paquet. `daemon-reload` est obligatoire
+      après un changement de fichier d’unité.
+    examples:
+      - title: Lire l’unité
+        command: systemctl cat ssh.service
+        comment: Le fichier, et les drop-in s’il y en a.
+        families:
+          - debian
+      - title: Prendre en compte un fichier modifié
+        command: sudo systemctl daemon-reload
+        comment: Relit les unités. Ne redémarre pas les services.
+see_also:
+  - journalctl
+  - service
+  - rc-service
+examples:
+  - title: SSH, famille Debian
+    command: systemctl status ssh.service
+    comment: État, PID et extrait de journal. L’unité s’appelle ssh.
+    families:
+      - debian
+  - title: SSH, Red Hat, SUSE et Arch
+    command: systemctl status sshd.service
+    comment: Même lecture. L’unité s’appelle sshd.
+    families:
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

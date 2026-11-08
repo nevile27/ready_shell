@@ -1,0 +1,48 @@
+name: tr
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Remplace ou supprime des caractères dans un flux.
+explanation: >-
+  tr lit l’entrée standard, pas un fichier en argument. tr a-z A-Z passe en majuscules
+  sur l’alphabet ASCII. tr -d ' ' retire les espaces. tr -s réduit les répétitions à un
+  seul caractère. Pour remplacer un mot par un autre mot de longueur différente, sed ou
+  awk sont les bons outils : tr travaille caractère par caractère.
+subcommands:
+  - name: jeu
+    summary: Remplace des caractères, pas des mots.
+    explanation: >-
+      `tr` lit l’entrée standard, pas un fichier en argument. `tr a-z A-Z` passe l’ASCII
+      en majuscules. Pour remplacer un mot, `sed` ou `awk`.
+    examples:
+      - title: Majuscules
+        command: printf '%s' 'abcz' | tr a-z A-Z
+        comment: Écrit ABCZ.
+  - name: "-d"
+    summary: Supprime les caractères listés.
+    explanation: "`-s` réduit les répétitions à un seul caractère. `-c` prend le complément du jeu."
+    examples:
+      - title: Sans espaces
+        command: printf '%s\n' 'a  b' | tr -d ' '
+        comment: Écrit ab.
+see_also:
+  - sed
+  - cut
+examples:
+  - title: Majuscules ASCII
+    command: printf '%s' 'Abcz' | tr a-z A-Z
+    comment: Écrit ABCZ. Les lettres accentuées ne sont pas dans cette plage.
+  - title: Retirer des caractères
+    command: printf '%s\n' 'a  b' | tr -d ' '
+    comment: Écrit ab sans les espaces.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

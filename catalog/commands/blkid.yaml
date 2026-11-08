@@ -1,0 +1,51 @@
+name: blkid
+themes:
+  - disques
+summary: Affiche UUID et type des systèmes de fichiers.
+explanation: >-
+  blkid écrit le type, l’UUID et parfois le LABEL de chaque périphérique bloc. blkid
+  /dev/sda1 se limite à un nom. Les fichiers fstab actuels montent par UUID= plutôt que
+  par /dev/sda1, qui peut changer de nom au redémarrage. blkid a besoin de pouvoir lire
+  les périphériques, donc souvent de l’administrateur.
+subcommands:
+  - name: tous
+    summary: UUID et type de chaque périphérique.
+    explanation: >-
+      `blkid` demande souvent l’administrateur pour lire les disques. On copie l’UUID
+      dans fstab plutôt que `/dev/sda1`, qui peut changer de nom.
+    examples:
+      - title: Tout
+        command: sudo blkid
+        comment: TYPE et UUID, une ligne par périphérique.
+  - name: "-o"
+    summary: Change le format de sortie.
+    explanation: >-
+      `-o value -s UUID` n’écrit que l’UUID. `-o export` produit des affectations. `-t
+      TYPE=ext4` filtre.
+    examples:
+      - title: Un seul
+        command: sudo blkid /dev/sda1
+        comment: Remplacez sda1 par un nom vu dans lsblk.
+see_also:
+  - lsblk
+  - findmnt
+  - mount
+examples:
+  - title: Tous les identifiants
+    command: sudo blkid
+    comment: Une ligne par périphérique reconnu, avec TYPE et UUID.
+  - title: Un seul
+    command: sudo blkid /dev/sda1
+    comment: Remplacez sda1 par un nom vu dans lsblk.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

@@ -1,0 +1,58 @@
+name: cp
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Copie des fichiers ou des répertoires.
+explanation: >-
+  cp source destination copie un fichier. cp -r descend dans un répertoire. cp -a
+  conserve droits, dates, liens et reste fidèle à une arborescence : c’est la forme à
+  préférer pour une copie d’administration. cp ne copie pas ce qu’il n’a pas le droit de
+  lire. Sur Ubuntu 26.04, cp reste le binaire GNU même quand les autres coreutils
+  viennent d’uutils.
+pitfalls:
+  - >-
+    cp écrase la destination sans prévenir si le shell n’a pas l’alias cp -i. Une
+    redirection n’est pas une copie : elle passe par le shell et peut suivre d’autres
+    règles.
+subcommands:
+  - name: "-a"
+    summary: Copie une arborescence en conservant droits et dates.
+    explanation: >-
+      `cp -a` récuse, garde les liens, les droits et les dates. C’est la forme
+      d’administration. `-r` descend aussi, sans tout préserver.
+    examples:
+      - title: Copie fidèle
+        command: cp -a /etc/ssh /root/ssh.bak
+        comment: Recopie l’arborescence avec droits et dates.
+  - name: "-i"
+    summary: Demande avant d’écraser.
+    explanation: >-
+      `-i` interroge si la destination existe. Beaucoup de comptes ont un alias `cp -i`.
+      `-n` n’écrase pas, sans poser de question. `-u` n’écrase que si la source est plus
+      récente.
+    examples:
+      - title: Confirmation
+        command: cp -i rapport.txt /tmp/rapport.txt
+        comment: Demande si /tmp/rapport.txt existe déjà.
+see_also:
+  - mv
+  - install
+  - rsync
+examples:
+  - title: Copie fidèle d’un répertoire
+    command: cp -a /etc/ssh /root/ssh.bak
+    comment: Recopie l’arborescence en conservant droits, propriétaires et dates.
+  - title: Un fichier
+    command: cp rapport.txt /tmp/rapport.txt
+    comment: Crée ou remplace /tmp/rapport.txt avec le contenu de rapport.txt.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

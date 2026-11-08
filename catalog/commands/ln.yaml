@@ -1,0 +1,61 @@
+name: ln
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Crée un lien dur ou un lien symbolique.
+explanation: >-
+  ln -s cible lien crée un lien symbolique : un chemin vers la cible, qui peut traverser
+  les systèmes de fichiers et pointer vers un répertoire. Sans -s, ln crée un lien dur,
+  second nom du même fichier, limité au même système de fichiers et refusé pour un
+  répertoire. Une cible relative se résout depuis le répertoire du lien, pas depuis
+  celui où vous tapez la commande.
+pitfalls:
+  - >-
+    ln -s ../config /etc/app/config enregistre le texte ../config. Déplacé, le lien
+    cherche ailleurs. Préférez une cible absolue quand le lien doit rester valable.
+subcommands:
+  - name: "-s"
+    summary: Crée un lien symbolique.
+    explanation: >-
+      `ln -s cible lien` stocke un chemin. Une cible relative se résout depuis le
+      répertoire du lien, pas depuis l’endroit où vous tapez la commande. `-f` remplace
+      un lien déjà là.
+    examples:
+      - title: Lien
+        command: ln -s /etc/os-release "$HOME/os"
+        comment: Lire ~/os affiche /etc/os-release.
+    pitfalls:
+      - >-
+        Une cible relative casse si le lien est déplacé. Préférez un chemin absolu quand
+        il doit rester valable.
+  - name: "-r"
+    summary: Calcule une cible relative, version GNU.
+    explanation: >-
+      `ln -sr` écrit une cible relative entre le lien et la source. Pratique dans une
+      arborescence que l’on déplace en bloc.
+    examples:
+      - title: Relatif
+        command: ln -sr /etc/hostname /tmp/h
+        comment: Le lien /tmp/h contient un chemin relatif vers hostname.
+see_also:
+  - readlink
+  - cp
+  - rm
+examples:
+  - title: Lien symbolique
+    command: ln -s /etc/os-release "$HOME/os"
+    comment: Lire ~/os affiche le fichier /etc/os-release.
+  - title: Voir la cible
+    command: readlink "$HOME/os"
+    comment: Écrit /etc/os-release, le texte stocké dans le lien.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

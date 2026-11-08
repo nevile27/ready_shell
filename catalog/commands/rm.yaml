@@ -1,0 +1,58 @@
+name: rm
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Supprime des fichiers ou des répertoires.
+explanation: >-
+  rm fichier retire le nom du fichier. Quand plus aucun nom ne pointe vers les données,
+  l’espace peut être réutilisé. Il n’y a pas de corbeille. rm -r descend dans les
+  répertoires. rm -f ne demande pas de confirmation et ne s’arrête pas si le nom est
+  déjà absent. Sur Ubuntu 26.04, rm reste le binaire GNU. --preserve-root empêche rm -r
+  / sur les coreutils GNU ; ne comptez pas dessus pour une variable vide.
+pitfalls:
+  - >-
+    rm -rf avec une variable vide peut viser le répertoire courant ou pire. Testez la
+    variable avant : [ -n "$dir" ] && rm -rf -- "$dir".
+subcommands:
+  - name: "-r"
+    summary: Supprime un répertoire et son contenu.
+    explanation: >-
+      `rm -r` descend. Il n’y a pas de corbeille. `-f` ne demande rien et ignore les
+      noms déjà absents. `--preserve-root` refuse `rm -r /` sur les coreutils GNU.
+    examples:
+      - title: Répertoire d’essai
+        command: mkdir -p /tmp/demo-rm && rm -r /tmp/demo-rm
+        comment: Supprime l’arborescence créée pour l’exemple.
+    pitfalls:
+      - Une variable vide devant rm -rf peut viser le mauvais endroit. Testez-la avant.
+  - name: "-i"
+    summary: Demande pour chaque nom.
+    explanation: >-
+      `-I` demande une seule fois s’il y a plus de trois fichiers, ou si l’on descend.
+      `-d` retire un répertoire vide, comme `rmdir`.
+    examples:
+      - title: Confirmation
+        command: rm -i /tmp/inutile.txt
+        comment: Demande avant de supprimer ce fichier.
+see_also:
+  - rmdir
+  - mv
+  - shred
+examples:
+  - title: Un fichier
+    command: rm -- "$HOME/inutile.txt"
+    comment: Le double tiret empêche un nom qui commence par - d’être lu comme une option.
+  - title: Un répertoire créé pour l’exemple
+    command: mkdir -p /tmp/demo-rm && rm -r /tmp/demo-rm
+    comment: "Supprime l’arborescence. Sans corbeille : la récupération n’est pas garantie."
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

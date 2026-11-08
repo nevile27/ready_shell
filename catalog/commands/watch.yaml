@@ -1,0 +1,48 @@
+name: watch
+themes:
+  - shell
+summary: Relance une commande à intervalle régulier et affiche le résultat.
+explanation: >-
+  watch -n 2 commande répète la commande toutes les deux secondes et rafraîchit l’écran.
+  -d met en évidence ce qui a changé. La commande est relue par un shell : les
+  guillemets décident de ce qui est développé à chaque tour. watch s’arrête avec Ctrl+C.
+  Ce n’est pas un planificateur : à la déconnexion, il s’arrête.
+subcommands:
+  - name: "-n"
+    summary: Répète la commande à cet intervalle, en secondes.
+    explanation: >-
+      `watch -n 2 commande` rafraîchit l’écran toutes les deux secondes. Ctrl+C arrête.
+      La commande est relue par un shell à chaque tour.
+    examples:
+      - title: Espace disque
+        command: watch -n 5 df -h
+        comment: Réaffiche df toutes les cinq secondes.
+  - name: "-d"
+    summary: Surligne ce qui a changé depuis le tour précédent.
+    explanation: >-
+      `-d` met en évidence les différences. `-g` quitte dès que la sortie change, au
+      lieu de continuer.
+    examples:
+      - title: Différences
+        command: watch -d -n 1 'ss -s'
+        comment: Surligne les compteurs de sockets qui bougent.
+see_also:
+  - crontab
+  - date
+examples:
+  - title: Suivre l’espace disque
+    command: watch -n 5 df -h
+    comment: Réaffiche df toutes les cinq secondes.
+  - title: Voir les différences
+    command: watch -d -n 1 'ss -s'
+    comment: Surligne ce qui change dans le résumé des sockets.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: procps
+overrides:
+  alpine:
+    note: N’est pas dans BusyBox. Le paquet procps l’ajoute.

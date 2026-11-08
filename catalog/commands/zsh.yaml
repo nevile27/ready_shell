@@ -1,0 +1,49 @@
+name: zsh
+themes:
+  - shell
+summary: Shell interactif à part, avec ses propres extensions.
+explanation: >-
+  zsh n’est le shell par défaut d’aucune des cinq familles. On l’installe pour le
+  prompt, la complétion et un langage proche de bash sans être compatible avec lui. Un
+  script zsh commence par #!/usr/bin/env zsh. Le laisser en shebang #!/bin/sh le fera
+  échouer.
+subcommands:
+  - name: "--version"
+    summary: Affiche la version de zsh.
+    explanation: >-
+      `zsh --version` échoue si le paquet n’est pas installé. zsh n’est le shell par
+      défaut d’aucune des cinq familles.
+    examples:
+      - title: Version
+        command: zsh --version
+        comment: Une ligne avec le numéro.
+  - name: "-c"
+    summary: Exécute une chaîne zsh.
+    explanation: >-
+      `zsh -c` interprète le langage zsh, pas celui de sh. Le shebang d’un script zsh
+      doit demander zsh explicitement.
+    examples:
+      - title: Chaîne
+        command: zsh -c 'print -l $ZSH_VERSION'
+        comment: Écrit la version de ce zsh.
+  - name: "-l"
+    summary: Ouvre un zsh de connexion.
+    explanation: >-
+      `zsh -l` lit les fichiers de connexion zsh. Le shell déjà ouvert ne change pas :
+      il faut une nouvelle session, ou `chsh`.
+    examples:
+      - title: Connexion
+        command: zsh -l
+        comment: exit revient au shell précédent.
+see_also:
+  - bash
+  - sh
+examples:
+  - title: Changer le shell de connexion
+    command: chsh -s /usr/bin/zsh
+    comment: Le chemin doit être listé dans /etc/shells. La session déjà ouverte ne change pas.
+  - title: Version installée
+    command: zsh --version
+    comment: Échoue tant que le paquet zsh n’est pas installé.
+status: courante
+package: zsh

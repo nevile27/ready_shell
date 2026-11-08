@@ -1,0 +1,52 @@
+name: cut
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Extrait des champs ou des colonnes de caractères.
+explanation: >-
+  cut -d: -f1 prend le premier champ séparé par un deux-points. -f1,3 prend le premier
+  et le troisième. -c1-8 prend les caractères 1 à 8, pas les colonnes visuelles d’un
+  texte large. cut ne regroupe pas les séparateurs répétés comme awk. Une ligne sans
+  séparateur est recopiée entière, sauf avec -s.
+subcommands:
+  - name: "-d"
+    summary: Choisit le séparateur et les champs.
+    explanation: >-
+      `-d: -f1` prend le premier champ. `-f1,3` prend le premier et le troisième. `cut`
+      ne regroupe pas les séparateurs répétés comme `awk`. `-s` retire les lignes sans
+      séparateur.
+    examples:
+      - title: Noms
+        command: "cut -d: -f1 /etc/passwd"
+        comment: Le premier champ de chaque ligne.
+  - name: "-c"
+    summary: Extrait des caractères, pas des champs.
+    explanation: >-
+      `-c1-8` prend les caractères 1 à 8, pas des colonnes visuelles. `--complement`
+      garde le reste, en GNU.
+    examples:
+      - title: Huit caractères
+        command: cut -c1-8 /etc/hostname
+        comment: Le début du nom, au plus huit caractères.
+see_also:
+  - awk
+  - paste
+  - sort
+examples:
+  - title: Noms de comptes
+    command: "cut -d: -f1 /etc/passwd"
+    comment: Écrit le premier champ de chaque ligne.
+  - title: Deux champs
+    command: "cut -d: -f1,3 /etc/passwd"
+    comment: Nom et UID, séparés par le même deux-points.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

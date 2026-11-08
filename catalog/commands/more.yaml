@@ -1,0 +1,36 @@
+name: more
+themes:
+  - fichiers
+summary: Affiche un fichier écran par écran, surtout vers l’avant.
+explanation: >-
+  more est le visualiseur historique, toujours présent via util-linux ou BusyBox. Il
+  avance avec Espace et quitte avec q. Il est moins à l’aise que less pour remonter et
+  chercher. more n’est pas déprécié : c’est un outil POSIX plus petit. Pour la lecture
+  quotidienne, less est le réflexe utile.
+subcommands:
+  - name: pages
+    summary: Avance écran par écran.
+    explanation: >-
+      `more` est le visualiseur POSIX. Espace avance, `q` quitte. Il remonte moins bien
+      que `less`.
+    examples:
+      - title: Lire
+        command: more /etc/passwd
+        comment: Une page à la fois. q quitte.
+see_also:
+  - less
+  - cat
+examples:
+  - title: Lecture simple
+    command: more /etc/passwd
+    comment: Affiche le fichier par pages. q quitte.
+  - title: Depuis un tube
+    command: cat /etc/passwd | more
+    comment: Met la sortie en pages. less fait la même chose et permet de remonter.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox

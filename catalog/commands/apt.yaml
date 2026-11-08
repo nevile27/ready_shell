@@ -1,0 +1,126 @@
+name: apt
+themes:
+  - paquets
+summary: Installe, met à jour et cherche des paquets Debian et Ubuntu.
+explanation: >-
+  `apt` est le frontal des paquets Debian et Ubuntu. L’index se rafraîchit avec
+  `update`. Les paquets se mettent à jour avec `upgrade`. `apt-get` reste la forme
+  stable des scripts. `apt-key` n’existe plus : une clé de dépôt se dépose à part et se
+  cite avec Signed-By.
+subcommands:
+  - name: update
+    summary: Rafraîchit la liste des paquets disponibles. N’installe rien.
+    explanation: >-
+      `update` télécharge les index des dépôts. Il ne met pas les paquets à jour. Sans
+      lui, `install` et `upgrade` raisonnent sur une liste périmée. Un dépôt dont la clé
+      ou l’adresse est fausse s’affiche ici, avant toute installation.
+    examples:
+      - title: Rafraîchir les index
+        command: sudo apt update
+        comment: Lit les dépôts. Les paquets déjà installés ne changent pas.
+        families:
+          - debian
+  - name: upgrade
+    summary: Installe les mises à jour sans retirer de paquet.
+    explanation: >-
+      `upgrade` applique les nouvelles versions. S’il faut retirer un paquet pour y
+      arriver, il s’abstient et le signale. `full-upgrade` accepte ces retraits : on le
+      réserve à une mise à jour que l’on a lue. Aucun des deux ne rafraîchit l’index.
+      Enchaînez `update` puis `upgrade`.
+    examples:
+      - title: Mettre à jour
+        command: sudo apt update && sudo apt upgrade
+        comment: D’abord les listes, ensuite les paquets. La question se confirme.
+        families:
+          - debian
+  - name: install
+    summary: Installe un paquet et ce dont il a besoin.
+    explanation: >-
+      `install` résout les dépendances et propose le téléchargement. Plusieurs noms se
+      donnent à la suite. `./paquet.deb` installe un fichier local en tirant quand même
+      les dépendances depuis les dépôts, ce que `dpkg -i` ne fait pas. `-y` répond oui :
+      à réserver à un script dont vous assumez la liste.
+    examples:
+      - title: Un paquet
+        command: sudo apt install curl
+        comment: Affiche la taille et attend la confirmation.
+        families:
+          - debian
+      - title: Un fichier local
+        command: sudo apt install ./outil.deb
+        comment: Installe le fichier et les dépendances manquantes.
+        families:
+          - debian
+  - name: remove
+    summary: Retire un paquet et laisse ses fichiers de configuration.
+    explanation: >-
+      `remove` désinstalle le programme et garde /etc. `purge` retire aussi ces
+      fichiers. `autoremove` enlève les dépendances qui ne servent plus à personne.
+      Aucune de ces formes ne touche aux données que vous auriez mises ailleurs que dans
+      les fichiers du paquet.
+    examples:
+      - title: Retirer en gardant la configuration
+        command: sudo apt remove curl
+        comment: Le paquet part. Une configuration dans /etc peut rester.
+        families:
+          - debian
+      - title: Retirer aussi la configuration
+        command: sudo apt purge curl
+        comment: Efface les fichiers de configuration du paquet.
+        families:
+          - debian
+  - name: search
+    summary: Cherche un mot dans les noms et les descriptions.
+    explanation: >-
+      `search` interroge l’index local. Il ne télécharge rien si `update` a déjà été
+      lancé. La recherche n’est pas un nom exact : `show` affiche la fiche d’un paquet
+      précis, avec la version et les dépendances.
+    examples:
+      - title: Chercher
+        command: apt search curl
+        comment: Noms et descriptions qui contiennent le mot. Rien n’est installé.
+        families:
+          - debian
+      - title: Fiche
+        command: apt show curl
+        comment: Version, taille, dépendances et description.
+        families:
+          - debian
+  - name: list
+    summary: Liste les paquets installés ou disponibles.
+    explanation: >-
+      `list --installed` ne garde que ce qui est installé. `--upgradable` ne garde que
+      ce qu’un `upgrade` changerait. Un motif comme `linux-image*` filtre les noms.
+    examples:
+      - title: Installés
+        command: apt list --installed
+        comment: La liste peut être longue. Le visualiseur se quitte avec q.
+        families:
+          - debian
+      - title: À mettre à jour
+        command: apt list --upgradable
+        comment: Ce que upgrade proposerait.
+        families:
+          - debian
+see_also:
+  - apt-get
+  - apt-cache
+  - apt-key
+  - dpkg
+examples:
+  - title: Mettre à jour l’index puis les paquets
+    command: sudo apt update && sudo apt upgrade
+    comment: "update ne met pas les paquets à jour à lui seul : il rafraîchit les listes."
+    families:
+      - debian
+  - title: Installer
+    command: sudo apt install curl
+    comment: Résout les dépendances. -y répond oui, à réserver aux scripts sûrs.
+    families:
+      - debian
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: apt
+    note: apt-get reste disponible pour les scripts. apt-key est retiré.

@@ -1,0 +1,41 @@
+name: users
+themes:
+  - utilisateurs
+tags:
+  - coreutils
+summary: Écrit sur une ligne les noms des utilisateurs connectés.
+explanation: >-
+  users est un résumé de who : juste les noms, séparés par des espaces, doublons compris
+  si le même compte a deux sessions. Pour l’heure ou le terminal, who est plus utile.
+subcommands:
+  - name: noms
+    summary: Les connectés, sur une ligne.
+    explanation: >-
+      `users` ne montre ni l’heure ni le terminal. Un compte avec deux sessions apparaît
+      deux fois.
+    examples:
+      - title: Noms
+        command: users
+        comment: Des noms séparés par des espaces.
+see_also:
+  - who
+  - w
+examples:
+  - title: Noms seuls
+    command: users
+    comment: Une ligne, par exemple « ada ada root » s’il y a deux sessions ada.
+  - title: Détail
+    command: who
+    comment: Ajoute terminal et heure, que users ne montre pas.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: >-
+      Le paquet coreutils le fournit. who, via BusyBox, couvre le besoin sur une image
+      minimale.

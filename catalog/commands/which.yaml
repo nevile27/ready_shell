@@ -1,0 +1,40 @@
+name: which
+themes:
+  - shell
+summary: Affiche le chemin d’une commande trouvée dans PATH.
+explanation: >-
+  which grep écrit le premier exécutable correspondant dans PATH. Il ne voit pas
+  toujours les alias et les fonctions, et il n’est pas POSIX. Dans un script, command -v
+  est le test portable. Sur Arch, which n’est pas dans le groupe base. which reste
+  commode au prompt pour confirmer un chemin.
+subcommands:
+  - name: "-a"
+    summary: Montre tous les exécutables de ce nom dans PATH.
+    explanation: >-
+      `which -a` ne voit pas toujours les alias. Dans un script, `command -v` est le
+      test portable. Sur Arch, `which` n’est pas dans le groupe base.
+    examples:
+      - title: Toutes les correspondances
+        command: which -a grep
+        comment: Un chemin par ligne, dans l’ordre de PATH.
+see_also:
+  - command
+  - type
+  - whereis
+examples:
+  - title: Chemin retenu
+    command: which grep
+    comment: Affiche le premier grep de PATH, par exemple /usr/bin/grep.
+  - title: Équivalent portable
+    command: command -v grep
+    comment: Même renseignement, interne au shell, y compris dans un script /bin/sh.
+status: courante
+package:
+  debian: debianutils
+  redhat: which
+  suse: which
+  arch: which
+  alpine: busybox
+overrides:
+  arch:
+    note: Paquet which, hors du groupe base. command -v est fourni par bash.

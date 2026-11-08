@@ -1,0 +1,50 @@
+name: bridge
+themes:
+  - reseau
+summary: Administre les ponts Ethernet. C’est le remplaçant de brctl.
+explanation: >-
+  bridge link liste les ports des ponts, bridge vlan montre les VLAN. On crée un pont
+  avec ip link add name br0 type bridge, puis on y attache une interface avec ip link
+  set eth0 master br0. brctl, du paquet bridge-utils, fait l’ancien vocabulaire et n’est
+  plus le bon outil. Le paquet est iproute2, le même que ip.
+subcommands:
+  - name: link
+    summary: Liste les ports des ponts.
+    explanation: >-
+      `bridge link` montre les interfaces attachées. On crée le pont avec `ip link add`,
+      puis on y attache une interface avec `ip link set eth0 master br0`.
+    examples:
+      - title: Ports
+        command: bridge link
+        comment: Les ports et leur état.
+  - name: vlan
+    summary: Montre les VLAN des ports.
+    explanation: >-
+      `bridge vlan` liste les VLAN. Ce n’est pas l’outil qui crée le pont : ça, c’est
+      `ip link`.
+    examples:
+      - title: VLAN
+        command: bridge vlan
+        comment: Les VLAN configurés, ou rien.
+see_also:
+  - ip
+  - brctl
+examples:
+  - title: Ports des ponts
+    command: bridge link
+    comment: Interfaces attachées à un pont, et leur état.
+  - title: Créer un pont
+    command: sudo ip link add name br0 type bridge
+    comment: >-
+      Le pont existe ensuite. ip link set br0 up l’active. Rien n’y est branché tant
+      qu’un master n’est pas posé.
+status: courante
+package:
+  debian: iproute2
+  redhat: iproute
+  suse: iproute2
+  arch: iproute2
+  alpine: iproute2
+overrides:
+  alpine:
+    note: Paquet iproute2. BusyBox n’a pas l’ip complet ni ss.

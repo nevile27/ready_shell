@@ -1,0 +1,40 @@
+name: nice
+themes:
+  - processus
+tags:
+  - coreutils
+summary: Lance une commande avec une politesse CPU différente.
+explanation: >-
+  nice -n 10 commande baisse la priorité CPU : le nombre va de -20 (le plus favorisé) à
+  19 (le plus effacé). Sans -n, nice ajoute 10. Un utilisateur ordinaire ne peut que
+  diminuer sa priorité, pas l’augmenter. nice ne limite pas la mémoire et ne confine pas
+  le processus. Pour un service, la directive Nice= d’une unité systemd survit au
+  redémarrage.
+subcommands:
+  - name: "-n"
+    summary: Lance une commande avec une autre politesse CPU.
+    explanation: >-
+      Le nombre va de -20, le plus favorisé, à 19, le plus effacé. Sans `-n`, `nice`
+      ajoute 10. Un utilisateur ordinaire ne peut que s’effacer.
+    examples:
+      - title: Discret
+        command: nice -n 19 ./index.sh
+        comment: Ne prend du CPU que si personne d’autre n’en veut.
+see_also:
+  - renice
+  - systemd-run
+  - timeout
+examples:
+  - title: Tâche de fond discrète
+    command: nice -n 19 ./index.sh
+    comment: Le script ne prend du CPU que si personne d’autre n’en veut.
+  - title: Voir la politesse
+    command: ps -eo pid,ni,cmd | head
+    comment: La colonne NI est la valeur nice. 0 est le défaut.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

@@ -1,0 +1,54 @@
+name: loginctl
+themes:
+  - services
+summary: Liste les sessions et les utilisateurs connectés selon systemd-logind.
+explanation: >-
+  loginctl list-sessions montre les sessions, loginctl session-status en détaille une.
+  terminate-session ferme une session distante. Ce n’est pas who : logind voit aussi des
+  sessions sans terminal classique, notamment graphiques. Les actions de fermeture
+  demandent l’administrateur. Alpine n’a pas logind.
+subcommands:
+  - name: list-sessions
+    summary: Liste les sessions vues par systemd-logind.
+    explanation: >-
+      `loginctl` voit aussi des sessions sans terminal classique. `session-status` en
+      détaille une. Alpine n’a pas logind.
+    examples:
+      - title: Sessions
+        command: loginctl list-sessions
+        comment: Identifiant, utilisateur et siège.
+  - name: terminate-session
+    summary: Ferme une session.
+    explanation: >-
+      L’identifiant vient de `list-sessions`. Cela déconnecte l’utilisateur. `who` ne
+      voit pas toutes les sessions que logind connaît.
+    examples:
+      - title: Utilisateurs
+        command: loginctl list-users
+        comment: Les comptes qui ont une session, pas /etc/passwd.
+see_also:
+  - who
+  - systemctl
+examples:
+  - title: Sessions
+    command: loginctl list-sessions
+    comment: Identifiant, utilisateur et siège.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Utilisateurs vus par logind
+    command: loginctl list-users
+    comment: Comptes qui ont une session, pas la liste de /etc/passwd.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

@@ -1,0 +1,68 @@
+name: crontab
+themes:
+  - services
+summary: Édite le tableau des tâches périodiques d’un utilisateur.
+explanation: >-
+  Une ligne de crontab est « minute heure jour mois jour-semaine commande ».
+  L’environnement est pauvre : les chemins se donnent en absolu. `-r` efface toute la
+  table.
+pitfalls:
+  - >-
+    crontab -r supprime toute la table. crontab -l > sauvegarde avant une édition
+    risquée.
+subcommands:
+  - name: "-l"
+    summary: Affiche la table sans la modifier.
+    explanation: >-
+      `-l` écrit les lignes du compte, ou dit qu’il n’y en a pas. `-u ada` vise un autre
+      compte et demande les droits d’administration. On sauvegarde avec une redirection
+      avant une édition risquée.
+    examples:
+      - title: Lire
+        command: crontab -l
+        comment: N’ouvre pas l’éditeur.
+  - name: "-e"
+    summary: Ouvre la table dans l’éditeur.
+    explanation: >-
+      `-e` lance l’éditeur désigné par VISUAL ou EDITOR. À l’enregistrement, le démon
+      est prévenu. Une ligne fausse est refusée. L’exemple d’horaire se vérifie avant :
+      `15 3 * * *` est tous les jours à 03:15.
+    examples:
+      - title: Éditer
+        command: crontab -e
+        comment: Ouvre la table du compte. Enregistrez pour appliquer.
+  - name: "-r"
+    summary: Supprime toute la table.
+    explanation: >-
+      `-r` efface toutes les lignes, souvent sans confirmation. `-i` demande avant,
+      quand la version l’a. Il n’y a pas de corbeille : `crontab -l` redirigé vers un
+      fichier est la sauvegarde.
+    pitfalls:
+      - "`crontab -r` retire toutes les tâches du compte, pas une seule ligne."
+    examples:
+      - title: Sauvegarder d’abord
+        command: crontab -l > "$HOME/crontab.bak"
+        comment: Le fichier contient la table. crontab fichier la réinstallerait.
+see_also:
+  - systemd-run
+  - date
+  - logger
+examples:
+  - title: Voir sa table
+    command: crontab -l
+    comment: Écrit les lignes, ou dit qu’il n’y en a pas. Ne modifie rien.
+  - title: Exemple de ligne
+    command: printf '%s\n' '15 3 * * * /usr/bin/logger -t sauvegarde ok'
+    comment: À poser via crontab -e, pas en l’exécutant telle quelle. Tous les jours à 03:15.
+status: courante
+package:
+  debian: cron
+  redhat: cronie
+  suse: cron
+  arch: cronie
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      BusyBox fournit crond et crontab. Le démon doit être ajouté au runlevel avec
+      rc-update si vous voulez qu’il tourne.

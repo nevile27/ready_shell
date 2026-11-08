@@ -1,0 +1,43 @@
+name: egrep
+themes:
+  - texte
+summary: Ancien nom de grep -E. GNU grep le signale comme obsolète depuis la version 3.8.
+explanation: >-
+  egrep motif fichier fait la même chose que grep -E. Depuis GNU grep 3.8, la commande
+  écrit un avertissement « obsolescent » sur l’erreur, ce qui pollue les courriels de
+  cron et les journaux. Les versions actuelles des familles GNU livrent encore le nom
+  pour ne pas casser les vieux scripts, et il faut le remplacer. BusyBox n’a en général
+  pas de commande egrep séparée : installez le paquet grep ou écrivez grep -E.
+subcommands:
+  - name: "-E"
+    summary: La forme actuelle est grep -E.
+    explanation: >-
+      `egrep` n’est plus qu’un rappel. Depuis GNU grep 3.8 il écrit un avertissement.
+      `grep -E` active les mêmes expressions étendues, sans le message.
+    examples:
+      - title: Forme actuelle
+        command: grep -E 'error|fail' journal.txt
+        comment: Le | est actif. Aucun avertissement obsolescent.
+see_also:
+  - grep
+  - fgrep
+replaced_by: grep
+examples:
+  - title: Forme actuelle
+    command: grep -E 'error|fail' journal.txt
+    comment: Expression rationnelle étendue, sans avertissement.
+  - title: Ancienne forme
+    command: egrep 'error|fail' journal.txt
+    comment: Fonctionne encore sur GNU grep et écrit un avertissement sur la sortie d’erreur.
+status: obsolète
+package:
+  debian: grep
+  redhat: grep
+  suse: grep
+  arch: grep
+  alpine: grep
+overrides:
+  alpine:
+    note: >-
+      Pas dans BusyBox. Le paquet grep peut encore fournir le nom, avec le même
+      avertissement GNU.

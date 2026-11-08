@@ -1,0 +1,38 @@
+name: mkfs.xfs
+themes:
+  - disques
+summary: Crée un système de fichiers XFS.
+explanation: >-
+  mkfs.xfs /dev/sdb1 initialise un XFS. RHEL et les familles qui s’en inspirent
+  l’utilisent souvent pour les données. On ne rétrécit pas un XFS : on le recrée, ou
+  l’on en crée un plus grand. La réparation passe par xfs_repair, pas par fsck générique
+  seul. -f force la création sur un périphérique qui porte déjà une signature, ce qui
+  efface cette signature.
+subcommands:
+  - name: "-L"
+    summary: Crée un XFS avec un label.
+    explanation: >-
+      On ne rétrécit pas un XFS. `-f` force la création par-dessus une signature déjà
+      là, et l’efface. La réparation se fait avec `xfs_repair`.
+    examples:
+      - title: Créer
+        command: sudo mkfs.xfs -L donnees /dev/sdb1
+        comment: Sur une partition que vous acceptez d’effacer.
+see_also:
+  - mkfs.ext4
+  - xfs_repair
+  - wipefs
+examples:
+  - title: Créer
+    command: sudo mkfs.xfs -L donnees /dev/sdb1
+    comment: À lancer sur une partition que vous acceptez d’effacer.
+  - title: Signature déjà présente
+    command: sudo wipefs /dev/sdb1
+    comment: Montre les signatures avant de décider d’un mkfs.xfs -f, qui les détruit.
+status: courante
+package:
+  debian: xfsprogs
+  redhat: xfsprogs
+  suse: xfsprogs
+  arch: xfsprogs
+  alpine: xfsprogs

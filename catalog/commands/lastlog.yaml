@@ -1,0 +1,39 @@
+name: lastlog
+themes:
+  - utilisateurs
+summary: Montre la dernière connexion réussie de chaque compte.
+explanation: >-
+  lastlog parcourt les comptes et écrit la dernière connexion enregistrée, ou « Never ».
+  -u user n’interroge qu’un compte. L’information vient du fichier lastlog, distinct de
+  wtmp. Sur un annuaire très grand, la commande peut être lente. Elle ne liste pas les
+  échecs.
+subcommands:
+  - name: "-u"
+    summary: Dernière connexion réussie d’un compte.
+    explanation: >-
+      `lastlog` parcourt les comptes. `-u` n’en interroge qu’un. « Never » signifie
+      qu’aucune connexion n’est enregistrée.
+    examples:
+      - title: root
+        command: lastlog -u root
+        comment: La dernière réussite, ou jamais.
+see_also:
+  - last
+  - getent
+examples:
+  - title: Un compte
+    command: lastlog -u root
+    comment: Dernière connexion réussie de root, ou jamais.
+  - title: Tout le monde
+    command: lastlog
+    comment: Une ligne par compte connu du fichier lastlog.
+status: courante
+package:
+  debian: login
+  redhat: lastlog
+  suse: lastlog
+  arch: lastlog
+  alpine: shadow
+overrides:
+  alpine:
+    note: Selon l’image, le paquet shadow ou linux-pam fournit lastlog. Pas dans BusyBox.

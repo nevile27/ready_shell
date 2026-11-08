@@ -1,0 +1,47 @@
+name: apt-cache
+themes:
+  - paquets
+summary: Interroge l’index des paquets Debian sans rien installer.
+explanation: >-
+  apt-cache search motif cherche dans les descriptions, show nom affiche la fiche,
+  policy nom dit quelle version serait installée et depuis quel dépôt. apt search et apt
+  show couvrent le même besoin au quotidien. apt-cache reste utile dans un script, et il
+  n’est pas retiré. Il ne télécharge rien si l’index local est déjà à jour ; sinon
+  lancez apt update.
+subcommands:
+  - name: show
+    summary: Fiche d’un paquet, sans l’installer.
+    explanation: >-
+      `show` écrit version, dépendances et description. `policy` dit quelle version
+      serait installée et depuis quel dépôt. L’index se rafraîchit avec `apt update`.
+    examples:
+      - title: Fiche
+        command: apt-cache show curl
+        comment: Rien n’est installé.
+  - name: search
+    summary: Cherche dans les descriptions.
+    explanation: "`search` interroge l’index local. `apt search` couvre le même besoin au quotidien."
+    examples:
+      - title: Motif
+        command: apt-cache search curl
+        comment: Noms et descriptions.
+see_also:
+  - apt
+  - apt-get
+  - dpkg
+examples:
+  - title: Fiche d’un paquet
+    command: apt-cache show curl
+    comment: Version, dépendances et description. Rien n’est installé.
+    families:
+      - debian
+  - title: Version retenue
+    command: apt-cache policy curl
+    comment: Version candidate et dépôts qui la proposent.
+    families:
+      - debian
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: apt

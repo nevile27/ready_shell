@@ -1,0 +1,36 @@
+name: arp
+themes:
+  - reseau
+summary: Ancien cache des adresses MAC. Remplacé par ip neigh.
+explanation: >-
+  arp -n listait les correspondances IPv4 et MAC du voisinage. C’est net-tools, plus
+  installé par défaut. ip neigh show donne le même cache, pour IPv4 et IPv6. ip neigh
+  flush vide une entrée quand une machine a changé de carte. BusyBox peut encore avoir
+  arp sur Alpine.
+subcommands:
+  - name: "-n"
+    summary: Ancien cache MAC, sans DNS.
+    explanation: >-
+      `arp -n` est remplacé par `ip neigh`. `ip neigh flush dev eth0` vide le cache
+      d’une interface.
+    examples:
+      - title: Voisinage
+        command: ip neigh
+        comment: Adresses, MAC et interface.
+see_also:
+  - ip
+  - ifconfig
+replaced_by: ip
+examples:
+  - title: Voisinage
+    command: ip neigh
+    comment: Adresses, MAC et interface. Remplace arp -n.
+  - title: Oublier une entrée
+    command: sudo ip neigh flush dev eth0
+    comment: Vide le cache de cette interface. Le nom eth0 vient de ip link.
+status: obsolète
+package: net-tools
+overrides:
+  alpine:
+    package: busybox
+    note: Applet possible. ip neigh, via iproute2, est complet.

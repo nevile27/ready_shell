@@ -1,0 +1,62 @@
+name: firewall-cmd
+themes:
+  - reseau
+summary: Pilote firewalld, le pare-feu habituel de Red Hat et de SUSE.
+explanation: >-
+  `firewall-cmd` pilote firewalld, le pare-feu habituel de Red Hat et de SUSE. Un
+  changement sans `--permanent` disparaît au rechargement. `--reload` applique ce qui a
+  été enregistré.
+subcommands:
+  - name: "--list-all"
+    summary: Montre la zone active, ses services et ses ports.
+    explanation: >-
+      La zone par défaut rassemble ce qui est ouvert. `--get-active-zones` dit quelle
+      zone protège quelle interface. `--list-all-zones` détaille chacune. La lecture ne
+      change rien.
+    examples:
+      - title: Zone en service
+        command: sudo firewall-cmd --list-all
+        comment: Services, ports et interfaces de la zone par défaut.
+        families:
+          - redhat
+          - suse
+  - name: "--add-service"
+    summary: Ouvre un service connu, pour cette fois ou de façon durable.
+    explanation: >-
+      `--add-service=ssh` ouvre le SSH dans la zone en cours, jusqu’au prochain
+      rechargement. `--permanent` l’enregistre. Il faut ensuite `--reload` pour que la
+      règle permanente devienne celle qui s’applique. `--remove-service=ssh --permanent`
+      puis `--reload` referme. `--get-services` liste les noms connus.
+    examples:
+      - title: Ouvrir le SSH durablement
+        command: sudo firewall-cmd --add-service=ssh --permanent && sudo firewall-cmd --reload
+        comment: Sans reload, la règle enregistrée n’est pas encore active.
+        families:
+          - redhat
+          - suse
+see_also:
+  - nft
+  - ufw
+  - iptables
+examples:
+  - title: Zone active
+    command: sudo firewall-cmd --list-all
+    comment: Services et ports ouverts dans la zone par défaut.
+    families:
+      - redhat
+      - suse
+  - title: Autoriser le SSH durablement
+    command: sudo firewall-cmd --add-service=ssh --permanent && sudo firewall-cmd --reload
+    comment: Sans --reload, la règle permanente n’est pas encore celle qui s’applique.
+    families:
+      - redhat
+      - suse
+status: absente
+package: firewalld
+overrides:
+  redhat:
+    status: spécifique
+    note: Pare-feu par défaut de RHEL et de Fedora.
+  suse:
+    status: spécifique
+    note: Pare-feu habituel des installations serveur SUSE.

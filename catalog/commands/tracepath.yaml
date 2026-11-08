@@ -1,0 +1,39 @@
+name: tracepath
+themes:
+  - reseau
+summary: Suit le chemin jusqu’à un hôte et estime le MTU.
+explanation: >-
+  tracepath hote ressemble à traceroute et découvre aussi la taille de paquet qui passe.
+  Il n’a pas besoin d’être root. -n n’interroge pas le DNS. -6 vise IPv6. Quand le
+  paquet traceroute n’est pas installé, tracepath est le réflexe qui est déjà sur la
+  machine.
+subcommands:
+  - name: "-n"
+    summary: Suit le chemin et estime le MTU, sans être root.
+    explanation: >-
+      `tracepath` ressemble à traceroute et n’a pas besoin du paquet traceroute. `-6`
+      vise IPv6.
+    examples:
+      - title: Local
+        command: tracepath -n 127.0.0.1
+        comment: Le saut unique, sans résolution de noms.
+see_also:
+  - traceroute
+  - ping
+examples:
+  - title: Chemin local
+    command: tracepath -n 127.0.0.1
+    comment: Montre le saut unique vers la machine, sans résolution de noms.
+  - title: IPv6
+    command: tracepath -6 ::1
+    comment: Même mesure sur la pile IPv6 locale.
+status: courante
+package:
+  debian: iputils-tracepath
+  redhat: iputils
+  suse: iputils
+  arch: iputils
+  alpine: iputils
+overrides:
+  alpine:
+    note: Paquet iputils. Pas dans BusyBox.

@@ -1,0 +1,43 @@
+name: swapoff
+themes:
+  - disques
+summary: Désactive l’espace d’échange.
+explanation: >-
+  swapoff /dev/sdb2 ramène en RAM les pages qui y étaient. S’il n’y a pas assez de RAM,
+  la commande échoue ou le système devient très lent. swapoff -a vise toutes les zones.
+  On le fait avant de supprimer une partition de swap ou de réduire un fichier swap. Ce
+  n’est pas mkswap à l’envers : la signature reste jusqu’à ce qu’on réécrive le
+  périphérique.
+subcommands:
+  - name: "-a"
+    summary: Désactive toutes les zones.
+    explanation: >-
+      `swapoff` ramène les pages en RAM. S’il n’y a pas assez de mémoire, la commande
+      échoue ou le système devient très lent. La signature reste jusqu’à ce qu’on
+      réécrive le périphérique.
+    examples:
+      - title: Une zone
+        command: sudo swapoff /dev/sdb2
+        comment: Vérifiez free avant sur une machine chargée.
+see_also:
+  - swapon
+  - free
+examples:
+  - title: Une zone
+    command: sudo swapoff /dev/sdb2
+    comment: Le contenu repart en RAM. Vérifiez free avant sur une machine chargée.
+  - title: Toutes
+    command: sudo swapoff -a
+    comment: Désactive chaque swap actif. Le démarrage suivant suivra encore fstab.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

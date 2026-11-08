@@ -1,0 +1,53 @@
+name: iptables
+themes:
+  - reseau
+summary: >-
+  Ancien vocabulaire du pare-feu. Sur les versions actuelles, la commande parle en
+  général à nftables.
+explanation: >-
+  iptables -L -n -v liste les règles du filtre IPv4 sans résoudre les noms. Les paquets
+  actuels installent iptables-nft : la commande reste, le moteur est nftables. Le
+  backend iptables-legacy est le reliquat à ne plus utiliser ; update-alternatives ou la
+  documentation de la famille disent lequel est actif. Pour de nouvelles règles, nft ou
+  un frontal (ufw, firewalld) est plus clair. iptables-save écrit le jeu au format
+  historique.
+pitfalls:
+  - >-
+    iptables -F vide les règles du filtre et peut couper l’accès administrateur à une
+    machine distante. On travaille depuis la console, ou l’on charge un fichier déjà
+    testé.
+subcommands:
+  - name: "-L"
+    summary: Liste les règles sans les modifier.
+    explanation: >-
+      `iptables -L -n -v` n’interroge pas le DNS et ajoute les compteurs. Sur les
+      versions actuelles, la commande parle souvent à nftables : `iptables --version` le
+      dit.
+    examples:
+      - title: Lire
+        command: sudo iptables -L -n -v
+        comment: INPUT, FORWARD et OUTPUT.
+  - name: "-A"
+    summary: Ajoute une règle en fin de chaîne.
+    explanation: >-
+      Les règles neuves s’écrivent plutôt avec `nft` ou un frontal, `ufw` ou
+      `firewall-cmd`. `iptables-save` écrit le jeu au format historique.
+    examples:
+      - title: Version
+        command: iptables --version
+        comment: La ligne précise souvent nf_tables ou legacy.
+see_also:
+  - nft
+  - ufw
+  - firewall-cmd
+examples:
+  - title: Lire le filtre
+    command: sudo iptables -L -n -v
+    comment: Chaînes INPUT, FORWARD et OUTPUT. -n évite un DNS lent.
+  - title: Quel backend
+    command: iptables --version
+    comment: >-
+      La ligne précise souvent nf_tables. Si elle dit legacy, vous êtes sur le moteur
+      ancien.
+status: courante
+package: iptables

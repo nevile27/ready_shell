@@ -1,0 +1,57 @@
+name: systemd-analyze
+themes:
+  - services
+summary: Mesure le démarrage et vérifie les unités systemd.
+explanation: >-
+  systemd-analyze blame classe les unités par le temps qu’elles ont pris au démarrage.
+  critical-chain montre le chemin qui retarde le plus. security unité estime la surface
+  d’exposition d’un service. verify contrôle la syntaxe des fichiers d’unité. Ce n’est
+  pas un superviseur : il ne démarre rien. Les chiffres d’un démarrage ne se comparent
+  pas d’une machine à l’autre sans le même matériel.
+subcommands:
+  - name: blame
+    summary: Classe les unités par le temps de démarrage.
+    explanation: >-
+      `blame` ne compare pas deux machines différentes. `critical-chain` montre le
+      chemin qui retarde le plus.
+    examples:
+      - title: Le plus lent
+        command: systemd-analyze blame
+        comment: Les unités, de la plus lente à la plus rapide.
+  - name: verify
+    summary: Contrôle la syntaxe des fichiers d’unité.
+    explanation: >-
+      `verify` signale les directives inconnues. Il ne démarre rien. `security` estime
+      la surface d’un service.
+    examples:
+      - title: Vérifier
+        command: systemd-analyze verify /etc/systemd/system/*.service
+        comment: Les erreurs de syntaxe. Le glob peut être vide.
+see_also:
+  - systemctl
+  - journalctl
+examples:
+  - title: Le plus lent
+    command: systemd-analyze blame
+    comment: Unités triées par durée de démarrage.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Vérifier des unités
+    command: systemd-analyze verify /etc/systemd/system/*.service
+    comment: >-
+      Signale les directives inconnues. Le glob peut être vide : le shell le laisse
+      alors tel quel si nullglob n’est pas actif.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

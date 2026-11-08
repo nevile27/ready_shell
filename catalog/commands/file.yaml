@@ -1,0 +1,40 @@
+name: file
+themes:
+  - fichiers
+summary: Devine le type d’un fichier d’après son contenu.
+explanation: >-
+  file regarde les premiers octets et la base magic, pas l’extension. file image.jpg
+  peut répondre JPEG, et file binaire peut répondre ELF. -z regarde à l’intérieur d’un
+  fichier compressé, -L suit les liens. -b retire le nom en préfixe, ce qui simplifie un
+  test dans un script. Le paquet n’est pas toujours dans une image minimale.
+subcommands:
+  - name: "-b"
+    summary: N’écrit pas le nom avant le type.
+    explanation: >-
+      `file` regarde le contenu, pas l’extension. `-b` ne garde que la réponse, plus
+      simple dans un script.
+    examples:
+      - title: Type seul
+        command: file -b /bin/ls
+        comment: Exécutable ELF, et l’architecture, sans répéter le chemin.
+  - name: "-L"
+    summary: Suit les liens symboliques.
+    explanation: >-
+      Sans `-L`, un lien est annoncé comme un lien. `-z` regarde à l’intérieur d’un
+      fichier compressé. `-i` répond par un type MIME.
+    examples:
+      - title: MIME
+        command: file -bi /etc/os-release
+        comment: Un type MIME, par exemple text/plain.
+see_also:
+  - stat
+  - ls
+examples:
+  - title: Type d’un fichier
+    command: file /bin/ls
+    comment: Répond en général que c’est un exécutable ELF, et pour quelle architecture.
+  - title: Réponse seule
+    command: file -b /etc/os-release
+    comment: Écrit le type sans répéter le nom du fichier.
+status: courante
+package: file

@@ -1,0 +1,51 @@
+name: scp
+themes:
+  - reseau
+summary: Copie des fichiers à travers SSH.
+explanation: >-
+  scp fichier user@hote:/tmp/ copie vers la machine distante. L’inverse ramène un
+  fichier. Les OpenSSH récents, dont ceux de 2026, font passer scp par le protocole SFTP
+  : l’ancien protocole SCP est retiré. La commande s’appelle encore scp et reste le bon
+  réflexe pour une copie simple. -O redemande l’ancien protocole, seulement pour un
+  serveur très vieux, et cette option n’est pas l’avenir. Pour une synchronisation,
+  rsync -e ssh est plus économe. Pour un échange interactif, sftp.
+subcommands:
+  - name: envoi
+    summary: Copie un fichier vers une machine, via SSH.
+    explanation: >-
+      Les OpenSSH récents font passer `scp` par SFTP. L’ancien protocole se redemande
+      avec `-O`, seulement pour un serveur très vieux. `-r` copie un répertoire, moins
+      finement que `rsync -a`.
+    examples:
+      - title: Envoyer
+        command: scp notes.txt user@hote:/tmp/notes.txt
+        comment: Le fichier local arrive dans /tmp sur la machine distante.
+  - name: "-r"
+    summary: Copie un répertoire.
+    explanation: >-
+      `-P` majuscule change le port, contrairement à `ssh -p`. `-i` choisit une clé,
+      comme pour ssh.
+    examples:
+      - title: Ramener
+        command: scp -r user@hote:/etc/ssh /tmp/ssh-distant
+        comment: Recopie le répertoire distant.
+see_also:
+  - sftp
+  - rsync
+  - ssh
+examples:
+  - title: Envoyer
+    command: scp notes.txt user@hote:/tmp/notes.txt
+    comment: Copie le fichier local vers /tmp sur la machine distante, via SSH.
+  - title: Ramener un répertoire
+    command: scp -r user@hote:/etc/ssh /tmp/ssh-distant
+    comment: >-
+      Recopie le répertoire. Les liens et les droits ne sont pas traités aussi finement
+      que par rsync -a.
+status: courante
+package:
+  debian: openssh-client
+  redhat: openssh-clients
+  suse: openssh-clients
+  arch: openssh
+  alpine: openssh-client

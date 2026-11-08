@@ -1,0 +1,38 @@
+name: mkfs.ext4
+themes:
+  - disques
+summary: Crée un système de fichiers ext4.
+explanation: >-
+  mkfs.ext4 /dev/sdb1 écrit les structures ext4 sur la partition. -L donne un label, -m
+  réserve un pourcentage aux processus root (5 % par défaut). La commande refuse parfois
+  un périphérique déjà monté. Elle ne crée pas la partition : fdisk ou parted le font
+  avant. Pour xfs, la commande sœur est mkfs.xfs, paquet xfsprogs.
+subcommands:
+  - name: "-L"
+    summary: Pose un label en créant le système.
+    explanation: >-
+      `mkfs.ext4` écrit les structures ext4. `-m` réserve un pourcentage à root, 5 % par
+      défaut. La partition ne doit pas être montée.
+    examples:
+      - title: Label
+        command: sudo mkfs.ext4 -L donnees /dev/sdb1
+        comment: TYPE ext4 et LABEL donnees, visibles ensuite avec blkid.
+see_also:
+  - mkfs
+  - tune2fs
+  - e2fsck
+  - mount
+examples:
+  - title: Créer
+    command: sudo mkfs.ext4 -L donnees /dev/sdb1
+    comment: Système ext4 étiqueté donnees. La partition ne doit pas être montée.
+  - title: Vérifier l’étiquette
+    command: sudo blkid /dev/sdb1
+    comment: Doit montrer TYPE="ext4" et LABEL="donnees".
+status: courante
+package:
+  debian: e2fsprogs
+  redhat: e2fsprogs
+  suse: e2fsprogs
+  arch: e2fsprogs
+  alpine: e2fsprogs

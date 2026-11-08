@@ -1,0 +1,45 @@
+name: alias
+themes:
+  - shell
+summary: Donne un raccourci développé par le shell interactif.
+explanation: >-
+  alias nom='commande' fait remplacer nom par commande avant l’exécution, dans un shell
+  interactif. Les scripts ne développent pas les alias, sauf option explicite. alias
+  sans argument les liste. unalias nom retire un raccourci. Pour quelque chose qui doit
+  exister dans les scripts, une fonction est plus claire qu’un alias.
+subcommands:
+  - name: liste
+    summary: Affiche les alias du shell.
+    explanation: >-
+      Sans argument, `alias` écrit les raccourcis déjà définis. Un script ne les
+      développe pas, sauf option explicite du shell.
+    examples:
+      - title: Voir
+        command: alias
+        comment: Une ligne nom=valeur par raccourci.
+  - name: définition
+    summary: Crée un raccourci de session.
+    explanation: >-
+      `alias nom='commande'` remplace nom par commande au prompt. Pour quelque chose qui
+      doit exister dans les scripts, une fonction est plus claire.
+    examples:
+      - title: Raccourci
+        command: alias ll='ls -la'
+        comment: Au prompt, ll se développe en ls -la.
+see_also:
+  - declare
+  - type
+examples:
+  - title: Raccourci de liste longue
+    command: alias ll='ls -la'
+    comment: Au prompt, ll se développe en ls -la. Un script ne le fera pas tout seul.
+  - title: Voir les alias
+    command: alias
+    comment: Affiche les raccourcis définis dans ce shell.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

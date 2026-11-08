@@ -1,0 +1,206 @@
+name: ip
+themes:
+  - reseau
+summary: Affiche et règle les adresses, les liens, les routes et le voisinage.
+explanation: >-
+  `ip` remplace `ifconfig`, `route` et `arp`. Chaque objet a sa sous-commande : on ne
+  mélange pas les adresses et les routes dans la même forme. `-br` tient l’affichage sur
+  une ligne, `-4` et `-6` choisissent la famille, `-s` ajoute les compteurs, `-c`
+  colore. Rien de ce que `ip` modifie n’est repris au démarrage : la configuration
+  durable est NetworkManager, systemd-networkd ou le fichier d’interfaces. Sur Alpine,
+  ces formes viennent du paquet iproute2.
+subcommands:
+  - name: addr
+    summary: Affiche, ajoute ou retire les adresses d’une interface.
+    explanation: >-
+      `ip addr` s’abrège en `ip a` et s’écrit aussi `ip address`. `show` liste les
+      adresses. Avec `-br`, une interface tient sur une ligne : état, nom, adresses. Une
+      adresse se note avec son préfixe, `192.0.2.10/24`, pas avec un masque séparé.
+      `add` ajoute sans effacer les autres. `replace` pose cette adresse à la place de
+      celles du même préfixe. `del` en retire une. `flush` vide l’interface. `scope
+      global` est une adresse routable, `scope link` reste sur le lien, `scope host`
+      reste sur la machine. Le nom d’interface vient de `ip link` : ce n’est plus
+      forcément eth0.
+    pitfalls:
+      - >-
+        `ip addr flush dev eth0` retire toutes les adresses de l’interface, y compris
+        celle par laquelle vous êtes connecté.
+    examples:
+      - title: Vue courte
+        command: ip -br addr
+        comment: Une ligne par interface, avec l’état et les adresses.
+      - title: Ajouter une adresse
+        command: sudo ip addr add 192.0.2.10/24 dev eth0
+        comment: >-
+          S’ajoute aux adresses déjà présentes. Remplacez eth0 par un nom vu dans ip
+          link.
+      - title: Retirer cette adresse
+        command: sudo ip addr del 192.0.2.10/24 dev eth0
+        comment: Le préfixe doit être le même que lors de l’ajout.
+  - name: link
+    summary: Liste les interfaces et change leur état, leur MTU ou leur MAC.
+    explanation: >-
+      `ip link` montre les interfaces, qu’elles aient une adresse ou non. `show` les
+      liste, `show dev eth0` n’en garde qu’une. `set eth0 up` active le lien, `set eth0
+      down` le coupe. `set eth0 mtu 9000` change la taille de trame. `set eth0 address
+      02:00:00:00:00:01` change l’adresse MAC. `set eth0 master br0` attache l’interface
+      à un pont, `set eth0 nomaster` l’en détache. `add name br0 type bridge` crée une
+      interface virtuelle. `delete` la retire. `-s` ajoute les compteurs d’erreurs et
+      d’octets, ce qui remplace l’ancien `netstat -i`.
+    examples:
+      - title: Interfaces et état
+        command: ip -br link
+        comment: UP ou DOWN, et l’adresse MAC, sur une ligne.
+      - title: Activer un lien
+        command: sudo ip link set eth0 up
+        comment: Le lien passe à UP. L’adresse, elle, se pose avec ip addr.
+      - title: Compteurs
+        command: ip -s link show dev eth0
+        comment: Erreurs, paquets perdus et octets, en plus de l’état.
+  - name: route
+    summary: Affiche ou modifie la table de routage.
+    explanation: >-
+      `ip route` remplace `route`. Sans argument, `show` écrit la table principale.
+      `show default` ne garde que la passerelle. `get 192.0.2.1` dit quelle route la
+      machine utiliserait pour joindre cette adresse, sans envoyer de paquet. `add
+      default via 192.0.2.1 dev eth0` pose la route par défaut. Une route de réseau
+      s’écrit `add 192.0.2.0/24 dev eth0`. `replace` change une route existante sans
+      échouer si elle est déjà là. `del` la retire. `metric` départage deux routes vers
+      la même destination : la plus petite l’emporte. `table 100` vise une table autre
+      que main, celle qu’une règle de `ip rule` peut choisir. `blackhole` jette le
+      trafic correspondant.
+    pitfalls:
+      - >-
+        Remplacer la route par défaut coupe la session si la nouvelle passerelle ne
+        répond pas. Gardez un accès console.
+    examples:
+      - title: Route par défaut
+        command: ip route show default
+        comment: La passerelle et l’interface utilisées pour le reste du réseau.
+      - title: Quelle route pour une adresse
+        command: ip route get 192.0.2.1
+        comment: Affiche l’interface et la passerelle choisies, sans rien modifier.
+      - title: Poser une route de réseau
+        command: sudo ip route add 192.0.2.0/24 dev eth0
+        comment: Les adresses de ce préfixe sortent par eth0, sans passerelle.
+  - name: neigh
+    summary: Montre ou vide le cache des voisins, adresses MAC et NDP.
+    explanation: >-
+      `ip neigh` remplace `arp`, et couvre IPv4 comme IPv6. `show` liste les voisins
+      connus : adresse, MAC, interface, état. `REACHABLE` vient d’être confirmé, `STALE`
+      est encore utilisable, `FAILED` n’a pas répondu. `flush dev eth0` oublie le cache
+      de cette interface, utile quand une machine a changé de carte. `replace 192.0.2.1
+      lladdr 02:00:00:00:00:0a dev eth0` force une entrée. On ne s’en sert pas pour
+      configurer sa propre adresse : ça, c’est `ip addr`.
+    examples:
+      - title: Voisinage
+        command: ip neigh
+        comment: Adresses, MAC et interface. Remplace arp -n.
+      - title: Oublier une interface
+        command: sudo ip neigh flush dev eth0
+        comment: Le cache se reconstruira au prochain trafic.
+  - name: rule
+    summary: Choisit quelle table de routage utiliser selon la source ou la marque.
+    explanation: >-
+      `ip rule` décide de la table consultée avant `ip route`. La règle par défaut
+      envoie tout vers la table main. `add from 192.0.2.10/32 table 100` fait sortir ce
+      qui vient de cette adresse par la table 100. `priority` fixe l’ordre : la plus
+      petite valeur est essayée d’abord. `del` retire une règle en répétant les mêmes
+      sélecteurs. Sans règle supplémentaire, cette sous-commande ne sert pas au
+      quotidien. Elle devient nécessaire dès qu’une machine a deux accès réseau et doit
+      répondre par celui qui a reçu la demande.
+    examples:
+      - title: Règles en place
+        command: ip rule
+        comment: Les priorités 0, 32766 et 32767 sont celles d’un système ordinaire.
+      - title: Envoyer une source vers une autre table
+        command: sudo ip rule add from 192.0.2.10/32 table 100
+        comment: Le trafic de cette adresse consulte la table 100, à remplir avec ip route.
+  - name: monitor
+    summary: Affiche les changements d’adresses, de liens et de routes au fil de l’eau.
+    explanation: >-
+      `ip monitor` reste ouvert et écrit chaque modification. Sans argument, il suit
+      tout. `ip monitor link` ne garde que les interfaces, `ip monitor address` les
+      adresses, `ip monitor route` les routes. Ctrl+C arrête. C’est le moyen de voir ce
+      que NetworkManager ou un script vient de changer, sans relancer `ip addr` en
+      boucle.
+    examples:
+      - title: Tout suivre
+        command: ip monitor
+        comment: Une ligne à chaque changement. Ctrl+C quitte.
+      - title: Seulement les adresses
+        command: ip monitor address
+        comment: N’affiche pas les routes ni les changements d’état du lien.
+  - name: netns
+    summary: Crée et utilise un espace de noms réseau isolé.
+    explanation: >-
+      `ip netns` donne à un groupe de processus ses propres interfaces, adresses et
+      routes. `list` montre les espaces existants. `add demo` en crée un, avec la boucle
+      down tant qu’on ne l’a pas activée. `exec demo commande` lance la commande dedans.
+      `delete demo` le retire. Les interfaces s’y déplacent avec `ip link set eth0 netns
+      demo`. C’est l’outil des conteneurs et des maquettes, pas celui d’une adresse sur
+      la machine hôte.
+    examples:
+      - title: Créer un espace
+        command: sudo ip netns add demo
+        comment: L’espace existe. ip netns list l’affiche.
+      - title: Y lancer une commande
+        command: sudo ip netns exec demo ip -br addr
+        comment: Montre les adresses vues depuis demo, pas celles de l’hôte.
+  - name: tunnel
+    summary: Crée un tunnel IP dans IP, GRE ou SIT.
+    explanation: >-
+      `ip tunnel` encapsule un paquet IP dans un autre. `add tun0 mode gre local
+      192.0.2.10 remote 198.51.100.20` crée un tunnel GRE. `mode ipip` encapsule IPv4
+      dans IPv4, `mode sit` porte IPv6 sur IPv4. Ensuite l’interface se traite comme une
+      autre : `ip link set tun0 up`, puis `ip addr add` pour son adresse interne. `show`
+      liste les tunnels. `delete` en retire un. Le pare-feu doit laisser passer le
+      protocole du tunnel, sinon le lien est up et rien ne passe.
+    examples:
+      - title: Lister
+        command: ip tunnel show
+        comment: Les tunnels configurés dans le noyau. Vide s’il n’y en a pas.
+      - title: Créer un GRE
+        command: sudo ip tunnel add tun0 mode gre local 192.0.2.10 remote 198.51.100.20
+        comment: >-
+          Crée l’interface. Elle reste down tant que ip link set tun0 up n’est pas
+          lancé.
+  - name: vrf
+    summary: Isole une table de routage derrière une interface VRF.
+    explanation: >-
+      `ip vrf` attache des interfaces à une table de routage nommée. `add vrf-bleu table
+      10` crée l’interface VRF liée à la table 10. `ip link set eth0 master vrf-bleu` y
+      place une interface réelle. Le trafic de eth0 consulte alors cette table, pas la
+      table principale. `show` liste les VRF. On s’en sert quand plusieurs réseaux
+      doivent cohabiter sur la même machine sans se mélanger. La table elle-même se
+      remplit avec `ip route`.
+    examples:
+      - title: Créer une VRF
+        command: sudo ip link add vrf-bleu type vrf table 10
+        comment: L’interface vrf-bleu représente la table 10.
+      - title: Voir les VRF
+        command: ip vrf show
+        comment: Nom et table. Rien ne s’affiche s’il n’y en a pas.
+see_also:
+  - ss
+  - ifconfig
+  - route
+  - bridge
+  - networkctl
+examples:
+  - title: Adresses
+    command: ip -br addr
+    comment: Une ligne par interface, format court, avec l’état et les adresses.
+  - title: Route par défaut
+    command: ip route show default
+    comment: La passerelle utilisée pour joindre le reste du réseau.
+status: courante
+package:
+  debian: iproute2
+  redhat: iproute
+  suse: iproute2
+  arch: iproute2
+  alpine: iproute2
+overrides:
+  alpine:
+    note: Paquet iproute2. BusyBox n’a pas l’ip complet ni ss.

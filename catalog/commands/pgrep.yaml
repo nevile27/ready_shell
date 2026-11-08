@@ -1,0 +1,53 @@
+name: pgrep
+themes:
+  - processus
+summary: Écrit les PID dont le nom correspond à un motif.
+explanation: >-
+  pgrep sshd écrit un PID par ligne. Le code de retour est 0 si au moins un processus
+  correspond. -a ajoute la ligne de commande, -u user filtre, -x exige l’égalité, -f
+  cherche dans la ligne complète. C’est le moyen habituel de savoir si un service tourne
+  sans découper la sortie de ps.
+subcommands:
+  - name: "-a"
+    summary: Ajoute la ligne de commande au PID.
+    explanation: >-
+      `pgrep` écrit un PID par ligne. Le code 0 signifie qu’au moins un processus
+      correspond. `-u` filtre, `-x` exige l’égalité.
+    examples:
+      - title: Avec la commande
+        command: pgrep -a sshd
+        comment: PID et ligne de commande.
+  - name: "-f"
+    summary: Cherche dans la ligne complète.
+    explanation: >-
+      `-f` voit les arguments, pas seulement le nom du binaire. `-c` ne garde que le
+      nombre.
+    examples:
+      - title: Compter
+        command: pgrep -c sshd
+        comment: Un nombre, ou 0 si personne ne correspond.
+see_also:
+  - pkill
+  - pidof
+  - ps
+examples:
+  - title: PID d’un nom
+    command: pgrep -a sshd
+    comment: >-
+      Liste les démons SSH avec leur commande. Le nom d’unité, lui, diffère selon la
+      famille.
+  - title: Test dans un script
+    command: pgrep -x cron >/dev/null && printf '%s\n' "présent"
+    comment: >-
+      N’écrit les PID nulle part. Le texte n’apparaît que si un processus s’appelle
+      exactement cron.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: procps
+overrides:
+  alpine:
+    note: Paquet procps, pas dans BusyBox.

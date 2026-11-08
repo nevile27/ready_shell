@@ -1,0 +1,48 @@
+name: hexdump
+themes:
+  - texte
+summary: Vide un fichier en hexadécimal, avec le texte à côté.
+explanation: >-
+  hexdump -C fichier est le format canonique : décalage, seize octets, puis la colonne
+  texte. Sur Debian et Ubuntu il est dans bsdextrautils. hd est souvent un synonyme.
+  Pour un outil POSIX déjà là, od fait le vidage avec une syntaxe différente. hexdump ne
+  modifie pas le fichier.
+subcommands:
+  - name: "-C"
+    summary: "Format canonique : octets et texte."
+    explanation: >-
+      `-C` aligne seize octets et la colonne des caractères. `-n` limite la lecture. Sur
+      Debian, le paquet est `bsdextrautils`.
+    examples:
+      - title: Canonique
+        command: hexdump -C /etc/hostname
+        comment: Décalage, octets et caractères imprimables.
+  - name: "-n"
+    summary: Ne lit que les premiers octets.
+    explanation: >-
+      `-n 20` suffit souvent à reconnaître un en-tête. `hd` est souvent un synonyme de
+      `hexdump`.
+    examples:
+      - title: En-tête
+        command: hexdump -C -n 20 /bin/ls
+        comment: Le début du binaire, assez pour voir ELF.
+see_also:
+  - od
+  - strings
+examples:
+  - title: Format canonique
+    command: hexdump -C /etc/hostname
+    comment: Seize octets par ligne, avec les caractères imprimables à droite.
+  - title: Vingt octets
+    command: hexdump -C -n 20 /bin/ls
+    comment: Ne lit que le début du binaire, assez pour reconnaître un en-tête ELF.
+status: courante
+package:
+  debian: bsdextrautils
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: hexdump
+overrides:
+  alpine:
+    note: Paquet hexdump ou util-linux selon l’image. Pas une applet BusyBox de base.

@@ -1,0 +1,47 @@
+name: cmp
+themes:
+  - texte
+summary: Compare deux fichiers octet par octet.
+explanation: >-
+  cmp s’arrête au premier octet différent et dit à quel endroit. Sans différence, il
+  n’écrit rien et renvoie 0. -s ne écrit rien du tout et ne laisse que le code de
+  retour. Contrairement à diff, cmp convient aux binaires. Il ne produit pas un patch.
+subcommands:
+  - name: octets
+    summary: S’arrête au premier octet différent.
+    explanation: >-
+      `cmp` convient aux binaires. Sans différence, il n’écrit rien et renvoie 0. Il ne
+      produit pas un patch.
+    examples:
+      - title: Identiques
+        command: cmp /etc/hostname /etc/hostname
+        comment: Silence et code 0.
+  - name: "-s"
+    summary: Ne laisse que le code de retour.
+    explanation: >-
+      `-l` liste tous les octets différents. `-s` n’écrit rien : 0 identiques, 1
+      différents.
+    examples:
+      - title: Test
+        command: cmp -s /etc/hostname /etc/hosts; printf '%s\n' $?
+        comment: 1 si les fichiers diffèrent.
+see_also:
+  - diff
+  - comm
+examples:
+  - title: Deux fichiers identiques
+    command: cmp /etc/hostname /etc/hostname
+    comment: "Silence et code 0 : rien ne diffère."
+  - title: Test silencieux
+    command: cmp -s a.bin b.bin
+    comment: Code 0 si identiques, 1 si différents. Aucune sortie.
+status: courante
+package:
+  debian: diffutils
+  redhat: diffutils
+  suse: diffutils
+  arch: diffutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Présent dans BusyBox. diffutils apporte la version GNU.

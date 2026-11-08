@@ -1,0 +1,56 @@
+name: hostnamectl
+themes:
+  - reseau
+  - services
+summary: Affiche ou change le nom de machine connu de systemd.
+explanation: >-
+  hostnamectl status résume le nom statique, le nom joli et le système. hostnamectl
+  hostname nouveau le change de façon durable. --static, --transient et --pretty
+  distinguent le nom du noyau, celui donné par le réseau, et celui destiné aux humains.
+  Alpine n’a pas systemd : on édite /etc/hostname.
+subcommands:
+  - name: status
+    summary: Nom statique, nom joli et système.
+    explanation: >-
+      `hostnamectl status` résume l’identité. Alpine n’a pas systemd : on édite
+      `/etc/hostname`.
+    examples:
+      - title: État
+        command: hostnamectl status
+        comment: Nom, identifiant et système.
+  - name: hostname
+    summary: Pose le nom de façon durable.
+    explanation: >-
+      `hostnamectl hostname nouveau` survit au redémarrage. `--static`, `--transient` et
+      `--pretty` distinguent le nom du noyau, celui du réseau et celui des humains.
+    examples:
+      - title: Poser
+        command: sudo hostnamectl hostname serveur-1
+        comment: Le nom est conservé.
+see_also:
+  - hostname
+  - localectl
+  - timedatectl
+examples:
+  - title: État
+    command: hostnamectl status
+    comment: Nom, identifiant de machine, noyau et système d’exploitation.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Poser le nom
+    command: sudo hostnamectl hostname serveur-1
+    comment: Le nom survit au redémarrage.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Pas de systemd. Le nom se lit avec hostname et se pose dans /etc/hostname.

@@ -1,0 +1,74 @@
+name: useradd
+themes:
+  - utilisateurs
+summary: Crée un compte. C’est l’outil de bas niveau, commun aux familles.
+explanation: >-
+  `useradd` crée un compte. C’est l’outil commun aux familles, celui des scripts. Sur
+  Debian, `adduser` pose les questions à votre place. Sans `-m`, le répertoire personnel
+  n’est pas créé. Le mot de passe se pose ensuite avec `passwd`.
+subcommands:
+  - name: "-m"
+    summary: Crée le répertoire personnel en même temps que le compte.
+    explanation: >-
+      `-m` copie le squelette, en général /etc/skel, vers /home/nom. Sans cette option,
+      le compte existe et n’a pas de répertoire. `-d` choisit un autre chemin. `-M`
+      interdit explicitement la création du répertoire.
+    examples:
+      - title: Compte et répertoire
+        command: sudo useradd -m ada
+        comment: Crée ada et /home/ada. Le mot de passe n’est pas encore posé.
+  - name: "-s"
+    summary: Choisit le shell de connexion.
+    explanation: >-
+      `-s /bin/bash` fixe le shell. Le chemin doit exister. Sur Debian et Ubuntu, le
+      shell des scripts système reste dash : ce choix ne concerne que le compte. `-s
+      /usr/sbin/nologin` crée un compte qui ne peut pas ouvrir de session.
+    examples:
+      - title: Shell bash
+        command: sudo useradd -m -s /bin/bash ada
+        comment: Les prochaines connexions de ada démarrent bash.
+  - name: "-G"
+    summary: Ajoute des groupes supplémentaires dès la création.
+    explanation: >-
+      `-G` prend une liste séparée par des virgules. Ce ne sont pas le groupe principal
+      : celui-ci se crée souvent au nom de l’utilisateur, ou se choisit avec `-g`. Sur
+      Debian et Ubuntu, le groupe qui donne `sudo` s’appelle sudo. Sur Red Hat, il
+      s’appelle souvent wheel.
+    examples:
+      - title: Groupe d’administration
+        command: sudo useradd -m -G sudo -s /bin/bash ada
+        comment: ada peut utiliser sudo, selon la politique de la famille.
+        families:
+          - debian
+see_also:
+  - adduser
+  - usermod
+  - userdel
+  - passwd
+examples:
+  - title: Compte avec répertoire
+    command: sudo useradd -m -s /bin/bash ada
+    comment: >-
+      Crée ada et /home/ada. Le shell doit exister dans /etc/shells si l’utilisateur
+      doit s’y connecter.
+  - title: Groupe supplémentaire
+    command: sudo useradd -m -G sudo -s /bin/bash ada
+    comment: >-
+      Sur Debian et Ubuntu, le groupe sudo donne l’usage de sudo. Ailleurs le groupe
+      s’appelle souvent wheel.
+status: courante
+package:
+  debian: passwd
+  redhat: shadow-utils
+  suse: shadow
+  arch: shadow
+  alpine: shadow
+overrides:
+  alpine:
+    note: >-
+      Paquet shadow. L’image minimale a plutôt l’applet adduser de BusyBox, qui n’a pas
+      les mêmes options.
+  debian:
+    note: >-
+      Outil de bas niveau. adduser, propre à Debian, pose les questions et crée le
+      groupe en plus.

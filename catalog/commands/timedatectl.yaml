@@ -1,0 +1,80 @@
+name: timedatectl
+themes:
+  - services
+summary: Affiche et règle l’heure, le fuseau et la synchronisation.
+explanation: >-
+  `timedatectl` montre l’heure, le fuseau et si la synchronisation réseau est active. Le
+  client derrière est chrony sur Ubuntu 26.04, RHEL et Fedora. Debian peut encore
+  utiliser systemd-timesyncd. Alpine n’a pas cette commande.
+subcommands:
+  - name: status
+    summary: Résume l’horloge.
+    explanation: >-
+      `status` écrit l’heure locale, l’heure UTC, le fuseau, et si NTP est actif. «
+      System clock synchronized: yes » signifie qu’un service a calé l’horloge. Le
+      détail des serveurs se lit avec `chronyc` quand chrony est ce service.
+    examples:
+      - title: État
+        command: timedatectl status
+        comment: Heure, fuseau et synchronisation.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+  - name: set-timezone
+    summary: Change le fuseau de façon durable.
+    explanation: >-
+      Le nom est celui de la base tz, par exemple Europe/Paris. `list-timezones` les
+      énumère. Le changement vaut pour le système, pas pour une seule session. Les
+      processus déjà lancés peuvent garder l’ancien fuseau jusqu’à leur redémarrage.
+    examples:
+      - title: Fuseau
+        command: sudo timedatectl set-timezone Europe/Paris
+        comment: Les prochaines lectures de la date locale utilisent ce fuseau.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+  - name: set-ntp
+    summary: Active ou coupe la synchronisation réseau.
+    explanation: >-
+      `set-ntp true` laisse le service d’heure démarrer. `false` l’arrête. Ce n’est pas
+      le choix du serveur NTP : ça, c’est la configuration de chrony ou de timesyncd.
+    examples:
+      - title: Activer
+        command: sudo timedatectl set-ntp true
+        comment: Démarre le service d’heure de la famille.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+see_also:
+  - date
+  - chronyc
+  - hwclock
+examples:
+  - title: État de l’horloge
+    command: timedatectl status
+    comment: Heure locale, UTC, fuseau, et si NTP est actif.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Fuseau
+    command: sudo timedatectl set-timezone Europe/Paris
+    comment: Les processus verront cette zone. timedatectl list-timezones les énumère.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

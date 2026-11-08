@@ -1,0 +1,50 @@
+name: uniq
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Retire les lignes répétées consécutives.
+explanation: >-
+  uniq ne regarde que les voisines. Deux lignes identiques séparées par une autre
+  restent. On trie d’abord, ou l’on utilise sort -u. uniq -c préfixe le nombre de
+  répétitions, -d ne garde que les lignes qui étaient en double, -u ne garde que celles
+  qui étaient uniques. -i ignore la casse sur GNU.
+subcommands:
+  - name: "-c"
+    summary: Compte les lignes identiques voisines.
+    explanation: >-
+      `uniq` ne regarde que les voisines. On trie d’abord, ou l’on utilise `sort -u`.
+      `-c` préfixe le nombre.
+    examples:
+      - title: Après un tri
+        command: sort /etc/shells | uniq -c
+        comment: Compte les lignes identiques une fois regroupées.
+  - name: "-d"
+    summary: Ne garde que les lignes qui étaient en double.
+    explanation: >-
+      `-u` ne garde que celles qui n’apparaissaient qu’une fois. `-i` ignore la casse
+      sur GNU.
+    examples:
+      - title: Doublons
+        command: printf '%s\n' a a b | uniq -d
+        comment: Écrit a, parce que a était répété.
+see_also:
+  - sort
+  - comm
+examples:
+  - title: Doublons voisins
+    command: printf '%s\n' a a b a | uniq
+    comment: Écrit a, b, a. Le dernier a n’est pas collé au premier, il reste.
+  - title: Compter après un tri
+    command: sort /etc/shells | uniq -c
+    comment: Compte les lignes identiques une fois qu’elles sont regroupées.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

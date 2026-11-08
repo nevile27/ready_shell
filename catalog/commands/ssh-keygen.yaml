@@ -1,0 +1,46 @@
+name: ssh-keygen
+themes:
+  - reseau
+summary: Crée et contrôle une paire de clés SSH.
+explanation: >-
+  ssh-keygen -t ed25519 crée une clé moderne dans ~/.ssh. Une phrase de passe protège la
+  clé privée si quelqu’un copie le fichier. ssh-keygen -l -f fichier affiche
+  l’empreinte, ce qui sert à comparer le serveur à ce que l’administrateur a publié.
+  ssh-keygen ne copie pas la clé publique sur le serveur : c’est ssh-copy-id, ou un
+  ajout manuel dans authorized_keys.
+subcommands:
+  - name: "-t"
+    summary: Crée une paire de clés.
+    explanation: >-
+      `-t ed25519` choisit l’algorithme actuel. `-f` fixe le fichier. Une phrase de
+      passe protège la clé privée. La clé publique se copie avec `ssh-copy-id`.
+    examples:
+      - title: Créer
+        command: ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519"
+        comment: Pose la question de la phrase de passe. Ne transmet rien.
+  - name: "-l"
+    summary: Affiche l’empreinte d’une clé.
+    explanation: >-
+      `-l -f` montre taille, empreinte et commentaire. On compare l’empreinte du serveur
+      à celle publiée par son administrateur.
+    examples:
+      - title: Empreinte
+        command: ssh-keygen -l -f "$HOME/.ssh/id_ed25519.pub"
+        comment: L’empreinte de la clé publique, si elle existe.
+see_also:
+  - ssh
+  - ssh-copy-id
+examples:
+  - title: Créer une clé
+    command: ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519"
+    comment: Pose la question de la phrase de passe. Ne transmet rien sur le réseau.
+  - title: Empreinte
+    command: ssh-keygen -l -f "$HOME/.ssh/id_ed25519.pub"
+    comment: Affiche la taille, l’empreinte et le commentaire de la clé publique.
+status: courante
+package:
+  debian: openssh-client
+  redhat: openssh-clients
+  suse: openssh-clients
+  arch: openssh
+  alpine: openssh-client

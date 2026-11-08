@@ -1,0 +1,46 @@
+name: whereis
+themes:
+  - shell
+summary: Cherche le binaire, les sources et le manuel d’un nom.
+explanation: >-
+  whereis ls regarde dans une liste de répertoires connus et peut montrer à la fois
+  /usr/bin/ls et la page de manuel. Il ne parcourt pas tout PATH comme which, et il ne
+  dit pas si un alias cache la commande. Utile pour voir si la documentation est
+  installée à côté du binaire.
+subcommands:
+  - name: "-b"
+    summary: Ne cherche que le binaire.
+    explanation: >-
+      `whereis` regarde une liste de répertoires connus, pas tout PATH. `-b` ignore les
+      pages de manuel et les sources.
+    examples:
+      - title: Binaire
+        command: whereis -b ls
+        comment: Le chemin du programme, s’il est dans les répertoires prévus.
+  - name: "-m"
+    summary: Ne cherche que le manuel.
+    explanation: "`-m` dit si une page de manuel est installée à côté du nom. `-s` vise les sources."
+    examples:
+      - title: Manuel
+        command: whereis -m ls
+        comment: Le chemin de la page, par exemple dans /usr/share/man.
+see_also:
+  - which
+  - command
+examples:
+  - title: Binaire et manuel
+    command: whereis ls
+    comment: Peut afficher le binaire et la page man ls.
+  - title: Seulement le binaire
+    command: whereis -b ls
+    comment: Ne cherche pas les sources ni les pages de manuel.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: Pas dans BusyBox. Fourni par le paquet util-linux.

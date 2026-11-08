@@ -1,0 +1,50 @@
+name: killall
+themes:
+  - processus
+summary: Envoie un signal à tous les processus d’un nom.
+explanation: >-
+  killall nom vise les processus dont le nom de commande est nom. Sans option, le signal
+  est SIGTERM. -u user limite à un utilisateur, -i demande confirmation sur la version
+  GNU. Ce n’est pas la même commande que sur certains Unix, où killall arrêtait tout.
+  Vérifiez avec pgrep nom avant. Sur un système très chargé, le nom peut être partagé
+  par plusieurs services.
+subcommands:
+  - name: nom
+    summary: Envoie SIGTERM à tous les processus de ce nom.
+    explanation: >-
+      `killall` vise le nom de commande, pas un motif. `-u` limite à un utilisateur.
+      Vérifiez avec `pgrep` avant.
+    examples:
+      - title: Arrêter sleep
+        command: killall sleep
+        comment: SIGTERM à chaque processus nommé sleep.
+  - name: "-i"
+    summary: Demande confirmation, version GNU.
+    explanation: >-
+      `-i` interroge pour chaque processus. `-s` choisit le signal. Le killall de
+      certains Unix arrêtait tout : ce n’est pas celui-ci.
+    examples:
+      - title: Confirmer
+        command: killall -i sleep
+        comment: Demande avant d’envoyer le signal.
+see_also:
+  - pkill
+  - pgrep
+  - kill
+examples:
+  - title: Voir avant d’arrêter
+    command: pgrep -a sleep
+    comment: Liste les PID dont le nom est sleep, avec leur ligne de commande.
+  - title: Demander l’arrêt
+    command: killall sleep
+    comment: Envoie SIGTERM à chaque processus nommé sleep.
+status: courante
+package:
+  debian: psmisc
+  redhat: psmisc
+  suse: psmisc
+  arch: psmisc
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet psmisc apporte la version GNU, avec -w et -r.

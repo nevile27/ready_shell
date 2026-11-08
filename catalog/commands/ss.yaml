@@ -1,0 +1,73 @@
+name: ss
+themes:
+  - reseau
+summary: Affiche les sockets. C’est le remplaçant de netstat.
+explanation: >-
+  `ss` lit les sockets dans le noyau. Il remplace `netstat`. Les lettres se combinent :
+  `-t` TCP, `-u` UDP, `-l` l’écoute, `-p` le processus, `-n` sans DNS. `-s` résume les
+  compteurs. Un filtre `state` choisit l’état des connexions.
+subcommands:
+  - name: "-tulpn"
+    summary: Liste les ports en écoute, TCP et UDP, avec le processus.
+    explanation: >-
+      Chaque lettre est une option. `-t` garde TCP, `-u` garde UDP, `-l` ne montre que
+      l’écoute, `-p` ajoute le processus, `-n` n’interroge pas le DNS. Ensemble, `ss
+      -tulpn` répond à la question « qui écoute, et sur quel port ». Sans les droits
+      d’administration, la colonne processus reste vide pour les services des autres. Le
+      nom du service n’est pas traduit : vous voyez 22, pas ssh.
+    examples:
+      - title: Ports en écoute
+        command: sudo ss -tulpn
+        comment: TCP et UDP, numéros de port, et le PID quand le droit de le lire est là.
+      - title: Seulement TCP
+        command: sudo ss -tlnp
+        comment: Retire UDP. Utile quand la liste est longue.
+  - name: state
+    summary: Filtre les connexions selon leur état.
+    explanation: >-
+      `state established` ne garde que les sessions en cours. `state time-wait` montre
+      celles qui finissent de se fermer. `state syn-sent` montre les connexions pas
+      encore abouties. On le combine avec `-t` pour TCP. `-p` ajoute le processus. Ce
+      n’est pas un suivi continu : la commande affiche l’instant, puis revient.
+    examples:
+      - title: Sessions en cours
+        command: ss -tp state established
+        comment: Connexions TCP établies, avec le nom du processus si les droits le permettent.
+      - title: En attente de fermeture
+        command: ss -tan state time-wait
+        comment: >-
+          Beaucoup de lignes ici signalent souvent des connexions très courtes et
+          nombreuses.
+  - name: "-s"
+    summary: Résume le nombre de sockets par type.
+    explanation: >-
+      `ss -s` écrit les totaux : TCP, UDP, paires de sockets locales, compteurs d’états.
+      Ce n’est pas la liste des ports. On s’en sert pour voir d’un coup si la machine
+      accumule des connexions, avant de détailler avec `-tulpn` ou `state`.
+    examples:
+      - title: Totaux
+        command: ss -s
+        comment: Quelques lignes de compteurs, sans la liste des sockets.
+see_also:
+  - ip
+  - netstat
+  - lsof
+examples:
+  - title: Ports en écoute
+    command: sudo ss -tulpn
+    comment: >-
+      TCP et UDP, sans résolution de noms, avec le PID. Sans sudo, la colonne processus
+      reste vide pour les services des autres.
+  - title: Connexions établies
+    command: ss -tp state established
+    comment: Sessions TCP en cours, avec le nom du processus si les droits le permettent.
+status: courante
+package:
+  debian: iproute2
+  redhat: iproute
+  suse: iproute2
+  arch: iproute2
+  alpine: iproute2
+overrides:
+  alpine:
+    note: Paquet iproute2. BusyBox n’a pas l’ip complet ni ss.

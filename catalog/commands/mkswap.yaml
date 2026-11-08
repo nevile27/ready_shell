@@ -1,0 +1,44 @@
+name: mkswap
+themes:
+  - disques
+summary: Prépare une partition ou un fichier pour servir d’espace d’échange.
+explanation: >-
+  mkswap /dev/sdb2 écrit la signature swap. Cela efface l’usage précédent de la
+  partition. Ensuite swapon l’active, et une ligne dans fstab la rend durable. mkswap -L
+  donne un label. Un fichier swap se crée d’abord à la bonne taille, puis passe par
+  mkswap et swapon. mkswap n’active rien tout seul.
+subcommands:
+  - name: "-L"
+    summary: Prépare une zone d’échange avec un label.
+    explanation: >-
+      `mkswap` écrit une signature et efface l’usage précédent. Il n’active rien :
+      `swapon` le fait ensuite.
+    examples:
+      - title: Préparer
+        command: sudo mkswap -L swap /dev/sdb2
+        comment: Uniquement si sdb2 est destinée au swap.
+see_also:
+  - swapon
+  - swapoff
+  - free
+examples:
+  - title: Préparer une partition
+    command: sudo mkswap /dev/sdb2
+    comment: >-
+      Uniquement si sdb2 est destinée au swap. Le contenu précédent n’est plus un
+      système de fichiers.
+  - title: Activer ensuite
+    command: sudo swapon /dev/sdb2
+    comment: Le swap devient utilisable. free -h le montre.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

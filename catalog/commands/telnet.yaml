@@ -1,0 +1,39 @@
+name: telnet
+themes:
+  - reseau
+summary: Client Telnet. À ne plus utiliser pour une session d’administration.
+explanation: >-
+  telnet hote ouvre une session où tout circule en clair. Ce n’est plus un moyen de se
+  connecter à une machine. La commande sert encore, rarement, à regarder la bannière
+  d’un port TCP : telnet hote 25. Même cet usage se fait mieux avec nc. Le paquet n’est
+  pas installé par défaut. Une session distante se fait avec ssh.
+subcommands:
+  - name: hôte
+    summary: Ancienne session en clair.
+    explanation: >-
+      `telnet` ne sert plus à administrer. Pour sonder un port, `nc` est plus explicite.
+      Une session distante se fait avec `ssh`.
+    examples:
+      - title: Session
+        command: ssh user@hote
+        comment: Remplace une connexion d’administration.
+see_also:
+  - ssh
+  - nc
+examples:
+  - title: Session distante
+    command: ssh user@hote
+    comment: Remplace une connexion Telnet d’administration.
+  - title: Sonder un port
+    command: nc -v 127.0.0.1 22
+    comment: Montre la bannière du service local. Plus explicite qu’un client Telnet.
+status: obsolète
+package:
+  debian: telnet
+  redhat: telnet
+  suse: telnet
+  arch: inetutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox possible. Le défaut de chiffrement est le même.

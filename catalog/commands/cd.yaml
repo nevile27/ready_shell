@@ -1,0 +1,49 @@
+name: cd
+themes:
+  - shell
+summary: Change le répertoire courant du shell.
+explanation: >-
+  cd est interne au shell : un programme séparé ne peut pas déplacer le shell qui l’a
+  appelé. Sans argument, cd revient au répertoire de HOME. cd - revient au répertoire
+  précédent. Un chemin relatif part du répertoire courant, pas de l’endroit où se trouve
+  le script.
+pitfalls:
+  - >-
+    Dans un script lancé depuis un autre répertoire, cd relatif rate ou agit au mauvais
+    endroit. Utilisez un chemin absolu.
+subcommands:
+  - name: "-"
+    summary: Revient au répertoire précédent.
+    explanation: >-
+      `cd -` échange le répertoire courant et l’ancien, puis affiche le nouveau chemin.
+      `OLDPWD` mémorise cet ancien chemin.
+    examples:
+      - title: Aller-retour
+        command: cd /tmp && cd -
+        comment: Revient au répertoire d’où vous veniez et l’affiche.
+  - name: "-P"
+    summary: Résout les liens symboliques.
+    explanation: >-
+      `cd -P` entre dans le répertoire réel. `-L`, le défaut, conserve le chemin
+      logique. `pwd -P` montre ensuite le chemin physique.
+    examples:
+      - title: Chemin physique
+        command: cd -P /bin
+        comment: Si /bin est un lien, le shell se place sur la cible.
+see_also:
+  - pwd
+  - pushd
+examples:
+  - title: Revenir au répertoire personnel
+    command: cd
+    comment: Équivaut à cd "$HOME".
+  - title: Revenir au répertoire précédent
+    command: cd -
+    comment: Échange le répertoire courant et l’ancien, puis affiche le nouveau chemin.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

@@ -1,0 +1,62 @@
+name: test
+themes:
+  - shell
+summary: Teste un fichier ou une chaîne. Le crochet [ est la même commande.
+explanation: >-
+  test -f fichier réussit si le fichier existe et est régulier. [ -f fichier ] est
+  exactement test, avec un ] final obligatoire et des espaces. -d teste un répertoire,
+  -z une chaîne vide, -n une chaîne non vide, = compare deux chaînes. [[ ]] est une
+  extension bash : elle ne marche pas sous dash ni ash. Dans un script POSIX, restez sur
+  [ ] ou test.
+pitfalls:
+  - >-
+    Les espaces autour de [ et ] sont obligatoires. [ -f "$fichier" ] est correct ; [-f
+    $fichier] ne l’est pas, et sans guillemets un nom contenant des espaces casse le
+    test.
+subcommands:
+  - name: "-f"
+    summary: Vrai si le chemin est un fichier régulier.
+    explanation: >-
+      `test -f` et `[ -f fichier ]` sont la même commande. Les espaces autour des
+      crochets sont obligatoires. Le nom se met entre guillemets.
+    examples:
+      - title: Fichier
+        command: "[ -f /etc/os-release ] && printf '%s\\n' présent"
+        comment: Le message n’apparaît que si le fichier existe.
+  - name: "-d"
+    summary: Vrai si le chemin est un répertoire.
+    explanation: >-
+      `-d` sert avant un `cd` ou un parcours. `-e` se contente de l’existence, quel que
+      soit le type. `-L` reconnaît un lien symbolique.
+    examples:
+      - title: Répertoire
+        command: "[ -d /tmp ]"
+        comment: Code 0 si /tmp est un répertoire. Rien ne s’affiche.
+  - name: "-n"
+    summary: Vrai si la chaîne n’est pas vide.
+    explanation: >-
+      `-n` teste le contenu. `-z` teste le vide. Sans guillemets, une valeur qui
+      contient des espaces casse le test.
+    examples:
+      - title: Chaîne
+        command: test -n "$USER"
+        comment: Réussit si USER contient quelque chose.
+see_also:
+  - find
+  - set
+examples:
+  - title: Fichier régulier
+    command: "[ -f /etc/os-release ] && printf '%s\\n' \"présent\""
+    comment: Le && ne lance printf que si le test réussit.
+  - title: Chaîne non vide
+    command: test -n "$USER"
+    comment: >-
+      Renvoie 0 si USER contient quelque chose. Rien ne s’affiche : seul le code de
+      retour compte.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

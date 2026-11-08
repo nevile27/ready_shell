@@ -1,0 +1,50 @@
+name: findmnt
+themes:
+  - disques
+summary: Retrouve où et comment un système de fichiers est monté.
+explanation: >-
+  findmnt présente l’arbre des montages mieux que mount sans argument. findmnt /var
+  montre la source, le type et les options du montage qui contient /var. -T fichier
+  répond pour le fichier donné, -S UUID=... cherche une source. --verify contrôle fstab
+  sans monter. C’est la commande de diagnostic quand un chemin n’est pas sur le disque
+  que l’on croit.
+subcommands:
+  - name: chemin
+    summary: Dit quel montage contient un chemin.
+    explanation: >-
+      `findmnt /var` montre la source, le type et les options. `-T fichier` répond pour
+      un fichier. `-S UUID=…` cherche une source.
+    examples:
+      - title: Où est /var
+        command: findmnt /var
+        comment: La ligne du montage qui porte /var.
+  - name: "--verify"
+    summary: Contrôle fstab sans monter.
+    explanation: "`--verify` signale les lignes incohérentes. Il ne les applique pas."
+    examples:
+      - title: Contrôle
+        command: sudo findmnt --verify
+        comment: Les erreurs de fstab, s’il y en a.
+see_also:
+  - mount
+  - lsblk
+  - df
+examples:
+  - title: Où est /var
+    command: findmnt /var
+    comment: Source, point de montage, type et options.
+  - title: Contrôler fstab
+    command: sudo findmnt --verify
+    comment: Signale les lignes de fstab incohérentes sans les appliquer.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

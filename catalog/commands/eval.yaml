@@ -1,0 +1,47 @@
+name: eval
+themes:
+  - shell
+summary: Réinterprète une chaîne comme du code shell.
+explanation: >-
+  eval concatène ses arguments et les fait exécuter par le shell. C’est rarement
+  nécessaire. Toute donnée non fiable qui passe dans eval devient du code : un nom de
+  fichier, un paramètre HTTP ou une ligne de journal peut alors lancer une commande.
+  Quand l’objectif est d’obtenir la valeur d’une variable dont le nom est calculé, les
+  tableaux ou une simple indirection bash suffisent souvent.
+pitfalls:
+  - >-
+    N’utilisez pas eval sur une chaîne construite avec une entrée extérieure. C’est une
+    injection de commande.
+subcommands:
+  - name: chaîne
+    summary: Réinterprète le texte comme du code.
+    explanation: >-
+      `eval` exécute ses arguments. Toute donnée reçue qui y passe devient du code. On
+      s’en passe presque toujours.
+    examples:
+      - title: Affectation contrôlée
+        command: eval "$(printf '%s' 'msg=bonjour')"
+        comment: >-
+          Uniquement si la chaîne est produite par vous et ne contient qu’une
+          affectation.
+see_also:
+  - source
+  - bash
+examples:
+  - title: À éviter avec une entrée
+    command: eval "echo $saisie"
+    comment: >-
+      Si saisie contient ; rm -rf ..., le shell l’exécute. Ne faites pas cela avec une
+      donnée reçue.
+  - title: Relire une affectation contrôlée
+    command: eval "$(printf '%s' 'msg=bonjour')"
+    comment: >-
+      Uniquement si la chaîne est produite par vous et ne contient qu’une affectation
+      attendue.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

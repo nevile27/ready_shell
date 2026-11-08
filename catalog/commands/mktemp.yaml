@@ -1,0 +1,54 @@
+name: mktemp
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Crée un fichier ou un répertoire temporaire au nom imprévisible.
+explanation: >-
+  mktemp crée un fichier vide dans /tmp, avec des droits restreints, et écrit son
+  chemin. -d crée un répertoire. Un modèle se termine par au moins trois X, remplacés
+  par des caractères aléatoires. C’est le moyen correct d’éviter un nom fixe dans /tmp,
+  que quelqu’un d’autre pourrait préparer avant vous. Associez-le à trap pour le
+  supprimer à la sortie.
+subcommands:
+  - name: fichier
+    summary: Crée un fichier vide au nom imprévisible.
+    explanation: >-
+      `mktemp` écrit le chemin créé. Les droits sont restreints. On l’associe à `trap`
+      pour le supprimer à la sortie.
+    examples:
+      - title: Fichier
+        command: tmp=$(mktemp) && printf '%s\n' "$tmp"
+        comment: Crée le fichier et montre son chemin.
+  - name: "-d"
+    summary: Crée un répertoire temporaire.
+    explanation: >-
+      Le modèle se termine par au moins trois X. `-p` choisit le répertoire parent au
+      lieu de /tmp.
+    examples:
+      - title: Répertoire
+        command: dir=$(mktemp -d) && printf '%s\n' "$dir"
+        comment: Un répertoire vide au nom imprévisible.
+see_also:
+  - trap
+  - rm
+  - install
+examples:
+  - title: Fichier temporaire
+    command: tmp=$(mktemp) && printf '%s\n' "$tmp"
+    comment: >-
+      Crée le fichier et range son chemin dans tmp. Personne d’autre ne peut le lire
+      avec umask habituel.
+  - title: Répertoire temporaire
+    command: dir=$(mktemp -d) && printf '%s\n' "$dir"
+    comment: Crée un répertoire vide au nom imprévisible.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

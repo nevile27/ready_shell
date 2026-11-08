@@ -1,0 +1,49 @@
+name: losetup
+themes:
+  - disques
+summary: Associe un fichier à un périphérique boucle.
+explanation: >-
+  losetup -f --show image.img prend le premier /dev/loop libre et y branche le fichier.
+  On peut ensuite partitionner ou monter cette image comme un disque. losetup -d
+  /dev/loop0 détache. -P fait apparaître les partitions de l’image en loop0p1, loop0p2.
+  Oublier -d laisse l’image occupée. Les versions actuelles créent les périphériques
+  loop à la demande.
+subcommands:
+  - name: "-f"
+    summary: Branche un fichier sur le premier périphérique libre.
+    explanation: >-
+      `-f --show` écrit le nom, par exemple /dev/loop0. `-P` fait apparaître les
+      partitions de l’image. `-d` détache, après un `umount`.
+    examples:
+      - title: Brancher
+        command: sudo losetup -f --show image.img
+        comment: Écrit /dev/loopN. Le fichier image doit exister.
+  - name: "-d"
+    summary: Détache un périphérique boucle.
+    explanation: On démonte d’abord ce qui était monté dessus. Oublier `-d` laisse l’image occupée.
+    examples:
+      - title: Détacher
+        command: sudo losetup -d /dev/loop0
+        comment: Libère loop0.
+see_also:
+  - mount
+  - lsblk
+examples:
+  - title: Brancher une image
+    command: sudo losetup -f --show image.img
+    comment: Écrit le nom, par exemple /dev/loop0. lsblk le montre ensuite.
+  - title: Détacher
+    command: sudo losetup -d /dev/loop0
+    comment: Libère le périphérique. Démontez d’abord ce qui était monté dessus.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

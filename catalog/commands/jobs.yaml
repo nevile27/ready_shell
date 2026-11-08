@@ -1,0 +1,46 @@
+name: jobs
+themes:
+  - shell
+summary: Liste les tâches lancées depuis ce shell.
+explanation: >-
+  jobs montre les processus que le shell suit : ceux lancés avec &, ceux suspendus par
+  Ctrl+Z. Le numéro entre crochets sert à fg, bg et kill %1. Un autre terminal ne voit
+  pas ces numéros de job : ce sont des repères du shell, pas des PID.
+subcommands:
+  - name: "-l"
+    summary: Ajoute le PID de chaque tâche.
+    explanation: >-
+      `jobs -l` montre le numéro de job du shell et le PID. Un autre terminal ne connaît
+      pas ces numéros : ce ne sont pas des identifiants globaux.
+    examples:
+      - title: Avec PID
+        command: jobs -l
+        comment: Numéro entre crochets, état, PID et commande.
+  - name: "-p"
+    summary: N’écrit que les PID.
+    explanation: >-
+      `jobs -p` est la forme à passer à une autre commande. Les numéros `%1` restent
+      ceux de `fg` et `bg`.
+    examples:
+      - title: PID seuls
+        command: jobs -p
+        comment: Un PID par ligne, ou rien s’il n’y a pas de tâche.
+see_also:
+  - fg
+  - bg
+  - kill
+  - ps
+examples:
+  - title: Tâches du shell
+    command: jobs -l
+    comment: Ajoute le PID à côté de chaque numéro de job.
+  - title: Reprendre la première
+    command: fg %1
+    comment: Ramène au premier plan la tâche 1 listée par jobs.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

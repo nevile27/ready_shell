@@ -1,0 +1,44 @@
+name: modprobe
+themes:
+  - disques
+summary: Charge ou retire un module du noyau, avec ses dépendances.
+explanation: >-
+  modprobe nom charge le module et ceux dont il dépend, en lisant les fichiers de
+  /lib/modules. modprobe -r nom le retire si plus personne ne l’utilise. Les options
+  durables se posent dans /etc/modprobe.d, pas seulement sur la ligne de commande.
+  modprobe est préférable à insmod, qui ne gère pas les dépendances. Sur beaucoup de
+  systèmes le chargement est automatique dès qu’un matériel se présente.
+subcommands:
+  - name: charger
+    summary: Charge un module et ses dépendances.
+    explanation: >-
+      `modprobe nom` lit /lib/modules. Les options durables se posent dans
+      /etc/modprobe.d. `insmod` ne gère pas les dépendances.
+    examples:
+      - title: Charger
+        command: sudo modprobe loop
+        comment: Charge loop s’il n’est pas déjà dans le noyau.
+  - name: "-r"
+    summary: Retire un module s’il n’est plus utilisé.
+    explanation: "`-r` échoue si un périphérique s’en sert encore. Pour loop, `losetup -d` d’abord."
+    examples:
+      - title: Retirer
+        command: sudo modprobe -r loop
+        comment: Échoue si un loop est encore ouvert.
+see_also:
+  - lsmod
+  - sysctl
+examples:
+  - title: Charger
+    command: sudo modprobe loop
+    comment: Charge le module loop s’il n’est pas déjà dans le noyau.
+  - title: Retirer
+    command: sudo modprobe -r loop
+    comment: Échoue si un périphérique loop est encore ouvert. losetup -d d’abord.
+status: courante
+package:
+  debian: kmod
+  redhat: kmod
+  suse: kmod
+  arch: kmod
+  alpine: kmod

@@ -1,0 +1,45 @@
+name: dash
+themes:
+  - shell
+summary: Shell POSIX léger, et /bin/sh sur Debian et Ubuntu.
+explanation: >-
+  dash exécute le langage POSIX sans les extensions de bash. Debian et Ubuntu
+  l’installent comme /bin/sh pour que les scripts de démarrage restent rapides et
+  stricts. Les autres familles n’en font pas leur shell système. Écrire pour dash, c’est
+  écrire pour sh sur toute la famille Debian.
+subcommands:
+  - name: "-n"
+    summary: Vérifie un script comme le ferait /bin/sh Debian.
+    explanation: >-
+      `dash -n` contrôle la syntaxe POSIX sans lancer le script. C’est le test utile
+      avant un shebang `#!/bin/sh` sur Debian ou Ubuntu.
+    examples:
+      - title: Syntaxe
+        command: dash -n script.sh
+        comment: Signale les constructions que dash refuse.
+  - name: "-c"
+    summary: Exécute une chaîne avec dash.
+    explanation: "`dash -c` ne charge pas les extensions de bash. Un tableau ou `[[` y échoue."
+    examples:
+      - title: Chaîne
+        command: dash -c 'echo ok'
+        comment: Écrit ok. Les options de echo restent celles de dash.
+see_also:
+  - sh
+  - bash
+  - ash
+examples:
+  - title: Contrôler un script comme le ferait /bin/sh
+    command: dash -n script.sh
+    comment: Vérifie la syntaxe POSIX sans exécuter le script. Famille Debian.
+    families:
+      - debian
+  - title: Voir le shell des scripts système
+    command: ls -l /bin/sh
+    comment: Sur Debian et Ubuntu, le lien mène à dash.
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: dash
+    note: /bin/sh est dash. bash reste le shell interactif des comptes.

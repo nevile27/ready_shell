@@ -1,0 +1,49 @@
+name: exec
+themes:
+  - shell
+summary: Remplace le shell par une autre commande, ou redirige le shell lui-même.
+explanation: >-
+  exec commande remplace le processus du shell : il n’y a pas de retour. Les scripts
+  s’en servent pour devenir le programme final sans laisser un shell attendre. exec >
+  fichier, sans commande, redirige la sortie du shell courant pour la suite de la
+  session ou du script.
+subcommands:
+  - name: commande
+    summary: Remplace le shell par un autre programme.
+    explanation: >-
+      `exec commande` ne revient pas : le processus du shell devient cette commande. Les
+      scripts s’en servent pour ne pas laisser un shell attendre.
+    examples:
+      - title: Devenir un programme
+        command: exec /usr/bin/top
+        comment: Quitter top ferme la session s’il n’y avait plus de shell derrière.
+  - name: redirection
+    summary: Redirige la suite du shell lui-même.
+    explanation: >-
+      `exec > fichier` sans commande envoie la sortie du shell courant vers le fichier,
+      pour le reste de la session ou du script.
+    examples:
+      - title: Vers un fichier
+        command: exec > "$HOME/sortie.log" 2>&1
+        comment: La sortie et l’erreur suivantes vont dans le fichier.
+see_also:
+  - source
+  - exit
+examples:
+  - title: Devenir un autre programme
+    command: exec /usr/bin/top
+    comment: >-
+      Le shell est remplacé par top. Quitter top ferme la session s’il n’y avait plus de
+      shell derrière.
+  - title: Envoyer la suite dans un fichier
+    command: exec > "$HOME/sortie.log" 2>&1
+    comment: >-
+      À partir de cette ligne, la sortie standard et l’erreur du shell vont dans le
+      fichier.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

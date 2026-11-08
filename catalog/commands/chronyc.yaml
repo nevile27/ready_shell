@@ -1,0 +1,49 @@
+name: chronyc
+themes:
+  - services
+summary: Interroge le client d’heure chrony.
+explanation: >-
+  chronyc tracking dit si l’horloge est calée et sur quelle source. chronyc sources -v
+  liste les serveurs. C’est le client d’heure de RHEL, Fedora, et d’Ubuntu 26.04, qui
+  l’a préféré à systemd-timesyncd. Debian 13 peut encore tourner avec timesyncd sur une
+  installation simple : chronyc n’y répond alors pas. Alpine l’utilise souvent.
+  timedatectl montre le résultat côté systemd, pas le détail des sources.
+subcommands:
+  - name: tracking
+    summary: Dit si l’horloge est calée, et sur quelle source.
+    explanation: >-
+      `tracking` échoue si chronyd ne tourne pas. Ubuntu 26.04, RHEL et Fedora utilisent
+      chrony. Un Debian minimal peut encore être sur systemd-timesyncd.
+    examples:
+      - title: Suivi
+        command: chronyc tracking
+        comment: Décalage estimé et serveur suivi.
+  - name: sources
+    summary: Liste les serveurs NTP.
+    explanation: >-
+      L’astérisque marque la source retenue. `-v` détaille les colonnes. `timedatectl`
+      montre le résultat, pas cette liste.
+    examples:
+      - title: Sources
+        command: chronyc sources
+        comment: Les serveurs, et celui qui est choisi.
+see_also:
+  - timedatectl
+  - ntpdate
+  - date
+examples:
+  - title: Suivi
+    command: chronyc tracking
+    comment: Décalage estimé et serveur actuellement suivi. Échoue si chronyd ne tourne pas.
+  - title: Sources
+    command: chronyc sources
+    comment: Liste les serveurs NTP, avec un astérisque devant celui qui est retenu.
+status: courante
+package: chrony
+overrides:
+  debian:
+    note: >-
+      Ubuntu 26.04 utilise chrony. Un Debian 13 minimal peut encore synchroniser avec
+      systemd-timesyncd : dans ce cas chrony n’est pas installé.
+  alpine:
+    note: Paquet chrony, fréquent. Le démon s’active avec rc-update add chronyd default.

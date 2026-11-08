@@ -1,0 +1,91 @@
+name: resolvectl
+themes:
+  - reseau
+  - services
+summary: "Interroge systemd-resolved : DNS, cache et domaines."
+explanation: >-
+  `resolvectl` interroge systemd-resolved. `query` résout comme la machine, cache
+  compris. `status` montre les résolveurs par interface. C’est le successeur de
+  `systemd-resolve`. Alpine n’a pas cette commande.
+subcommands:
+  - name: status
+    summary: Montre les résolveurs et le domaine de recherche.
+    explanation: >-
+      `status` détaille chaque interface gérée par resolved : DNS, domaine, et si le
+      DNSSEC est actif. Ce n’est pas /etc/resolv.conf brut : ce fichier ne fait souvent
+      que renvoyer vers resolved.
+    examples:
+      - title: Résolveurs
+        command: resolvectl status
+        comment: Une section par interface.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+  - name: query
+    summary: Résout un nom en passant par le cache du système.
+    explanation: >-
+      `query` utilise les résolveurs de la machine, pas un serveur imposé. La réponse
+      peut donc différer d’un `dig @` direct. `query` montre aussi l’interface qui a
+      répondu. Pour un enregistrement précis, le type se donne en second argument.
+    examples:
+      - title: Résoudre
+        command: resolvectl query exemple.fr
+        comment: Adresses vues par resolved.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+      - title: Seulement le courrier
+        command: resolvectl query exemple.fr MX
+        comment: Enregistrements MX.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+  - name: flush-caches
+    summary: Vide le cache de resolved.
+    explanation: >-
+      `flush-caches` oublie les réponses mémorisées. La prochaine résolution redemande
+      aux serveurs. On s’en sert après un changement de DNS qui semble ne pas être pris
+      en compte. Les applications peuvent avoir leur propre cache en plus.
+    examples:
+      - title: Vider
+        command: sudo resolvectl flush-caches
+        comment: Le cache système est vide. Les résolveurs ne changent pas.
+        families:
+          - debian
+          - redhat
+          - suse
+          - arch
+see_also:
+  - systemd-resolve
+  - dig
+  - networkctl
+examples:
+  - title: Résolveurs en service
+    command: resolvectl status
+    comment: Interfaces, DNS et domaine de recherche vus par systemd-resolved.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Résoudre comme le système
+    command: resolvectl query exemple.fr
+    comment: Passe par le cache et les résolveurs de resolved, pas par un serveur imposé.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    package: ""
+    note: Alpine n’utilise pas systemd. Le DNS se règle dans /etc/resolv.conf.

@@ -1,0 +1,47 @@
+name: comm
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Compare deux fichiers déjà triés, ligne par ligne.
+explanation: >-
+  comm fichier1 fichier2 écrit trois colonnes : lignes seulement dans le premier,
+  seulement dans le second, dans les deux. Les fichiers doivent être triés selon le même
+  ordre, en pratique LC_ALL=C sort. -12 retire les deux premières colonnes et ne garde
+  que les lignes communes. comm ne comprend pas un fichier non trié : le résultat a
+  l’air plausible et il est faux.
+subcommands:
+  - name: "-12"
+    summary: Ne garde que les lignes communes.
+    explanation: >-
+      Les fichiers doivent être triés dans le même ordre. `-1` retire la première
+      colonne, `-2` la deuxième, `-3` la troisième. Un fichier non trié donne un
+      résultat faux.
+    examples:
+      - title: Commun
+        command: comm -12 <(printf '%s\n' a b | sort) <(printf '%s\n' b c | sort)
+        comment: Écrit b. La substitution <() est bash.
+see_also:
+  - sort
+  - diff
+  - join
+examples:
+  - title: Lignes communes
+    command: comm -12 <(printf '%s\n' a b | sort) <(printf '%s\n' b c | sort)
+    comment: Écrit b. La substitution de processus est bash, pas dash.
+  - title: Préparer les fichiers
+    command: LC_ALL=C sort -o gauche.trie gauche.txt
+    comment: >-
+      Trie en place logique dans un nouveau fichier, dans l’ordre des octets, avant
+      comm.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    package: coreutils
+    note: Pas dans l’applet BusyBox habituelle. Le paquet coreutils le fournit.

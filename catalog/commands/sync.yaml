@@ -1,0 +1,38 @@
+name: sync
+themes:
+  - disques
+tags:
+  - coreutils
+summary: Demande d’écrire sur disque les données encore en mémoire.
+explanation: >-
+  sync vide les caches d’écriture du noyau vers les périphériques. On le lance avant
+  d’arracher une clé ou après un dd vers un disque. Il revient quand le noyau a accepté
+  les écritures, ce qui n’est pas toujours la même chose qu’un SSD ayant physiquement
+  fini. Pour une clé, umount est le geste qui compte : il sync et détache.
+subcommands:
+  - name: caches
+    summary: Demande d’écrire les données encore en mémoire.
+    explanation: >-
+      `sync` revient quand le noyau a accepté les écritures. Pour une clé, `umount`
+      synchronise et détache, ce qui est le geste utile.
+    examples:
+      - title: Pousser
+        command: sync
+        comment: Peut prendre plusieurs secondes.
+see_also:
+  - umount
+  - dd
+examples:
+  - title: Pousser les caches
+    command: sync
+    comment: Revient quand les tampons sont partis. Peut prendre plusieurs secondes.
+  - title: Avant de retirer une clé
+    command: sync && sudo umount /mnt
+    comment: "umount seul suffit en pratique : il synchronise ce montage."
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

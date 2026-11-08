@@ -1,0 +1,128 @@
+title: Catalogue des commandes Linux
+updated: "2026-11-08"
+preface: |
+  Livre local des commandes du socle Linux, rédigé pour être lu hors ligne.
+  Les fiches couvrent le shell, les fichiers, le texte, les processus, les
+  utilisateurs, les disques, le réseau, les services, les paquets et les
+  archives. Le registre d’obsolescence rassemble ce qui est déprécié ou
+  retiré dans les versions figées ci-dessous.
+
+  Une commande peut être courante sur une famille et absente d’une autre.
+  Le statut décrit la version actuelle de la famille, pas l’historique.
+  Les dérivées ne sont pas suivies une à une : Linux Mint, Pop!_OS et Kali
+  héritent de Debian ou d’Ubuntu ; AlmaLinux, Rocky Linux et Oracle Linux
+  héritent de Red Hat.
+
+  Ce premier livre ne recense pas chaque binaire livré par chaque paquet
+  (bases de données, Kubernetes, compilateurs, suites métier). Ces noms
+  pourront s’ajouter plus tard, une fiche à la fois, sans changer le format.
+statuses:
+  courante: Outil encore juste pour cette version. Le paquet peut ne pas être installé par défaut ; la fiche le dit.
+  obsolète: Encore livré, ou encore invocable, mais à ne plus utiliser. La fiche donne le remplaçant.
+  retirée: Absent de la version actuelle. La fiche dit par quoi le remplacer.
+  spécifique: Outil propre à cette famille, ou dont le comportement change d’une famille à l’autre.
+  absente: Cette famille ne fournit pas la commande.
+implementation_notes:
+  - tag: coreutils
+    text: |
+      Debian 13 livre les coreutils GNU. Ubuntu 26.04 confie la plupart de
+      ces commandes à rust-coreutils (uutils). cp, mv et rm restent les
+      binaires GNU. Le paquet coreutils-from-gnu rétablit l’ensemble GNU.
+      Quand uutils est le fournisseur, les binaires GNU restent appelables
+      avec le préfixe gnu, par exemple gnuls ou gnucat.
+  - tag: sudo
+    text: |
+      Debian 13 fournit le sudo classique. Sur Ubuntu 26.04, la commande
+      sudo vient de sudo-rs. L’implémentation d’origine reste disponible
+      et se lance par sudo.ws.
+families:
+  - id: debian
+    label: Debian
+    short: Deb
+    package_manager: apt
+    init: systemd
+    privilege: sudo
+    shell: bash
+    systems:
+      - name: Debian
+        version: "13.7"
+        codename: Trixie
+      - name: Ubuntu
+        version: "26.04.1 LTS"
+        codename: Resolute Raccoon
+    summary: |
+      Debian 13.7 « Trixie » et Ubuntu 26.04 LTS « Resolute Raccoon ».
+      /bin/sh est dash. Le gestionnaire de paquets est apt, l’init est
+      systemd. apt-key est retiré (APT 3) : une clé de dépôt tiers se
+      dépose dans /etc/apt/keyrings et se déclare avec Signed-By.
+      Ubuntu 26.10 n’est citée que lorsqu’une fiche s’en écarte.
+  - id: redhat
+    label: Red Hat
+    short: RH
+    package_manager: dnf
+    init: systemd
+    privilege: sudo
+    shell: bash
+    systems:
+      - name: Red Hat Enterprise Linux
+        version: "10.2"
+        codename: ""
+      - name: Fedora
+        version: "45"
+        codename: ""
+    summary: |
+      RHEL 10.2 et Fedora 45. /bin/sh est bash. Les paquets passent par dnf ;
+      rpm interroge la base locale. yum n’est plus qu’une compatibilité vers
+      dnf. RHEL 9 n’est mentionnée que lorsqu’une commande y vit encore.
+      Le pare-feu habituel est firewalld. L’horloge réseau est chrony.
+  - id: suse
+    label: SUSE
+    short: SUSE
+    package_manager: zypper
+    init: systemd
+    privilege: sudo
+    shell: bash
+    systems:
+      - name: openSUSE Leap
+        version: "16"
+        codename: ""
+      - name: SUSE Linux Enterprise
+        version: "16"
+        codename: ""
+    summary: |
+      openSUSE Leap 16 et SLES 16. /bin/sh est bash. zypper pilote les
+      paquets, rpm interroge la base. L’init est systemd. Le pare-feu
+      habituel des installations serveur est firewalld.
+  - id: arch
+    label: Arch
+    short: Arch
+    package_manager: pacman
+    init: systemd
+    privilege: sudo
+    shell: bash
+    systems:
+      - name: Arch Linux
+        version: "instantané 2026-11"
+        codename: rolling
+    summary: |
+      Publication rolling figée pour ce catalogue à novembre 2026.
+      /bin/sh est bash. pacman est le gestionnaire de paquets. L’init est
+      systemd. Beaucoup d’outils du socle sont dans le groupe base ; les
+      autres fiches nomment le paquet à installer.
+  - id: alpine
+    label: Alpine
+    short: Alp
+    package_manager: apk
+    init: OpenRC
+    privilege: doas
+    shell: ash
+    systems:
+      - name: Alpine Linux
+        version: "3.24"
+        codename: ""
+    summary: |
+      Alpine 3.24, et le sous-ensemble BusyBox des images minimales.
+      /bin/sh est ash. Les paquets passent par apk. L’init est OpenRC :
+      systemctl n’est pas la commande du système. L’élévation habituelle
+      est doas. Les applets BusyBox couvrent l’usage courant et omettent
+      souvent les options longues de GNU.

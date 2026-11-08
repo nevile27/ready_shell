@@ -1,0 +1,42 @@
+name: dirname
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Retire le dernier élément d’un chemin.
+explanation: >-
+  dirname /etc/ssh/sshd_config écrit /etc/ssh. Sur un nom sans slash, dirname écrit un
+  point, le répertoire courant. dirname ne vérifie pas que le chemin existe. Associé à
+  basename, il découpe un chemin sans lancer find.
+subcommands:
+  - name: parent
+    summary: Retire le dernier élément du chemin.
+    explanation: >-
+      `dirname` n’exige pas que le chemin existe. Sur un nom sans slash, il écrit un
+      point.
+    examples:
+      - title: Répertoire
+        command: dirname /etc/ssh/sshd_config
+        comment: Écrit /etc/ssh.
+see_also:
+  - basename
+  - pwd
+examples:
+  - title: Répertoire parent
+    command: dirname /etc/ssh/sshd_config
+    comment: Écrit /etc/ssh.
+  - title: Répertoire d’un script bash
+    command: dirname -- "$0"
+    comment: >-
+      Donne le répertoire du chemin par lequel le script a été lancé, qui peut être
+      relatif.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

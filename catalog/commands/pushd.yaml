@@ -1,0 +1,45 @@
+name: pushd
+themes:
+  - shell
+summary: Empile le répertoire courant et change de place.
+explanation: >-
+  pushd /tmp enregistre l’ancien répertoire dans une pile et s’y déplace. popd revient.
+  dirs montre la pile. C’est un outil de session bash, absent de dash et d’ash. Dans un
+  script, un cd explicite vers un chemin absolu est plus clair.
+subcommands:
+  - name: répertoire
+    summary: Empile le répertoire courant et s’y déplace.
+    explanation: >-
+      `pushd /tmp` enregistre l’ancien chemin. `popd` revient. `dirs -v` montre la pile.
+      Dash et ash n’ont pas `pushd`.
+    examples:
+      - title: Aller voir
+        command: pushd /var/log
+        comment: Affiche la pile. popd revient.
+  - name: +N
+    summary: Fait tourner la pile.
+    explanation: >-
+      `pushd +1` ramène le premier répertoire empilé en haut et s’y place. `dirs -c`
+      vide la pile.
+    examples:
+      - title: Voir la pile
+        command: dirs -v
+        comment: Numérote les répertoires empilés.
+see_also:
+  - popd
+  - cd
+  - pwd
+examples:
+  - title: Aller voir ailleurs
+    command: pushd /var/log
+    comment: Empile l’ancien répertoire et affiche la pile. popd revient.
+  - title: Voir la pile
+    command: dirs -v
+    comment: Numérote les répertoires empilés. dirs -c la vide.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

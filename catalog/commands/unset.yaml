@@ -1,0 +1,45 @@
+name: unset
+themes:
+  - shell
+summary: Retire une variable ou une fonction du shell.
+explanation: >-
+  unset nom efface la variable nom. unset -f nom efface une fonction. Sans -f, bash peut
+  refuser d’effacer une fonction si une variable du même nom n’existe pas, ou l’inverse
+  selon le cas : -f et -v lèvent l’ambiguïté. Une variable exportée disparaît aussi de
+  l’environnement des commandes suivantes.
+subcommands:
+  - name: "-v"
+    summary: Efface une variable.
+    explanation: >-
+      `unset -v` vise une variable, même si une fonction porte le même nom. Une variable
+      exportée disparaît aussi de l’environnement.
+    examples:
+      - title: Variable
+        command: unset -v http_proxy
+        comment: http_proxy n’existe plus dans ce shell.
+  - name: "-f"
+    summary: Efface une fonction.
+    explanation: >-
+      `unset -f` retire une fonction définie dans le shell. Un alias du même nom n’est
+      pas concerné : c’est `unalias`.
+    examples:
+      - title: Fonction
+        command: unset -f ll
+        comment: La fonction ll disparaît.
+see_also:
+  - export
+  - declare
+examples:
+  - title: Effacer une variable
+    command: unset -v http_proxy
+    comment: Retire http_proxy du shell et de l’environnement des prochaines commandes.
+  - title: Effacer une fonction
+    command: unset -f ll
+    comment: Retire la fonction ll sans toucher à une variable qui porterait le même nom.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

@@ -1,0 +1,38 @@
+name: traceroute
+themes:
+  - reseau
+summary: Liste les routeurs traversés jusqu’à un hôte.
+explanation: >-
+  traceroute hote envoie des paquets avec un TTL croissant et affiche qui répond. Les
+  routeurs peuvent ne pas répondre, ce qui laisse des étoiles. Ce n’est pas installé
+  partout par défaut : tracepath, du paquet iputils, est souvent déjà là et n’a pas
+  besoin des droits d’administration. traceroute -n n’essaie pas de résoudre les noms,
+  ce qui va plus vite.
+subcommands:
+  - name: "-n"
+    summary: N’interroge pas le DNS.
+    explanation: >-
+      `traceroute` envoie des paquets avec un TTL croissant. Les routeurs peuvent ne pas
+      répondre, ce qui laisse des étoiles. `-n` va plus vite.
+    examples:
+      - title: Sans noms
+        command: traceroute -n 127.0.0.1
+        comment: "Un seul saut : la machine elle-même."
+see_also:
+  - tracepath
+  - ping
+  - ip
+examples:
+  - title: Jusqu’à un hôte
+    command: traceroute -n 127.0.0.1
+    comment: "Une seule ligne en pratique : la machine elle-même. -n évite le DNS."
+  - title: Déjà installé souvent
+    command: tracepath -n 127.0.0.1
+    comment: Même idée, sans le paquet traceroute. Voir la fiche tracepath.
+status: courante
+package:
+  debian: traceroute
+  redhat: traceroute
+  suse: traceroute
+  arch: traceroute
+  alpine: traceroute

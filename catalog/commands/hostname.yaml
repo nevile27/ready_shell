@@ -1,0 +1,51 @@
+name: hostname
+themes:
+  - reseau
+summary: Affiche ou fixe le nom de la machine.
+explanation: >-
+  hostname sans argument écrit le nom courant. hostname -f tente le nom complet, ce qui
+  dépend de la résolution. Changer le nom avec hostname nouveau ne survit pas au
+  redémarrage. Sur les familles systemd, hostnamectl set-hostname est le geste durable.
+  Sur Alpine, le nom se pose dans /etc/hostname. Le paquet qui fournit la commande n’est
+  pas le même partout.
+subcommands:
+  - name: lire
+    summary: Écrit le nom courant du noyau.
+    explanation: >-
+      `hostname` sans argument ne dit pas le nom durable. Sur systemd, `hostnamectl` le
+      conserve. Sur Alpine, le fichier est `/etc/hostname`.
+    examples:
+      - title: Nom
+        command: hostname
+        comment: Une ligne, le nom court.
+  - name: "-f"
+    summary: Tente le nom complet.
+    explanation: >-
+      `-f` dépend de la résolution. `-s` ne garde que le premier composant. Changer le
+      nom avec `hostname nouveau` ne survit pas au redémarrage.
+    examples:
+      - title: Complet
+        command: hostname -f
+        comment: Le FQDN, si la résolution le connaît.
+see_also:
+  - hostnamectl
+  - uname
+examples:
+  - title: Nom courant
+    command: hostname
+    comment: Le nom court du noyau, une ligne.
+  - title: Nom durable, systemd
+    command: hostnamectl hostname
+    comment: Le nom que systemd conservera. Voir hostnamectl pour le modifier.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package:
+  debian: hostname
+  redhat: hostname
+  suse: hostname
+  arch: inetutils
+  alpine: busybox

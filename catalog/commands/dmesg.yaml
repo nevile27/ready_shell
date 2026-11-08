@@ -1,0 +1,49 @@
+name: dmesg
+themes:
+  - services
+  - disques
+summary: Affiche le tampon de messages du noyau.
+explanation: >-
+  dmesg montre ce que le noyau a écrit depuis le démarrage : disques détectés, erreurs
+  matérielles, pilotes. -T convertit les secondes en heure locale sur util-linux, -w
+  suit les nouveaux messages, -l err ne garde que les erreurs. Sur beaucoup de machines,
+  seul l’administrateur lit le tampon complet. Ce n’est pas le journal des services : un
+  échec de sshd est dans journalctl, pas dans dmesg, sauf s’il vient du noyau.
+subcommands:
+  - name: "-T"
+    summary: Convertit les secondes du noyau en heure locale.
+    explanation: >-
+      `dmesg` montre disques, pilotes et erreurs depuis le démarrage. `-T` est
+      util-linux. BusyBox a une sortie plus simple. Seul l’administrateur lit souvent le
+      tampon complet.
+    examples:
+      - title: Erreurs
+        command: sudo dmesg -l err,warn
+        comment: Avertissements et erreurs. -l est util-linux.
+  - name: "-w"
+    summary: Suit les nouveaux messages.
+    explanation: >-
+      `-w` reste ouvert, comme `tail -f`. `-l` filtre la priorité. Le journal des
+      services, lui, est dans `journalctl`.
+    examples:
+      - title: Suivre
+        command: sudo dmesg -w
+        comment: Les lignes nouvelles du noyau. Ctrl+C arrête.
+see_also:
+  - journalctl
+  - lsblk
+  - logger
+examples:
+  - title: Erreurs du noyau
+    command: sudo dmesg -l err,warn
+    comment: Avertissements et erreurs. -l est util-linux ; BusyBox a une sortie plus simple.
+  - title: Disques vus au démarrage
+    command: sudo dmesg -T | grep -i nvme
+    comment: Cherche ce que le noyau a dit des disques NVMe. -T peut manquer sur BusyBox.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox

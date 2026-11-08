@@ -1,0 +1,48 @@
+name: sleep
+themes:
+  - shell
+tags:
+  - coreutils
+summary: Attend un nombre de secondes avant de rendre la main.
+explanation: >-
+  sleep 5 bloque cinq secondes. Un suffixe s, m, h ou d précise l’unité sur les
+  coreutils GNU et sur la plupart des BusyBox. sleep 0.5 demande une demi-seconde là où
+  l’implémentation accepte les décimales. Ce n’est pas un ordonnanceur : pour une
+  répétition fiable, utilisez un minuteur systemd ou crontab.
+subcommands:
+  - name: secondes
+    summary: Attend un nombre de secondes.
+    explanation: >-
+      `sleep 5` bloque cinq secondes. Un suffixe `s`, `m`, `h` ou `d` précise l’unité
+      sur coreutils et sur la plupart des BusyBox.
+    examples:
+      - title: Deux secondes
+        command: sleep 2
+        comment: Rend la main ensuite. Le code est 0.
+  - name: durée
+    summary: Attend avec une unité explicite.
+    explanation: >-
+      `sleep 1m` attend une minute. `sleep 0.5` demande une demi-seconde là où
+      l’implémentation accepte les décimales.
+    examples:
+      - title: Une minute
+        command: sleep 1m
+        comment: Le suffixe m est accepté par coreutils et par BusyBox.
+see_also:
+  - timeout
+  - watch
+  - crontab
+examples:
+  - title: Pause courte
+    command: sleep 2
+    comment: Rend la main après deux secondes. Le code de retour est 0.
+  - title: Pause en minutes
+    command: sleep 1m
+    comment: Attend une minute. Le suffixe est accepté par coreutils et par BusyBox.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

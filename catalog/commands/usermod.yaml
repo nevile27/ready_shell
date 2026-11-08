@@ -1,0 +1,64 @@
+name: usermod
+themes:
+  - utilisateurs
+summary: Modifie un compte existant.
+explanation: >-
+  `usermod` modifie un compte déjà créé. `-aG` ajoute un groupe. Sans `-a`, `-G`
+  remplace toute la liste des groupes supplémentaires.
+pitfalls:
+  - usermod -G groupe user sans -a retire tous les autres groupes supplémentaires.
+subcommands:
+  - name: "-aG"
+    summary: Ajoute des groupes sans retirer ceux qui sont déjà là.
+    explanation: >-
+      `-a` signifie append, `-G` la liste. Les deux vont ensemble pour un ajout. La
+      session déjà ouverte ne voit le nouveau groupe qu’après une nouvelle connexion.
+      `groups` et `id` montrent ce qui est enregistré.
+    pitfalls:
+      - "`usermod -G groupe user` sans -a retire tous les autres groupes supplémentaires."
+    examples:
+      - title: Ajouter un groupe
+        command: sudo usermod -aG sudo ada
+        comment: ada garde ses groupes et gagne sudo.
+        families:
+          - debian
+  - name: "-s"
+    summary: Change le shell de connexion.
+    explanation: >-
+      `-s` remplace le shell pour les prochaines connexions. Le shell déjà ouvert ne
+      change pas. Le chemin doit être acceptable par le système. `chsh` fait le même
+      changement en consultant /etc/shells de façon plus stricte.
+    examples:
+      - title: Passer à bash
+        command: sudo usermod -s /bin/bash ada
+        comment: Les nouvelles sessions de ada utilisent bash.
+  - name: "-L"
+    summary: Verrouille ou déverrouille le mot de passe.
+    explanation: >-
+      `-L` empêche la connexion par mot de passe. `-U` la rend de nouveau possible. Une
+      clé SSH déjà autorisée peut encore fonctionner après `-L`. `passwd -l` est l’autre
+      façon d’écrire le même verrou.
+    examples:
+      - title: Verrouiller
+        command: sudo usermod -L ada
+        comment: Le mot de passe ne permet plus d’entrer.
+see_also:
+  - useradd
+  - groupadd
+  - chsh
+examples:
+  - title: Ajouter un groupe
+    command: sudo usermod -aG sudo ada
+    comment: >-
+      ada garde ses groupes et gagne sudo. La session déjà ouverte ne voit le groupe
+      qu’après une nouvelle connexion.
+  - title: Changer le shell
+    command: sudo usermod -s /bin/bash ada
+    comment: Les prochaines connexions de ada utilisent bash.
+status: courante
+package:
+  debian: passwd
+  redhat: shadow-utils
+  suse: shadow
+  arch: shadow
+  alpine: shadow

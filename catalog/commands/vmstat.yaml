@@ -1,0 +1,52 @@
+name: vmstat
+themes:
+  - processus
+summary: Résume périodiquement mémoire, swap et processeur.
+explanation: >-
+  vmstat 2 affiche une ligne toutes les deux secondes. La première ligne est une moyenne
+  depuis le démarrage ; les suivantes sont l’intervalle. si et so sont les pages
+  échangées vers le swap : les voir monter en continu dit qu’il manque de RAM. wa est le
+  temps perdu à attendre les disques. vmstat ne nomme pas les processus : c’est top ou
+  ps.
+subcommands:
+  - name: intervalle
+    summary: Une ligne de compteurs à chaque intervalle.
+    explanation: >-
+      La première ligne est une moyenne depuis le démarrage. `si` et `so` sont les
+      échanges avec le swap. `wa` est l’attente des disques.
+    examples:
+      - title: Trois mesures
+        command: vmstat 2 3
+        comment: Une moyenne, puis deux intervalles de deux secondes.
+  - name: "-s"
+    summary: Compteurs cumulés depuis le démarrage.
+    explanation: >-
+      `-s` écrit une liste, pas un tableau. `-d` détaille les disques. Le nom des
+      processus, c’est `ps` ou `top`.
+    examples:
+      - title: Liste
+        command: vmstat -s
+        comment: Mémoire, swap et CPU depuis le boot.
+see_also:
+  - free
+  - top
+  - iostat
+examples:
+  - title: Trois mesures
+    command: vmstat 2 3
+    comment: >-
+      Une ligne de moyenne, puis deux intervalles de deux secondes, puis la commande
+      s’arrête.
+  - title: Mémoire
+    command: vmstat -s
+    comment: Compteurs cumulés depuis le démarrage, en une liste.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: procps
+overrides:
+  alpine:
+    note: Paquet procps, pas dans BusyBox.

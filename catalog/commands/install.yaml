@@ -1,0 +1,54 @@
+name: install
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Copie un fichier en fixant propriétaire, droits et répertoire.
+explanation: >-
+  install -m 644 -D source /dest/fichier copie le fichier, crée les répertoires
+  manquants grâce à -D, et pose les droits dans la même opération. -o et -g règlent
+  propriétaire et groupe, ce qui demande en pratique d’être administrateur. Les scripts
+  d’empaquetage s’en servent à la place de cp suivi de chmod, pour ne pas laisser un
+  instant un fichier avec les droits par défaut.
+subcommands:
+  - name: "-m"
+    summary: Copie et pose les droits dans la même opération.
+    explanation: >-
+      `install -m 644` évite l’instant où le fichier aurait les droits du umask. `-o` et
+      `-g` règlent propriétaire et groupe, ce qui demande l’administrateur.
+    examples:
+      - title: Fichier privé
+        command: install -m 600 "$HOME/.ssh/id_ed25519" /tmp/cle-demo
+        comment: Copie la clé en lecture pour le seul propriétaire, si elle existe.
+  - name: "-D"
+    summary: Crée les répertoires parents de la destination.
+    explanation: >-
+      `-D` évite un `mkdir -p` séparé. `-t répertoire` copie plusieurs sources dans un
+      répertoire.
+    examples:
+      - title: Avec les parents
+        command: install -m 644 -D /etc/hostname /tmp/demo-install/h
+        comment: Crée /tmp/demo-install si besoin.
+see_also:
+  - cp
+  - chmod
+  - mkdir
+examples:
+  - title: Installer un fichier privé
+    command: install -m 600 -D "$HOME/cle" /tmp/demo-install/cle
+    comment: >-
+      Crée /tmp/demo-install si besoin et copie la clé en lecture seule pour le
+      propriétaire.
+  - title: Binaire exécutable
+    command: install -m 755 outil.sh /tmp/demo-install/outil.sh
+    comment: Pose le bit d’exécution en même temps que la copie.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

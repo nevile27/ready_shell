@@ -1,0 +1,53 @@
+name: sudo
+themes:
+  - utilisateurs
+tags:
+  - sudo
+summary: Exécute une commande avec les droits d’un autre compte, selon une politique.
+explanation: >-
+  sudo commande lance commande en root si la politique l’autorise, après votre mot de
+  passe, pas celui de root. sudo -u ada commande change d’utilisateur. sudo -l montre ce
+  que votre compte a le droit de faire. La politique est dans /etc/sudoers, que l’on
+  édite avec visudo. -n échoue au lieu d’attendre un mot de passe, ce qui sert dans un
+  script. sudo n’est pas un shell durable : la commande se termine et les droits avec
+  elle.
+pitfalls:
+  - >-
+    sudo commande > fichier protégé ne redirige pas avec les droits de root : le shell
+    ouvre le fichier avant. Passez par sudo tee.
+subcommands:
+  - name: "-u"
+    summary: Exécute en tant qu’un autre compte.
+    explanation: >-
+      Sans `-u`, la cible est root. `sudo -u ada commande` change d’utilisateur. La
+      politique est dans sudoers, éditée avec `visudo`.
+    examples:
+      - title: Un autre compte
+        command: sudo -u ada id
+        comment: Doit afficher l’UID d’ada si la politique l’autorise.
+  - name: "-l"
+    summary: Montre ce que votre compte a le droit de faire.
+    explanation: >-
+      `-l` liste les commandes autorisées. `-n` échoue au lieu d’attendre un mot de
+      passe, pour un script.
+    examples:
+      - title: Droits
+        command: sudo -l
+        comment: Les règles qui vous concernent sur cette machine.
+see_also:
+  - visudo
+  - su
+  - doas
+  - tee
+examples:
+  - title: Une commande d’administration
+    command: sudo id
+    comment: Doit afficher uid=0(root) si la politique vous y autorise.
+  - title: Ce que vous pouvez faire
+    command: sudo -l
+    comment: Liste les commandes autorisées pour votre compte sur cette machine.
+status: courante
+package: sudo
+overrides:
+  alpine:
+    note: Paquet sudo, pas le choix par défaut. Alpine installe plutôt doas.

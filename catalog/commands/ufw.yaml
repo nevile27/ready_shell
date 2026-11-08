@@ -1,0 +1,69 @@
+name: ufw
+themes:
+  - reseau
+summary: Frontal de pare-feu simple, habituel sur Ubuntu.
+explanation: >-
+  `ufw` est le frontal de pare-feu habituel d’Ubuntu. Il écrit les règles nftables ou
+  iptables à votre place. On ouvre le SSH avant d’activer, sinon une session distante se
+  coupe.
+subcommands:
+  - name: status
+    summary: Dit si le pare-feu est actif et quelles règles sont posées.
+    explanation: >-
+      `status` répond active ou inactive. `status verbose` ajoute la politique par
+      défaut. `status numbered` numérote les règles pour pouvoir en supprimer une.
+    examples:
+      - title: État
+        command: sudo ufw status verbose
+        comment: Politique par défaut et règles.
+        families:
+          - debian
+  - name: allow
+    summary: Autorise un port ou un service.
+    explanation: >-
+      `allow 22/tcp` ouvre le TCP 22. `allow OpenSSH` utilise le profil du service quand
+      il existe. `deny` fait l’inverse. `delete` retire une règle, plus simplement avec
+      le numéro de `status numbered`.
+    examples:
+      - title: Ouvrir le SSH
+        command: sudo ufw allow 22/tcp
+        comment: À faire avant ufw enable sur une machine distante.
+        families:
+          - debian
+  - name: enable
+    summary: Active le pare-feu.
+    explanation: >-
+      `enable` commence à appliquer les règles. `disable` arrête le filtrage.
+      L’activation survit au redémarrage. Sans règle SSH préalable, une connexion
+      distante peut tomber au moment du enable.
+    examples:
+      - title: Activer
+        command: sudo ufw enable
+        comment: Demande confirmation. Les règles déjà ajoutées s’appliquent.
+        families:
+          - debian
+see_also:
+  - nft
+  - firewall-cmd
+  - iptables
+examples:
+  - title: État
+    command: sudo ufw status verbose
+    comment: Actif ou non, et la liste des ports autorisés.
+    families:
+      - debian
+  - title: Ouvrir le SSH avant d’activer
+    command: sudo ufw allow 22/tcp
+    comment: >-
+      À faire avant ufw enable sur une machine distante, sinon la session peut se
+      couper.
+    families:
+      - debian
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: ufw
+    note: >-
+      Frontal habituel d’Ubuntu. Sur un Debian minimal il peut ne pas être installé : le
+      pare-feu est alors nftables directement.

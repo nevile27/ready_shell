@@ -1,0 +1,38 @@
+name: tree
+themes:
+  - fichiers
+summary: Affiche une arborescence en texte.
+explanation: >-
+  tree part du répertoire courant et dessine les sous-répertoires. -L 2 limite la
+  profondeur, -d ne montre que les répertoires, -a inclut les cachés. Le paquet n’est
+  pas dans les installations minimales. find peut produire une liste plate quand tree
+  n’est pas là. tree ne modifie rien.
+subcommands:
+  - name: "-L"
+    summary: Limite la profondeur.
+    explanation: >-
+      `tree` dessine l’arborescence. `-L 2` ne descend pas plus bas. Le paquet n’est pas
+      dans les installations minimales.
+    examples:
+      - title: Deux niveaux
+        command: tree -L 2 /etc/ssh
+        comment: La structure, sans aller plus loin.
+  - name: "-d"
+    summary: Ne montre que les répertoires.
+    explanation: "`-a` ajoute les noms cachés. `-h` ajoute les tailles. `tree` ne modifie rien."
+    examples:
+      - title: Répertoires
+        command: tree -d /etc
+        comment: La structure, sans les fichiers.
+see_also:
+  - ls
+  - find
+examples:
+  - title: Deux niveaux
+    command: tree -L 2 /etc/ssh
+    comment: Dessine /etc/ssh sans descendre plus bas.
+  - title: Répertoires seulement
+    command: tree -d /etc
+    comment: Cache les fichiers pour ne garder que la structure.
+status: courante
+package: tree

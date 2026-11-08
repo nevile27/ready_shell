@@ -1,0 +1,44 @@
+name: pwd
+themes:
+  - shell
+summary: Affiche le répertoire courant.
+explanation: >-
+  pwd écrit le chemin absolu du répertoire dans lequel le shell travaille. L’option -P
+  résout les liens symboliques ; -L, le défaut, les conserve. C’est la référence avant
+  un chemin relatif, un script, ou un archivage.
+subcommands:
+  - name: "-L"
+    summary: Affiche le chemin logique, liens compris.
+    explanation: >-
+      `pwd -L` est le défaut : le chemin tel que les `cd` successifs l’ont construit,
+      sans résoudre les liens.
+    examples:
+      - title: Chemin logique
+        command: pwd -L
+        comment: Le chemin que le shell retient.
+  - name: "-P"
+    summary: Affiche le chemin physique.
+    explanation: >-
+      `pwd -P` résout tous les liens symboliques. Utile pour savoir sur quel répertoire
+      réel on écrit.
+    examples:
+      - title: Chemin réel
+        command: pwd -P
+        comment: Plus aucun lien dans le résultat.
+see_also:
+  - cd
+  - realpath
+examples:
+  - title: Chemin logique
+    command: pwd
+    comment: Affiche le chemin tel que le shell le voit, liens symboliques compris.
+  - title: Chemin physique
+    command: pwd -P
+    comment: Résout les liens et montre le répertoire réel sur le disque.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

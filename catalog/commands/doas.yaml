@@ -1,0 +1,45 @@
+name: doas
+themes:
+  - utilisateurs
+summary: >-
+  Exécute une commande en root selon /etc/doas.conf. C’est l’élévation habituelle sur
+  Alpine.
+explanation: >-
+  doas commande ressemble à sudo, avec un fichier de règles plus court. permit persist
+  :wheel autorise le groupe wheel et mémorise l’authentification. Il n’y a pas
+  d’équivalent direct de sudo -u dans toutes les versions : on vise un utilisateur avec
+  -u quand la version le permet. Debian, Red Hat, SUSE et Arch peuvent empaqueter doas,
+  mais ce n’est pas leur outil d’administration. Sur ces familles, la politique en place
+  est sudo.
+subcommands:
+  - name: commande
+    summary: Exécute en root selon /etc/doas.conf.
+    explanation: >-
+      `doas commande` ressemble à sudo, avec un fichier de règles plus court. `permit
+      persist :wheel` autorise le groupe wheel et mémorise l’authentification.
+    examples:
+      - title: Identité
+        command: doas id
+        comment: uid=0 si la règle vous y autorise.
+see_also:
+  - sudo
+  - su
+examples:
+  - title: Commande en root
+    command: doas id
+    comment: Affiche uid=0 si /etc/doas.conf vous y autorise.
+    families:
+      - alpine
+  - title: Règle minimale
+    command: printf '%s\n' 'permit persist :wheel' | doas tee /etc/doas.conf
+    comment: >-
+      Le groupe wheel peut élever, avec mémorisation. À poser en étant déjà root la
+      première fois.
+    families:
+      - alpine
+status: absente
+overrides:
+  alpine:
+    status: spécifique
+    package: doas
+    note: Outil d’élévation attendu. sudo reste disponible en paquet.

@@ -1,0 +1,55 @@
+name: coredumpctl
+themes:
+  - services
+summary: Liste et extrait les vidages mémoire enregistrés par systemd.
+explanation: >-
+  coredumpctl list montre les crashs conservés. coredumpctl info PID détaille l’un
+  d’eux, dump l’enregistre dans un fichier. Il faut que systemd-coredump soit l’outil de
+  core du noyau, ce qui est le cas sur les installations systemd habituelles. Un core
+  n’est pas une correction : il sert à comprendre un plantage. Les vidages peuvent
+  contenir des secrets qui étaient en mémoire.
+subcommands:
+  - name: list
+    summary: Liste les vidages mémoire conservés.
+    explanation: >-
+      `list` est vide s’il n’y a pas eu de plantage enregistré. Un core peut contenir
+      des secrets qui étaient en mémoire.
+    examples:
+      - title: Liste
+        command: coredumpctl list
+        comment: Programme, PID et heure, ou rien.
+  - name: info
+    summary: Détaille un vidage.
+    explanation: >-
+      Sans argument, `info` vise le plus récent. `dump` l’enregistre dans un fichier. Il
+      faut que systemd-coredump soit l’outil de core du noyau.
+    examples:
+      - title: Le dernier
+        command: coredumpctl info
+        comment: Le détail du vidage le plus récent.
+see_also:
+  - journalctl
+  - systemctl
+examples:
+  - title: Plantations connues
+    command: coredumpctl list
+    comment: Vide s’il n’y a pas eu de core. Sinon, programme, PID et heure.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Détail du plus récent
+    command: coredumpctl info
+    comment: Le dernier vidage. Ajoutez un PID pour en viser un autre.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

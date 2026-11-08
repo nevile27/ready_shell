@@ -1,0 +1,35 @@
+name: brctl
+themes:
+  - reseau
+summary: Ancien outil des ponts Ethernet. Remplacé par bridge et ip link.
+explanation: >-
+  brctl show listait les ponts, brctl addif y ajoutait un port. Le projet bridge-utils
+  n’est plus le chemin recommandé : iproute2 fournit bridge et ip link. Le paquet peut
+  encore s’installer, il n’est pas dans le système de base. Les scripts de
+  virtualisation anciens l’appellent encore ; les nouveaux parlent ip link.
+subcommands:
+  - name: show
+    summary: Ancienne liste des ponts.
+    explanation: >-
+      `brctl show` vient de bridge-utils. `bridge link` et `ip link add name br0 type
+      bridge` le remplacent.
+    examples:
+      - title: Ports
+        command: bridge link
+        comment: Les interfaces attachées à un pont.
+see_also:
+  - bridge
+  - ip
+replaced_by: bridge
+examples:
+  - title: Liste actuelle
+    command: bridge link
+    comment: Remplace brctl show pour voir les ports.
+  - title: Créer un pont
+    command: sudo ip link add name br0 type bridge
+    comment: Remplace brctl addbr br0.
+status: obsolète
+package: bridge-utils
+overrides:
+  alpine:
+    note: Pas dans BusyBox. Installez iproute2 et utilisez bridge.

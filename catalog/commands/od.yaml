@@ -1,0 +1,51 @@
+name: od
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Vide un fichier en octal, hexadécimal ou caractères.
+explanation: >-
+  od -An -tx1 fichier écrit les octets en hexadécimal, sans la colonne d’adresse si -An
+  est accepté. -c montre les caractères. od est POSIX et présent dans les coreutils.
+  Pour un vidage hexadécimal plus lisible, hexdump -C est courant mais vient
+  d’util-linux, pas de POSIX. od convient aux binaires que cat afficherait mal dans un
+  terminal.
+subcommands:
+  - name: "-tx1"
+    summary: Vide les octets en hexadécimal.
+    explanation: >-
+      `od` est POSIX. `-An` retire la colonne d’adresse sur les coreutils GNU. `-c`
+      montre les caractères.
+    examples:
+      - title: Hexadécimal
+        command: od -An -tx1 /etc/hostname
+        comment: Les octets du fichier, sans adresse à gauche.
+  - name: "-c"
+    summary: Montre les caractères et les séquences.
+    explanation: >-
+      `\n` apparaît pour le saut de ligne. Pour un format canonique plus lisible,
+      `hexdump -C`.
+    examples:
+      - title: Caractères
+        command: od -c /etc/hostname
+        comment: Lettres et \n.
+see_also:
+  - hexdump
+  - strings
+examples:
+  - title: Octets en hexadécimal
+    command: od -An -tx1 /etc/hostname
+    comment: Une ligne d’octets, sans adresse à gauche sur les coreutils GNU.
+  - title: Caractères visibles
+    command: od -c /etc/hostname
+    comment: Montre les lettres et le saut de ligne comme \n.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

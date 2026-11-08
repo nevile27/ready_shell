@@ -1,0 +1,40 @@
+name: tac
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Écrit un fichier en partant de la dernière ligne.
+explanation: >-
+  tac inverse l’ordre des lignes, pas l’ordre des caractères dans la ligne. C’est
+  l’opposé de cat sur l’axe vertical. Pour suivre un journal qui grandit par la fin,
+  tail -f est plus adapté : tac lit tout le fichier d’abord.
+subcommands:
+  - name: inverse
+    summary: Écrit les lignes en partant de la fin.
+    explanation: >-
+      `tac` inverse l’ordre des lignes, pas les caractères dans la ligne. Pour suivre un
+      fichier qui grandit, `tail -f` lit au fur et à mesure.
+    examples:
+      - title: À l’envers
+        command: tac /etc/passwd
+        comment: La dernière ligne du fichier apparaît en premier.
+see_also:
+  - cat
+  - tail
+examples:
+  - title: Dernières lignes d’abord
+    command: tac /etc/passwd
+    comment: La dernière ligne du fichier apparaît en premier.
+  - title: Cinq dernières, à l’endroit
+    command: tail -n 5 /etc/passwd
+    comment: Si vous voulez les cinq dernières dans leur ordre d’origine, tail est plus direct.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: Pas dans BusyBox. Le paquet coreutils le fournit.

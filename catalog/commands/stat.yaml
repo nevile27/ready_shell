@@ -1,0 +1,51 @@
+name: stat
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Affiche les métadonnées d’un fichier.
+explanation: >-
+  stat montre la taille, les droits, le propriétaire, les dates et l’inode. stat -c '%A
+  %s %n' fichier ne garde que le format demandé : droits symboliques, taille, nom. C’est
+  plus stable que de découper ls -l. -f interroge le système de fichiers qui porte le
+  fichier, pas le fichier lui-même.
+subcommands:
+  - name: fiche
+    summary: Affiche taille, droits, propriétaire, dates et inode.
+    explanation: >-
+      `stat` est plus stable à lire qu’un découpage de `ls -l`. `-f` interroge le
+      système de fichiers, pas le fichier.
+    examples:
+      - title: Métadonnées
+        command: stat /etc/os-release
+        comment: Taille, droits, dates et inode.
+  - name: "-c"
+    summary: N’écrit que le format demandé, version GNU.
+    explanation: >-
+      `%a` est l’octal des droits, `%s` la taille, `%n` le nom, `%U` le propriétaire.
+      BusyBox a un stat plus court.
+    examples:
+      - title: Droits octaux
+        command: stat -c '%a' /etc/os-release
+        comment: Par exemple 644.
+see_also:
+  - ls
+  - file
+  - find
+examples:
+  - title: Fiche complète
+    command: stat /etc/os-release
+    comment: Affiche taille, droits, propriétaire, dates et inode.
+  - title: Un seul champ
+    command: stat -c '%a' /etc/os-release
+    comment: Écrit les droits en octal, par exemple 644. Format GNU.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: BusyBox a un stat limité. Le paquet coreutils apporte -c et les formats GNU.

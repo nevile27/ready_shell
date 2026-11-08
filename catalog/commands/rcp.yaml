@@ -1,0 +1,42 @@
+name: rcp
+themes:
+  - reseau
+summary: Copie distante sans chiffrement. Remplacée par scp.
+explanation: >-
+  rcp fichier hote:/tmp/ copiait via le protocole rsh, en clair. scp fait la copie sur
+  SSH. Pour une arborescence à maintenir, rsync -aH -e ssh est plus adapté. rcp n’est
+  pas dans les systèmes actuels par défaut, et le remettre en service n’est pas un
+  objectif.
+subcommands:
+  - name: copie
+    summary: Ancienne copie distante en clair.
+    explanation: >-
+      `rcp` passait par rsh. `scp` copie sur SSH. Pour une arborescence à maintenir,
+      `rsync -aH`.
+    examples:
+      - title: Copie
+        command: scp notes.txt user@hote:/tmp/notes.txt
+        comment: Le fichier arrive chiffré.
+see_also:
+  - scp
+  - rsync
+  - rsh
+replaced_by: scp
+examples:
+  - title: Copie chiffrée
+    command: scp notes.txt user@hote:/tmp/notes.txt
+    comment: Remplace rcp notes.txt hote:/tmp/notes.txt.
+  - title: Arborescence
+    command: rsync -aH ./site/ user@hote:/var/www/site/
+    comment: Meilleur qu’un scp -r quand il faudra recommencer.
+status: obsolète
+package:
+  debian: rsh-client
+  redhat: rsh
+  suse: rsh
+  arch: inetutils
+  alpine: busybox
+overrides:
+  alpine:
+    status: absente
+    note: Absent. Utilisez scp.

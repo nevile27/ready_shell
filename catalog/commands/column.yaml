@@ -1,0 +1,60 @@
+name: column
+themes:
+  - texte
+summary: Aligne du texte en colonnes.
+explanation: >-
+  column -t lit une table séparée par des espaces et aligne les colonnes. -s: fixe un
+  autre séparateur. Sur Debian et Ubuntu, la commande est dans le paquet bsdextrautils,
+  pas dans l’installation minimale de tous les conteneurs. La commande reste courante.
+  Deux options ont été renommées dans util-linux et ne doivent plus servir dans un
+  script nouveau.
+subcommands:
+  - name: "-t"
+    summary: Aligne une table sur les espaces.
+    explanation: >-
+      `column -t` calcule des colonnes. `-s:` fixe un autre séparateur. Sur Debian, la
+      commande est dans `bsdextrautils`.
+    examples:
+      - title: Aligner
+        command: printf '%s\n' 'nom uid' 'root 0' | column -t
+        comment: Aligne les deux colonnes.
+  - name: "-s"
+    summary: Choisit le séparateur d’entrée.
+    explanation: >-
+      `-s` ne sert qu’avec `-t`. `--keep-empty-lines` a remplacé `--table-empty-lines`
+      depuis util-linux 2.37.
+    examples:
+      - title: Deux-points
+        command: "cut -d: -f1,3 /etc/passwd | column -s: -t"
+        comment: Nom et UID en colonnes.
+see_also:
+  - paste
+  - ls
+deprecated_options:
+  - option: "--table-empty-lines"
+    since: util-linux 2.37
+    replacement: "--keep-empty-lines"
+    why: >-
+      Le nom a été clarifié. L’ancienne option reste acceptée pour les scripts
+      existants.
+  - option: "--columns"
+    since: util-linux 2.30
+    replacement: "--output-width"
+    why: Renommée pour ne plus être confondue avec le nombre de colonnes du tableau.
+examples:
+  - title: Aligner les champs
+    command: printf '%s\n' 'nom uid' 'root 0' | column -t
+    comment: Aligne nom au-dessus de root et uid au-dessus de 0.
+  - title: Séparateur deux-points
+    command: "cut -d: -f1,3 /etc/passwd | column -s: -t"
+    comment: Présente le nom et l’UID en deux colonnes lisibles.
+status: courante
+package:
+  debian: bsdextrautils
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: Paquet util-linux, pas dans BusyBox.

@@ -1,0 +1,70 @@
+name: sfdisk
+themes:
+  - disques
+summary: Lit ou écrit une table de partitions en script.
+explanation: >-
+  sfdisk -d /dev/sdb écrit une description réutilisable de la table. On peut la modifier
+  et la renvoyer à sfdisk /dev/sdb pour l’appliquer. --list se contente de lire. C’est
+  l’outil des installations automatiques. Plusieurs options historiques ont été retirées
+  du vocabulaire recommandé : la taille d’un disque se demande à blockdev, pas à sfdisk.
+subcommands:
+  - name: "-d"
+    summary: Écrit une description réutilisable de la table.
+    explanation: >-
+      `sfdisk -d` produit un texte que l’on peut renvoyer plus tard à `sfdisk`. Ce n’est
+      pas une sauvegarde des données.
+    examples:
+      - title: Sauver
+        command: sudo sfdisk -d /dev/sdb > /root/sdb.sfdisk
+        comment: Le fichier décrit la table, pas le contenu des partitions.
+  - name: "--list"
+    summary: Affiche la table sans la modifier.
+    explanation: >-
+      `--list` se contente de lire. `--show-size` est déprécié : la taille se demande à
+      `blockdev --getsz`.
+    examples:
+      - title: Lire
+        command: sudo sfdisk --list /dev/sdb
+        comment: La table, sans écriture.
+see_also:
+  - fdisk
+  - parted
+  - blockdev
+deprecated_options:
+  - option: "--show-size"
+    since: util-linux
+    replacement: blockdev --getsz
+    why: La taille en secteurs n’appartient pas à sfdisk.
+  - option: "--Linux"
+    since: util-linux
+    replacement: (aucune)
+    why: Le mode DOS a disparu. La table est une table Linux.
+  - option: "--unit"
+    since: util-linux
+    replacement: les tailles explicites du script sfdisk
+    why: L’unité se dit dans le script, plus par une option globale.
+  - option: "--show-pt-geometry"
+    since: util-linux
+    replacement: lsblk ou blockdev
+    why: La géométrie CHS n’est plus une information utile.
+examples:
+  - title: Sauvegarder la table
+    command: sudo sfdisk -d /dev/sdb > /root/sdb.sfdisk
+    comment: >-
+      Fichier texte. Vous pouvez le relire plus tard. Ne remplace pas une sauvegarde des
+      données.
+  - title: Lire
+    command: sudo sfdisk --list /dev/sdb
+    comment: Affiche la table sans la modifier.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

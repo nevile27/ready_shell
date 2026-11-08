@@ -1,0 +1,37 @@
+name: xfs_repair
+themes:
+  - disques
+summary: Répare un système de fichiers XFS démonté.
+explanation: >-
+  xfs_repair /dev/sdb1 vérifie et corrige un XFS qui n’est pas monté. -n fait seulement
+  le diagnostic. On ne lance pas la réparation sur un système monté en écriture. Après
+  un arrêt brutal, le journal se rejoue souvent au montage ; xfs_repair sert quand le
+  montage ne suffit plus. Ce n’est pas l’outil d’ext4.
+subcommands:
+  - name: "-n"
+    summary: Diagnostic sans écrire.
+    explanation: >-
+      `xfs_repair` exige un système démonté. `-n` dit ce qui serait corrigé. Sans `-n`,
+      les corrections sont écrites.
+    examples:
+      - title: Lire
+        command: sudo xfs_repair -n /dev/sdb1
+        comment: Ne modifie rien.
+see_also:
+  - mkfs.xfs
+  - fsck
+  - e2fsck
+examples:
+  - title: Diagnostic
+    command: sudo xfs_repair -n /dev/sdb1
+    comment: Ne modifie rien. La partition ne doit pas être montée.
+  - title: Réparation
+    command: sudo xfs_repair /dev/sdb1
+    comment: Écrit les corrections. À n’utiliser que sur le bon périphérique, démonté.
+status: courante
+package:
+  debian: xfsprogs
+  redhat: xfsprogs
+  suse: xfsprogs
+  arch: xfsprogs
+  alpine: xfsprogs

@@ -1,0 +1,36 @@
+name: fg
+themes:
+  - shell
+summary: Ramène une tâche en arrière-plan au premier plan.
+explanation: >-
+  fg reprend la dernière tâche suspendue ou mise en arrière-plan. fg %2 vise le job 2
+  indiqué par jobs. La tâche retrouve le terminal : Ctrl+C et Ctrl+Z la concernent de
+  nouveau. fg n’existe pas comme binaire séparé.
+subcommands:
+  - name: "%"
+    summary: Ramène un numéro de job au premier plan.
+    explanation: >-
+      `fg` sans argument reprend la dernière tâche. `fg %2` vise le job 2 de `jobs`. La
+      tâche retrouve le terminal.
+    examples:
+      - title: Dernière tâche
+        command: fg
+        comment: Rend le terminal à la tâche suspendue ou en arrière-plan.
+see_also:
+  - bg
+  - jobs
+  - kill
+examples:
+  - title: Reprendre la dernière tâche
+    command: fg
+    comment: Rend le terminal à la tâche la plus récente suspendue ou en arrière-plan.
+  - title: Reprendre un numéro
+    command: fg %2
+    comment: Le numéro est celui que jobs affiche entre crochets.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

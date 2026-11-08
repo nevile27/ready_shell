@@ -1,0 +1,45 @@
+name: visudo
+themes:
+  - utilisateurs
+summary: Édite /etc/sudoers en refusant d’enregistrer une syntaxe cassée.
+explanation: >-
+  visudo ouvre la politique sudo dans l’éditeur, puis vérifie la syntaxe avant de
+  remplacer le fichier. Une erreur dans sudoers peut vous interdire toute élévation, y
+  compris pour la corriger. visudo -c se contente de vérifier. On ne modifie pas sudoers
+  avec un éditeur ordinaire. Les snippets dans /etc/sudoers.d se valident de la même
+  façon : visudo -f /etc/sudoers.d/dev.
+subcommands:
+  - name: "-c"
+    summary: Vérifie la syntaxe sans éditer.
+    explanation: >-
+      `visudo -c` dit si sudoers est valide. Une erreur dans ce fichier peut interdire
+      toute élévation.
+    examples:
+      - title: Contrôle
+        command: sudo visudo -c
+        comment: Annonce que le fichier est correct, ou désigne la ligne.
+  - name: "-f"
+    summary: Édite un fragment de sudoers.d.
+    explanation: >-
+      `visudo -f` ouvre un seul fichier et refuse de l’enregistrer s’il est invalide. On
+      ne modifie pas sudoers avec un éditeur ordinaire.
+    examples:
+      - title: Fragment
+        command: sudo visudo -f /etc/sudoers.d/dev
+        comment: Ouvre ce fichier, pas le sudoers principal.
+see_also:
+  - sudo
+examples:
+  - title: Vérifier sans éditer
+    command: sudo visudo -c
+    comment: Écrit que le fichier est correct, ou désigne la ligne fautive.
+  - title: Éditer un fragment
+    command: sudo visudo -f /etc/sudoers.d/dev
+    comment: Ouvre seulement ce fragment et refuse de le sauver s’il est invalide.
+status: courante
+package: sudo
+overrides:
+  alpine:
+    note: >-
+      Installé avec le paquet sudo. La configuration de doas, elle, est /etc/doas.conf
+      et ne passe pas par visudo.

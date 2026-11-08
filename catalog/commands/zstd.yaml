@@ -1,0 +1,44 @@
+name: zstd
+themes:
+  - archives
+summary: Compresse vite, avec un bon taux. Format courant des paquets récents.
+explanation: >-
+  zstd fichier crée fichier.zst. -d décompresse, -k garde l’original, -19 pousse le taux
+  au prix du temps, -1 va vite. tar --zstd crée un .tar.zst sur un tar GNU assez récent.
+  Les paquets Debian, Fedora et Arch s’appuient de plus en plus sur ce format. BusyBox
+  ne le fournit pas : sur Alpine c’est le paquet zstd. unzstd est le même outil.
+subcommands:
+  - name: "-k"
+    summary: Compresse en .zst et garde l’original.
+    explanation: >-
+      `-1` va vite, `-19` pousse le taux. `tar --zstd` crée un `.tar.zst` sur un tar GNU
+      récent. BusyBox ne fournit pas zstd.
+    examples:
+      - title: Compresser
+        command: cp /etc/hostname /tmp/hote && zstd -k /tmp/hote
+        comment: Crée /tmp/hote.zst.
+  - name: "-d"
+    summary: Décompresse un .zst.
+    explanation: "`unzstd` est le même outil. `-c` écrit sur la sortie et ne retire pas l’archive."
+    examples:
+      - title: Vers la sortie
+        command: zstd -dc /tmp/hote.zst
+        comment: Le contenu, si /tmp/hote.zst existe.
+see_also:
+  - gzip
+  - xz
+  - tar
+examples:
+  - title: Compresser
+    command: zstd -k /etc/hostname
+    comment: Crée hostname.zst à côté du fichier.
+  - title: Décompresser vers la sortie
+    command: zstd -dc hostname.zst
+    comment: Écrit le contenu sans retirer l’archive. Le fichier doit exister.
+status: courante
+package:
+  debian: zstd
+  redhat: zstd
+  suse: zstd
+  arch: zstd
+  alpine: zstd

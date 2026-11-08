@@ -1,0 +1,46 @@
+name: sftp
+themes:
+  - reseau
+summary: Transfère des fichiers en session, sur SSH.
+explanation: >-
+  sftp user@hote ouvre un mini-shell : ls, cd, get, put, bye. C’est le remplaçant
+  chiffré d’un client FTP. get fichier ramène un fichier, put l’envoie. sftp -b
+  commandes lit un script de transfert. Le service distant est le même sshd,
+  sous-système sftp. On ne confond pas avec le FTP du port 21, qui circule en clair.
+subcommands:
+  - name: session
+    summary: Ouvre un mini-shell de transfert.
+    explanation: >-
+      `get` ramène un fichier, `put` l’envoie, `bye` quitte. Le service est le
+      sous-système sftp de sshd, pas le FTP du port 21.
+    examples:
+      - title: Session
+        command: sftp user@hote
+        comment: Prompt sftp>. bye quitte.
+  - name: "-b"
+    summary: Lit un script de commandes.
+    explanation: >-
+      `-b` enchaîne des ordres sans rester en session. On peut aussi donner un chemin
+      distant directement sur la ligne.
+    examples:
+      - title: Un fichier
+        command: sftp user@hote:/etc/hostname /tmp/hostname-distant
+        comment: Copie ce fichier et revient.
+see_also:
+  - scp
+  - ssh
+  - ftp
+examples:
+  - title: Session
+    command: sftp user@hote
+    comment: Prompt sftp>. bye quitte. get et put transfèrent.
+  - title: Ramener un fichier
+    command: sftp user@hote:/etc/hostname /tmp/hostname-distant
+    comment: Copie ce fichier et revient, sans rester en session.
+status: courante
+package:
+  debian: openssh-client
+  redhat: openssh-clients
+  suse: openssh-clients
+  arch: openssh
+  alpine: openssh-client

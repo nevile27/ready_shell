@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ready-shell.local/command.schema.json",
+  "title": "Fiche commande",
+  "description": "Forme d'une fiche du catalogue. Le statut est donné par famille, soit dans availability, soit par un statut commun complété par overrides.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "themes", "summary", "explanation", "examples"],
+  "anyOf": [
+    { "required": ["availability"] },
+    { "required": ["status"] }
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Nom exact de la commande, tel qu'on le tape."
+    },
+    "themes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["shell", "fichiers", "texte", "processus", "utilisateurs", "disques", "reseau", "services", "paquets", "archives"]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Relie la fiche à une note d'implémentation de distros.yaml, par exemple coreutils ou sudo."
+    },
+    "summary": { "type": "string", "minLength": 8 },
+    "explanation": { "type": "string", "minLength": 40 },
+    "pitfalls": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 8 }
+    },
+    "see_also": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "replaced_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Commande de remplacement, quand il y en a une seule."
+    },
+    "deprecated_options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["option", "since", "replacement"],
+        "properties": {
+          "option": { "type": "string" },
+          "since": { "type": "string" },
+          "replacement": { "type": "string" },
+          "why": { "type": "string" }
+        }
+      }
+    },
+    "examples": { "$ref": "#/$defs/examples" },
+    "subcommands": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Objets ou formes de la commande, par exemple addr pour ip addr. Une seule s’affiche en détail à la fois.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "summary", "explanation", "examples"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "label": {
+            "type": "string",
+            "description": "Texte affiché à la place de « commande nom », quand la forme tapée n’est pas un simple suffixe."
+          },
+          "summary": { "type": "string", "minLength": 8 },
+          "explanation": { "type": "string", "minLength": 40 },
+          "pitfalls": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 8 }
+          },
+          "examples": { "$ref": "#/$defs/examples" }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["courante", "obsolète", "retirée", "spécifique", "absente"]
+    },
+    "package": {
+      "description": "Paquet commun, ou un paquet par famille.",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "debian": { "type": "string" },
+            "redhat": { "type": "string" },
+            "suse": { "type": "string" },
+            "arch": { "type": "string" },
+            "alpine": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "debian": { "$ref": "#/$defs/slot" },
+        "redhat": { "$ref": "#/$defs/slot" },
+        "suse": { "$ref": "#/$defs/slot" },
+        "arch": { "$ref": "#/$defs/slot" },
+        "alpine": { "$ref": "#/$defs/slot" }
+      }
+    },
+    "availability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["debian", "redhat", "suse", "arch", "alpine"],
+      "properties": {
+        "debian": { "$ref": "#/$defs/slotFull" },
+        "redhat": { "$ref": "#/$defs/slotFull" },
+        "suse": { "$ref": "#/$defs/slotFull" },
+        "arch": { "$ref": "#/$defs/slotFull" },
+        "alpine": { "$ref": "#/$defs/slotFull" }
+      }
+    }
+  },
+  "$defs": {
+    "examples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "command", "comment"],
+        "properties": {
+          "title": { "type": "string", "minLength": 2 },
+          "command": { "type": "string", "minLength": 1 },
+          "comment": { "type": "string", "minLength": 8 },
+          "families": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": ["debian", "redhat", "suse", "arch", "alpine"]
+            }
+          }
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["courante", "obsolète", "retirée", "spécifique", "absente"]
+        },
+        "package": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "slotFull": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["courante", "obsolète", "retirée", "spécifique", "absente"]
+        },
+        "package": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+name: printf
+themes:
+  - shell
+summary: Formate du texte de façon portable.
+explanation: >-
+  printf reprend le modèle du printf du langage C : un format, puis les valeurs. %s
+  écrit une chaîne, %d un entier, \n un saut de ligne. Le format est le premier
+  argument, il se met entre quotes simples pour que le shell ne mange pas les
+  contre-obliques. C’est la commande à utiliser dans un script à la place d’echo -e ou
+  d’echo -n.
+subcommands:
+  - name: "%s"
+    summary: Écrit une chaîne telle quelle.
+    explanation: >-
+      `%s` ne donne aucun sens spécial aux caractères du texte. `\n` dans le format,
+      entre quotes simples, ajoute un saut de ligne.
+    examples:
+      - title: Une ligne
+        command: printf '%s\n' "$USER"
+        comment: Le nom d’utilisateur, puis un saut de ligne.
+  - name: "%d"
+    summary: Écrit un entier.
+    explanation: >-
+      `%d` formate un nombre. Un texte non numérique vaut souvent 0, avec un message sur
+      l’erreur selon le shell.
+    examples:
+      - title: Entier
+        command: printf '%d\n' 42
+        comment: Écrit 42.
+  - name: "%q"
+    summary: Échappe une chaîne pour la relire dans bash.
+    explanation: >-
+      `%q` est une extension bash. Elle produit une forme que le shell peut relire. Dash
+      ne la connaît pas.
+    examples:
+      - title: Échappement bash
+        command: printf '%q\n' "a b"
+        comment: Écrit une forme quotée, par exemple a\ b.
+see_also:
+  - echo
+examples:
+  - title: Ligne formatée
+    command: printf '%s %d\n' "fichiers" 3
+    comment: Écrit « fichiers 3 » puis un saut de ligne.
+  - title: Sans saut de ligne
+    command: printf '%s' "suite"
+    comment: N’ajoute rien après le texte. Le curseur reste sur la même ligne.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

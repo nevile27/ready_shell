@@ -1,0 +1,40 @@
+name: renice
+themes:
+  - processus
+summary: Change la politesse d’un processus déjà lancé.
+explanation: >-
+  renice -n 15 -p PID pose la politesse du processus. -u user vise tous les processus
+  d’un utilisateur. Comme nice, un utilisateur non privilégié ne peut pas rendre un
+  processus plus favorisé qu’il ne l’est. Le changement vaut jusqu’à la fin du
+  processus, pas au prochain démarrage.
+subcommands:
+  - name: "-n"
+    summary: Change la politesse d’un PID déjà lancé.
+    explanation: >-
+      `-p` désigne le PID, `-u` un utilisateur. Le changement dure jusqu’à la fin du
+      processus. On ne peut pas se favoriser sans être administrateur.
+    examples:
+      - title: Un PID
+        command: renice -n 10 -p 1234
+        comment: Remplacez 1234 par un PID à vous.
+see_also:
+  - nice
+  - ps
+  - top
+examples:
+  - title: Rendre un PID plus discret
+    command: renice -n 10 -p 1234
+    comment: Remplacez 1234 par un PID à vous. ps montrera NI à 10.
+  - title: Tous les processus d’un compte
+    command: sudo renice -n 5 -u backup
+    comment: Pose la politesse 5 pour les processus actuels de backup.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: Paquet util-linux. BusyBox a parfois un renice plus court.

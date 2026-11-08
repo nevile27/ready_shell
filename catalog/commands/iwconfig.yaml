@@ -1,0 +1,32 @@
+name: iwconfig
+themes:
+  - reseau
+summary: Ancien outil Wi-Fi de l’interface WEXT. Remplacé par iw.
+explanation: >-
+  iwconfig montrait le SSID et le signal via l’API WEXT, retirée des usages courants.
+  Les cartes et les noyaux actuels se pilotent avec iw, via nl80211. wireless-tools peut
+  encore s’installer et ne voit plus grand-chose sur un matériel récent. NetworkManager
+  reste le moyen d’associer un réseau au quotidien.
+subcommands:
+  - name: scan
+    summary: Ancien outil Wi-Fi WEXT.
+    explanation: >-
+      `iwconfig` ne voit plus grand-chose sur une carte récente. `iw dev wlan0 link` le
+      remplace.
+    examples:
+      - title: Lien
+        command: iw dev wlan0 link
+        comment: SSID et signal, via nl80211.
+see_also:
+  - iw
+  - nmcli
+replaced_by: iw
+examples:
+  - title: Lien actuel
+    command: iw dev wlan0 link
+    comment: Remplace iwconfig wlan0. Le nom de l’interface vient de iw dev.
+  - title: Ancienne commande
+    command: iwconfig
+    comment: Souvent absente, ou sans information utile sur une carte récente.
+status: obsolète
+package: wireless-tools

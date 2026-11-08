@@ -1,0 +1,44 @@
+name: addgroup
+themes:
+  - utilisateurs
+summary: Crée un groupe. Frontal Debian, ou applet BusyBox sur Alpine.
+explanation: >-
+  Comme adduser, addgroup n’a pas le même programme partout. Debian et Ubuntu
+  fournissent un script du paquet adduser. Alpine fournit l’applet BusyBox. Les autres
+  familles utilisent groupadd. addgroup user groupe, sur Debian, ajoute aussi un
+  utilisateur à un groupe : c’est alors usermod -aG.
+subcommands:
+  - name: groupe
+    summary: Crée un groupe, ou y ajoute un utilisateur sur Debian.
+    explanation: >-
+      Sur Debian, `addgroup dev` crée le groupe et `addgroup ada dev` ajoute ada. Sur
+      Alpine, l’applet n’a pas la même syntaxe. Ailleurs, `groupadd` et `usermod -aG`.
+    examples:
+      - title: Créer, Debian
+        command: sudo addgroup dev
+        comment: Un groupe, avec les conventions Debian de GID.
+see_also:
+  - groupadd
+  - adduser
+  - usermod
+examples:
+  - title: Créer, famille Debian
+    command: sudo addgroup dev
+    comment: Équivaut à groupadd avec les conventions Debian de GID.
+    families:
+      - debian
+  - title: Ajouter un membre, famille Debian
+    command: sudo addgroup ada dev
+    comment: ada rejoint dev sans perdre ses autres groupes.
+    families:
+      - debian
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: adduser
+    note: addgroup dev crée un groupe. addgroup ada dev ajoute ada au groupe.
+  alpine:
+    status: spécifique
+    package: busybox
+    note: Applet BusyBox. Pour ajouter un membre, la forme n’est pas celle de Debian.

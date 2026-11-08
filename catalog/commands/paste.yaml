@@ -1,0 +1,50 @@
+name: paste
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Juxtapose les lignes de plusieurs fichiers.
+explanation: >-
+  paste fichier1 fichier2 écrit la ligne 1 des deux fichiers sur une même ligne,
+  séparées par une tabulation. -d, change le séparateur. paste -s met toutes les lignes
+  d’un fichier sur une seule ligne. Ce n’est pas une jointure par clé : pour cela, join
+  exige des fichiers triés.
+subcommands:
+  - name: "-d"
+    summary: Juxtapose les lignes avec ce séparateur.
+    explanation: >-
+      `paste f1 f2` met la ligne 1 de chaque fichier sur une même ligne, séparées par
+      une tabulation. `-d,` change le séparateur.
+    examples:
+      - title: Virgule
+        command: printf '%s\n' a b | paste -sd,
+        comment: Écrit a,b.
+  - name: "-s"
+    summary: Met toutes les lignes d’un fichier sur une seule.
+    explanation: >-
+      `-s` est l’opposé de la juxtaposition de fichiers. Pour une jointure par clé,
+      `join` exige des fichiers triés.
+    examples:
+      - title: Une ligne
+        command: printf '%s\n' un deux | paste -sd ' '
+        comment: Écrit un deux.
+see_also:
+  - cut
+  - join
+examples:
+  - title: Côte à côte
+    command: paste -d, <(printf '%s\n' a b) <(printf '%s\n' 1 2)
+    comment: Écrit a,1 puis b,2. La substitution <() est une extension bash, absente de dash.
+  - title: Une seule ligne
+    command: printf '%s\n' un deux | paste -sd,
+    comment: Écrit un,deux.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

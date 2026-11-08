@@ -1,0 +1,46 @@
+name: bzip2
+themes:
+  - archives
+summary: Compresse un fichier en .bz2.
+explanation: >-
+  bzip2 fichier crée fichier.bz2. -d décompresse, -k garde l’original, -c écrit sur la
+  sortie. tar -j crée une archive .tar.bz2. Le taux est souvent meilleur que gzip et le
+  temps plus long. Les nouveaux échanges préfèrent zstd ou xz ; bzip2 reste nécessaire
+  pour lire des archives déjà publiées. bunzip2 est le même programme sous l’autre nom.
+subcommands:
+  - name: "-k"
+    summary: Compresse en .bz2 et garde l’original.
+    explanation: >-
+      `bzip2` sans `-k` remplace le fichier. `-d` décompresse. `tar -j` produit un
+      `.tar.bz2`. Le taux est souvent meilleur que gzip, et plus lent.
+    examples:
+      - title: Garder
+        command: cp /etc/hostname /tmp/hote && bzip2 -k /tmp/hote
+        comment: Crée /tmp/hote.bz2.
+  - name: "-d"
+    summary: Décompresse un .bz2.
+    explanation: "`bunzip2` est le même programme. `bzcat` écrit sur la sortie."
+    examples:
+      - title: Lister une archive
+        command: tar -tjf archive.tar.bz2
+        comment: Liste le contenu. -j dit à tar d’utiliser bzip2.
+see_also:
+  - gzip
+  - xz
+  - tar
+examples:
+  - title: Compresser sans effacer
+    command: bzip2 -k /etc/hostname
+    comment: >-
+      Produit hostname.bz2 à côté de la source si le chemin est local au répertoire
+      courant. Avec un chemin, le .bz2 est à côté du fichier.
+  - title: Lire une archive tar
+    command: tar -tjf archive.tar.bz2
+    comment: Liste le contenu. -j dit à tar d’utiliser bzip2.
+status: courante
+package:
+  debian: bzip2
+  redhat: bzip2
+  suse: bzip2
+  arch: bzip2
+  alpine: bzip2

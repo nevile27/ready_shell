@@ -1,0 +1,36 @@
+name: gunzip
+themes:
+  - archives
+summary: Décompresse un fichier .gz.
+explanation: >-
+  gunzip fichier.gz recrée fichier et retire l’archive. C’est gzip -d. -k conserve le
+  .gz. -c écrit le contenu décompressé sur la sortie sans toucher au fichier, ce que
+  fait aussi zcat. gunzip ne sait pas ouvrir un .tar.gz comme une arborescence : il rend
+  le .tar, et tar -xzf fait les deux d’un coup.
+subcommands:
+  - name: "-k"
+    summary: Décompresse et garde le .gz.
+    explanation: >-
+      `gunzip` recrée le fichier et retire l’archive, sauf avec `-k`. Il ne sait pas
+      ouvrir un `.tar.gz` comme une arborescence : `tar -xzf` fait les deux.
+    examples:
+      - title: Archive tar
+        command: tar -xzf /tmp/etc-ssh.tar.gz -C /tmp
+        comment: tar extrait après décompression.
+see_also:
+  - gzip
+  - tar
+examples:
+  - title: Décompresser un flux
+    command: gzip -c /etc/hostname | gunzip -c
+    comment: Recompose le texte de hostname. Rien n’est écrit sur le disque.
+  - title: Archive tar
+    command: tar -xzf /tmp/etc-ssh.tar.gz -C /tmp
+    comment: "gunzip seul ne suffit pas : tar extrait l’arborescence après décompression."
+status: courante
+package:
+  debian: gzip
+  redhat: gzip
+  suse: gzip
+  arch: gzip
+  alpine: busybox

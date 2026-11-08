@@ -1,0 +1,50 @@
+name: stty
+themes:
+  - shell
+tags:
+  - coreutils
+summary: Affiche ou change les réglages de la ligne du terminal.
+explanation: >-
+  stty -a montre les caractères spéciaux : effacement, interruption, suspension. stty
+  sane remet des réglages utilisables quand Entrée ne revient plus en début de ligne ou
+  que la frappe n’apparaît plus. stty -echo coupe l’écho, ce que font les lectures de
+  mot de passe. Le réglage concerne le terminal du processus, pas un fichier de
+  configuration durable.
+subcommands:
+  - name: "-a"
+    summary: Affiche les réglages de la ligne.
+    explanation: >-
+      `stty -a` montre taille, vitesse et caractères de contrôle : interruption,
+      effacement, suspension.
+    examples:
+      - title: Réglages
+        command: stty -a
+        comment: Une description du terminal attaché à ce processus.
+  - name: sane
+    summary: Remet des réglages utilisables.
+    explanation: >-
+      `stty sane` répare une ligne sans écho ou sans retour chariot. On peut le taper à
+      l’aveugle. `reset` est plus complet.
+    examples:
+      - title: Réparer
+        command: stty sane
+        comment: Le terminal redevient utilisable.
+see_also:
+  - tput
+  - reset
+examples:
+  - title: Réglages courants
+    command: stty -a
+    comment: Liste taille, vitesse et caractères de contrôle.
+  - title: Rétablir un terminal
+    command: stty sane
+    comment: >-
+      Remet des réglages raisonnables. On peut le taper à l’aveugle si l’écho a été
+      coupé.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

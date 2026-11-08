@@ -1,0 +1,37 @@
+name: bg
+themes:
+  - shell
+summary: Relance en arrière-plan une tâche suspendue.
+explanation: >-
+  Ctrl+Z suspend le processus au premier plan. bg le fait continuer sans lui rendre le
+  terminal. La sortie peut encore s’écrire à l’écran. Pour une tâche qui doit survivre à
+  la fermeture du terminal, nohup ou un service conviennent mieux qu’un simple bg.
+subcommands:
+  - name: "%"
+    summary: Continue en arrière-plan une tâche suspendue.
+    explanation: >-
+      Après Ctrl+Z, `bg` relance la tâche sans lui rendre le terminal. `bg %1` vise un
+      numéro. Pour survivre à la fermeture du terminal, `nohup` ou un service
+      conviennent mieux.
+    examples:
+      - title: Relancer
+        command: bg
+        comment: La tâche suspendue continue. Le prompt revient.
+see_also:
+  - fg
+  - jobs
+  - nohup
+examples:
+  - title: Continuer en arrière-plan
+    command: bg
+    comment: Après Ctrl+Z, relance la tâche suspendue sans bloquer le prompt.
+  - title: Viser un job
+    command: bg %1
+    comment: Relance uniquement la tâche 1.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

@@ -1,0 +1,61 @@
+name: nc
+themes:
+  - reseau
+summary: Ouvre une connexion TCP ou UDP brute, ou écoute un port.
+explanation: >-
+  nc hote 80 se connecte au port et relie le terminal à la socket. nc -l 9000 écoute. -v
+  est bavard, -z teste le port sans envoyer de données sur la version OpenBSD. Le nom nc
+  cache plusieurs programmes : netcat OpenBSD, ncat de Nmap, netcat traditionnel, ou
+  l’applet BusyBox. Les options -z et -q ne sont pas communes à tous. On vérifie nc -h
+  sur la machine avant de copier un exemple trouvé ailleurs.
+subcommands:
+  - name: "-l"
+    summary: Écoute un port.
+    explanation: >-
+      `nc -l` attend une connexion. Plusieurs programmes s’appellent nc : OpenBSD, ncat,
+      ou BusyBox. Les options ne sont pas toutes communes. `nc -h` dit lequel vous avez.
+    examples:
+      - title: Écouter
+        command: nc -l 127.0.0.1 9000
+        comment: Attend une connexion. Un second terminal peut lancer nc 127.0.0.1 9000.
+  - name: "-v"
+    summary: Rend la connexion bavarde.
+    explanation: >-
+      `-z`, sur le netcat OpenBSD, teste le port sans envoyer de données. ncat n’a pas
+      toujours la même lettre.
+    examples:
+      - title: Tester
+        command: nc -vz 127.0.0.1 22
+        comment: Dit si quelque chose accepte le port 22.
+see_also:
+  - ss
+  - curl
+  - socat
+examples:
+  - title: Tester un port local
+    command: nc -vz 127.0.0.1 22
+    comment: >-
+      Dit si quelque chose accepte le port 22. -z est celui d’OpenBSD-netcat ; ncat
+      préfère parfois une autre forme.
+  - title: Écouter
+    command: nc -l 127.0.0.1 9000
+    comment: >-
+      Attend une connexion sur le port 9000. Un second terminal peut lancer nc 127.0.0.1
+      9000.
+status: courante
+package:
+  debian: netcat-openbsd
+  redhat: nmap-ncat
+  suse: netcat-openbsd
+  arch: openbsd-netcat
+  alpine: busybox
+overrides:
+  debian:
+    note: >-
+      Le paquet par défaut recommandé est netcat-openbsd. netcat-traditional a d’autres
+      options.
+  redhat:
+    package: nmap-ncat
+    note: RHEL et Fedora fournissent ncat sous le nom nc.
+  alpine:
+    note: Applet BusyBox, sous-ensemble des options OpenBSD.

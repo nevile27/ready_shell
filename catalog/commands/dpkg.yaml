@@ -1,0 +1,49 @@
+name: dpkg
+themes:
+  - paquets
+summary: Installe un fichier .deb et interroge la base locale, sans résoudre les dépendances.
+explanation: >-
+  dpkg -i paquet.deb installe ce fichier et échoue si une dépendance manque : apt
+  install ./paquet.deb les résout. dpkg -l liste les paquets connus, dpkg -L nom les
+  fichiers d’un paquet installé, dpkg -S /usr/bin/ls le paquet qui fournit un chemin.
+  dpkg-query est le même fond pour les sélections. On ne met pas à jour le système avec
+  dpkg. C’est l’outil de bas niveau sous apt.
+subcommands:
+  - name: "-l"
+    summary: Liste les paquets connus de la base locale.
+    explanation: >-
+      `dpkg -l` ne contacte pas les dépôts. `-L nom` liste les fichiers d’un paquet
+      installé. `-S /chemin` dit qui fournit un fichier.
+    examples:
+      - title: Qui fournit
+        command: dpkg -S /usr/bin/ls
+        comment: Le paquet, par exemple coreutils.
+  - name: "-i"
+    summary: Installe un fichier .deb sans résoudre les dépendances.
+    explanation: >-
+      `dpkg -i` échoue si une dépendance manque. `apt install ./fichier.deb` les tire.
+      On ne met pas le système à jour avec dpkg.
+    examples:
+      - title: Fichiers d’un paquet
+        command: dpkg -L coreutils
+        comment: Les chemins installés. Le paquet doit être là.
+see_also:
+  - apt
+  - apt-get
+  - rpm
+examples:
+  - title: Qui fournit un fichier
+    command: dpkg -S /usr/bin/ls
+    comment: Écrit le paquet, par exemple coreutils.
+    families:
+      - debian
+  - title: Fichiers d’un paquet
+    command: dpkg -L coreutils
+    comment: Liste les chemins installés par coreutils. Le paquet doit être installé.
+    families:
+      - debian
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: dpkg

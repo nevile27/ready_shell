@@ -1,0 +1,46 @@
+name: export
+themes:
+  - shell
+summary: Publie une variable pour les commandes lancées ensuite.
+explanation: >-
+  Une variable du shell reste locale tant qu’elle n’est pas exportée. export la place
+  dans l’environnement des processus enfants. export -p liste ce qui est déjà publié.
+  L’affectation et l’export peuvent s’écrire ensemble : export EDITOR=vim. Les enfants
+  héritent de la valeur ; le parent ne voit pas les changements faits par l’enfant.
+subcommands:
+  - name: "-p"
+    summary: Liste les variables déjà publiées.
+    explanation: >-
+      `export -p` écrit des déclarations que l’on peut relire. Chaque ligne est une
+      variable que les commandes suivantes héritent.
+    examples:
+      - title: Lister
+        command: export -p
+        comment: Une déclaration export par variable publiée.
+  - name: "-n"
+    summary: Retire une variable de l’environnement.
+    explanation: >-
+      `export -n` garde la variable dans le shell mais ne la transmet plus aux enfants.
+      `unset` la supprime complètement.
+    examples:
+      - title: Ne plus transmettre
+        command: export -n http_proxy
+        comment: Les prochaines commandes ne voient plus http_proxy.
+see_also:
+  - env
+  - unset
+  - declare
+examples:
+  - title: Publier un répertoire de configuration
+    command: export XDG_CONFIG_HOME="$HOME/.config"
+    comment: Les commandes lancées après cette ligne voient la variable.
+  - title: Lister l’environnement exporté
+    command: export -p
+    comment: Affiche les déclarations export, prêtes à être relues par un shell.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

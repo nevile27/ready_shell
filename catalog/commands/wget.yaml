@@ -1,0 +1,50 @@
+name: wget
+themes:
+  - reseau
+summary: Télécharge un fichier depuis une URL.
+explanation: >-
+  wget URL enregistre le fichier dans le répertoire courant. -O nom choisit le nom, -q
+  se tait, -c reprend un téléchargement interrompu. wget -r descend dans un site, ce qui
+  peut être très large. Pour une API ou des en-têtes sur mesure, curl est plus à l’aise.
+  Le wget de BusyBox ne connaît pas toutes les options GNU.
+subcommands:
+  - name: "-O"
+    summary: Choisit le nom local.
+    explanation: >-
+      `wget` enregistre dans le répertoire courant si `-O` est absent. `-q` se tait.
+      `-c` reprend un téléchargement sur la version GNU. Le wget de BusyBox est plus
+      court.
+    examples:
+      - title: Nom choisi
+        command: wget -O /tmp/exemple.html https://example.com
+        comment: Le corps va dans ce fichier.
+  - name: "-c"
+    summary: Reprend un fichier interrompu.
+    explanation: >-
+      `-c` continue si le fichier existe. `-r` descend dans un site et peut devenir très
+      large. Pour une API, `curl` est plus à l’aise.
+    examples:
+      - title: Reprendre
+        command: wget -c -O /tmp/gros.bin https://example.com/gros.bin
+        comment: Continue le fichier. La version GNU sait le faire.
+see_also:
+  - curl
+examples:
+  - title: Télécharger sous un nom
+    command: wget -O /tmp/exemple.html https://example.com
+    comment: Écrit le corps dans /tmp/exemple.html.
+  - title: Reprendre
+    command: wget -c -O /tmp/gros.bin https://example.com/gros.bin
+    comment: Continue le fichier s’il existe déjà. La version GNU sait le faire.
+status: courante
+package:
+  debian: wget
+  redhat: wget
+  suse: wget
+  arch: wget
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      BusyBox a un wget court. Le paquet wget apporte la version GNU, dont -c et
+      --mirror.

@@ -1,0 +1,58 @@
+name: ulimit
+themes:
+  - shell
+summary: Affiche ou fixe les plafonds de ressources du shell.
+explanation: >-
+  ulimit -n règle le nombre de fichiers ouverts, -u le nombre de processus, -f la taille
+  d’un fichier créé, -l la mémoire verrouillée. La limite dure le temps du shell et se
+  transmet aux enfants. -H montre le plafond dur, que seul un administrateur peut
+  relever ; -S est la limite souple, celle que l’utilisateur peut baisser. Ce n’est pas
+  un réglage permanent : pour le rendre durable, il se pose dans les limites systemd ou
+  dans /etc/security/limits.conf.
+subcommands:
+  - name: "-a"
+    summary: Affiche toutes les limites du shell.
+    explanation: >-
+      `ulimit -a` liste fichiers ouverts, processus, taille des fichiers et mémoire.
+      `-H` est le plafond dur, `-S` la limite souple.
+    examples:
+      - title: Tout voir
+        command: ulimit -a
+        comment: Une limite par ligne, pour ce shell.
+  - name: "-n"
+    summary: Nombre de fichiers ouverts.
+    explanation: >-
+      `ulimit -n` lit la limite. `ulimit -n 4096` la relève pour les commandes
+      suivantes, sans dépasser le plafond dur. Ce n’est pas un réglage permanent.
+    examples:
+      - title: Lire
+        command: ulimit -n
+        comment: Le nombre de descripteurs autorisés.
+  - name: "-u"
+    summary: Nombre de processus.
+    explanation: >-
+      `ulimit -u` borne combien de processus l’utilisateur peut lancer depuis ce shell.
+      Les enfants héritent de la limite.
+    examples:
+      - title: Lire
+        command: ulimit -u
+        comment: Le plafond de processus de cet utilisateur.
+see_also:
+  - sysctl
+  - systemd-run
+examples:
+  - title: Nombre de fichiers ouverts
+    command: ulimit -n
+    comment: Affiche la limite souple de descripteurs pour ce shell.
+  - title: Relever la limite souple
+    command: ulimit -n 4096
+    comment: >-
+      Vaut pour les commandes lancées ensuite dans ce shell, sans dépasser le plafond
+      dur.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

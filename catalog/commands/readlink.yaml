@@ -1,0 +1,49 @@
+name: readlink
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Affiche la cible d’un lien symbolique.
+explanation: >-
+  readlink lien écrit la cible telle qu’elle est stockée, souvent un chemin relatif.
+  readlink -f suit toute la chaîne et écrit un chemin absolu ; sur les coreutils
+  récents, realpath fait ce travail avec un vocabulaire plus clair. BusyBox fournit un
+  readlink plus court.
+subcommands:
+  - name: cible
+    summary: Écrit la cible telle qu’elle est stockée.
+    explanation: "`readlink lien` ne suit pas une chaîne de liens. La cible peut être relative."
+    examples:
+      - title: Cible brute
+        command: readlink /bin/sh
+        comment: "Le texte du lien : dash, bash ou busybox."
+  - name: "-f"
+    summary: Suit toute la chaîne et écrit un chemin absolu.
+    explanation: >-
+      `readlink -f` résout les liens. `realpath` fait le même travail avec un
+      vocabulaire plus clair sur les coreutils récents.
+    examples:
+      - title: Chemin final
+        command: readlink -f /bin/sh
+        comment: Le chemin canonique du binaire.
+see_also:
+  - realpath
+  - ln
+  - stat
+examples:
+  - title: Cible brute
+    command: readlink /bin/sh
+    comment: Peut écrire dash, bash ou busybox, le texte du lien.
+  - title: Chemin absolu final
+    command: readlink -f /bin/sh
+    comment: Suit les liens et écrit le chemin canonique du binaire.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

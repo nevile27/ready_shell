@@ -1,0 +1,41 @@
+name: unzip
+themes:
+  - archives
+summary: Extrait une archive .zip.
+explanation: >-
+  unzip archive.zip extrait dans le répertoire courant. -l liste, -d /tmp/dest choisit
+  la destination, -n ne remplace pas un fichier déjà là. Une archive peut contenir des
+  chemins ../ ou absolus : -d vers un répertoire vide limite la casse. unzip demande
+  parfois la confirmation pour un nom qui existe. Le paquet est distinct de zip sur
+  plusieurs familles.
+subcommands:
+  - name: "-l"
+    summary: Liste sans extraire.
+    explanation: >-
+      `-l` montre chemins et tailles. `-d` choisit la destination. `-n` n’écrase pas un
+      fichier déjà là.
+    examples:
+      - title: Lister
+        command: unzip -l /tmp/ssh.zip
+        comment: Le contenu, si l’archive existe.
+  - name: "-d"
+    summary: Extrait dans un répertoire.
+    explanation: >-
+      Une archive peut contenir `..` ou des chemins absolus. `-d` vers un répertoire
+      vide limite la casse.
+    examples:
+      - title: À part
+        command: unzip -d /tmp/zip-out /tmp/ssh.zip
+        comment: Place les fichiers dans /tmp/zip-out.
+see_also:
+  - zip
+  - tar
+examples:
+  - title: Lister
+    command: unzip -l /tmp/ssh.zip
+    comment: Chemins et tailles, sans écriture.
+  - title: Extraire à part
+    command: unzip -d /tmp/zip-out /tmp/ssh.zip
+    comment: Crée /tmp/zip-out si besoin et y place les fichiers.
+status: courante
+package: unzip

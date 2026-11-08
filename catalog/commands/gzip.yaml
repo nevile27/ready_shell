@@ -1,0 +1,48 @@
+name: gzip
+themes:
+  - archives
+summary: Compresse un fichier en .gz et le remplace.
+explanation: >-
+  gzip fichier crée fichier.gz et retire fichier. -k conserve l’original, -d
+  décompresse, comme gunzip. -l décrit une archive sans l’extraire. gzip -c écrit sur la
+  sortie standard, ce qui permet de compresser un flux. Le format est celui que tar -z
+  attend. Pour un meilleur taux sur de gros fichiers, xz ou zstd sont plus courants en
+  2026 ; gzip reste le plus universel.
+subcommands:
+  - name: "-k"
+    summary: Compresse et garde l’original.
+    explanation: >-
+      `gzip` sans `-k` remplace le fichier par un `.gz`. `-c` écrit sur la sortie. `-l`
+      décrit une archive sans l’extraire.
+    examples:
+      - title: Garder
+        command: cp /etc/hostname /tmp/hote && gzip -k /tmp/hote
+        comment: Crée /tmp/hote.gz et laisse /tmp/hote.
+  - name: "-d"
+    summary: Décompresse.
+    explanation: >-
+      `-d` est la même opération que `gunzip`. `zcat` écrit le contenu sans retirer
+      l’archive.
+    examples:
+      - title: Vers la sortie
+        command: gzip -c /etc/hostname | gzip -d
+        comment: Recompose le texte. Rien n’est écrit sur le disque.
+see_also:
+  - gunzip
+  - tar
+  - zstd
+  - compress
+examples:
+  - title: Compresser en gardant l’original
+    command: cp /etc/hostname /tmp/hote && gzip -k /tmp/hote
+    comment: Crée /tmp/hote.gz et laisse /tmp/hote en place grâce à -k.
+  - title: Vers la sortie
+    command: gzip -c /etc/hostname
+    comment: Écrit le flux gzip. On le redirige vers un fichier si on veut le garder.
+status: courante
+package:
+  debian: gzip
+  redhat: gzip
+  suse: gzip
+  arch: gzip
+  alpine: busybox

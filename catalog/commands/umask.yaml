@@ -1,0 +1,47 @@
+name: umask
+themes:
+  - shell
+summary: Masque les droits retirés aux fichiers nouvellement créés.
+explanation: >-
+  umask 022 retire l’écriture pour le groupe et les autres : un fichier prévu en 666
+  naît en 644, un répertoire prévu en 777 naît en 755. umask sans argument affiche le
+  masque courant, souvent en octal avec -S pour une forme symbolique. Le masque suit le
+  processus et ses enfants. Il ne modifie pas les fichiers déjà là : cela, c’est chmod.
+subcommands:
+  - name: "-S"
+    summary: Affiche le masque en droits accordés.
+    explanation: >-
+      `umask -S` écrit une forme `u=rwx,g=rx,o=rx`. Sans `-S`, la sortie est l’octal des
+      droits retirés, souvent 0022.
+    examples:
+      - title: Forme lisible
+        command: umask -S
+        comment: Les droits que recevront les nouveaux fichiers et répertoires.
+  - name: octal
+    summary: Pose le masque pour la suite du shell.
+    explanation: >-
+      `umask 022` retire l’écriture au groupe et aux autres. `umask 077` ne laisse les
+      nouveaux fichiers qu’au propriétaire. Les fichiers déjà là ne changent pas.
+    examples:
+      - title: Fichiers privés
+        command: umask 077
+        comment: Jusqu’à la fin du shell, les créations sont privées.
+see_also:
+  - chmod
+  - mkdir
+examples:
+  - title: Masque actuel
+    command: umask -S
+    comment: Affiche les droits accordés par défaut, par exemple u=rwx,g=rx,o=rx.
+  - title: Fichiers privés
+    command: umask 077
+    comment: >-
+      Les nouveaux fichiers ne seront lisibles que par leur propriétaire, le temps de ce
+      shell.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

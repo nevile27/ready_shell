@@ -1,0 +1,46 @@
+name: id
+themes:
+  - utilisateurs
+tags:
+  - coreutils
+summary: "Affiche l’identité effective : UID, GID et groupes."
+explanation: >-
+  id écrit l’utilisateur et les groupes du processus. id user interroge un autre compte.
+  -u ne garde que l’UID, -g le GID principal, -n les noms au lieu des numéros. id est le
+  test honnête dans un script : whoami ne donne que le nom, et il peut être absent d’une
+  image très petite alors qu’id est dans coreutils ou BusyBox.
+subcommands:
+  - name: "-u"
+    summary: N’écrit que l’UID effectif.
+    explanation: >-
+      `id` sans option montre utilisateur et groupes. `-u` ne garde que le nombre. `-un`
+      écrit le nom. `-G` liste tous les groupes.
+    examples:
+      - title: UID
+        command: id -u
+        comment: 0 pour root, un autre nombre sinon.
+  - name: "-n"
+    summary: Préfère les noms aux numéros.
+    explanation: "`-n` s’associe à `-u`, `-g` ou `-G`. `id user` interroge un autre compte."
+    examples:
+      - title: Nom
+        command: id -un
+        comment: Le nom du compte effectif.
+see_also:
+  - whoami
+  - groups
+  - getent
+examples:
+  - title: Identité complète
+    command: id
+    comment: uid, gid et la liste des groupes, en noms et en numéros.
+  - title: UID seul
+    command: id -u
+    comment: Écrit 0 pour root, un autre nombre pour un compte ordinaire.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

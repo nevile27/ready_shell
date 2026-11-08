@@ -1,0 +1,50 @@
+name: apt-get
+themes:
+  - paquets
+summary: Interface stable d’apt, préférée dans les scripts.
+explanation: >-
+  apt-get update, install, remove et purge font le même travail qu’apt, avec une sortie
+  et des codes de retour pensés pour les scripts. apt-get dist-upgrade peut retirer des
+  paquets pour résoudre les dépendances ; upgrade refuse ce cas. On ne mélange pas les
+  deux outils dans un même script. Pour une recherche, apt-cache ou apt search. apt-get
+  n’est pas déprécié.
+subcommands:
+  - name: update
+    summary: Rafraîchit les index, forme stable pour les scripts.
+    explanation: >-
+      `apt-get update` ne met pas les paquets à jour. `apt-get install -y` installe sans
+      question. On ne mélange pas `apt` et `apt-get` dans un même script.
+    examples:
+      - title: Installer
+        command: sudo apt-get update && sudo apt-get install -y curl
+        comment: Index, puis curl, sans confirmation.
+  - name: autoremove
+    summary: Retire les dépendances devenues inutiles.
+    explanation: >-
+      `upgrade` n’enlève pas de paquet. `dist-upgrade` peut le faire pour résoudre les
+      dépendances. `autoremove` nettoie ce que plus personne ne tire.
+    examples:
+      - title: Nettoyer
+        command: sudo apt-get autoremove
+        comment: Propose les paquets qui ne servent plus.
+see_also:
+  - apt
+  - dpkg
+  - apt-cache
+examples:
+  - title: Installation non interactive
+    command: sudo apt-get update && sudo apt-get install -y curl
+    comment: "-y ne pose pas la question. Le script doit assumer l’installation."
+    families:
+      - debian
+  - title: Nettoyer les paquets devenus inutiles
+    command: sudo apt-get autoremove
+    comment: Retire les dépendances qui ne sont plus tirées par personne.
+    families:
+      - debian
+status: absente
+overrides:
+  debian:
+    status: spécifique
+    package: apt
+    note: À garder dans les scripts. Le terminal interactif peut utiliser apt.

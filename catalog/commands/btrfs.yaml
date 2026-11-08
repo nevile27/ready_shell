@@ -1,0 +1,53 @@
+name: btrfs
+themes:
+  - disques
+summary: "Administre un système de fichiers Btrfs : créer, sous-volumes, instantanés."
+explanation: >-
+  btrfs filesystem show liste les systèmes vus. mkfs.btrfs, livré par le même paquet,
+  crée le système. btrfs subvolume snapshot prend un instantané. Btrfs n’est pas le
+  système par défaut de toutes les familles : openSUSE et Fedora l’utilisent largement,
+  Debian et Ubuntu le proposent, RHEL le livre avec un statut qui a varié selon les
+  versions mineures. On vérifie la prise en charge du noyau et de la famille avant d’y
+  mettre le système.
+subcommands:
+  - name: filesystem
+    summary: Montre les systèmes Btrfs vus par le noyau.
+    explanation: >-
+      `btrfs filesystem show` liste les systèmes. `mkfs.btrfs`, du même paquet, crée le
+      système. Le statut de Btrfs comme système racine dépend de la famille.
+    examples:
+      - title: Voir
+        command: sudo btrfs filesystem show
+        comment: Vide s’il n’y a pas de Btrfs.
+  - name: subvolume
+    summary: Crée ou liste des sous-volumes et des instantanés.
+    explanation: >-
+      `subvolume list` montre les sous-volumes d’un montage. `subvolume snapshot` prend
+      un instantané. Ce n’est pas une sauvegarde sur un autre disque.
+    examples:
+      - title: Lister
+        command: sudo btrfs subvolume list /
+        comment: Les sous-volumes, si la racine est en Btrfs.
+see_also:
+  - mkfs
+  - mount
+  - findmnt
+examples:
+  - title: Systèmes visibles
+    command: sudo btrfs filesystem show
+    comment: Liste les systèmes Btrfs que le noyau voit. Vide s’il n’y en a pas.
+  - title: Créer
+    command: sudo mkfs.btrfs -L donnees /dev/sdb1
+    comment: Efface la partition et y met un Btrfs. Le paquet btrfs-progs fournit mkfs.btrfs.
+status: courante
+package:
+  debian: btrfs-progs
+  redhat: btrfs-progs
+  suse: btrfsprogs
+  arch: btrfs-progs
+  alpine: btrfs-progs
+overrides:
+  redhat:
+    note: >-
+      Présent en paquet. Sur RHEL, vérifiez qu’il est pris en charge pour votre usage
+      avant d’en faire le système racine.

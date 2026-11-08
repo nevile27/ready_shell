@@ -1,0 +1,52 @@
+name: kill
+themes:
+  - processus
+summary: Envoie un signal à un processus, par son PID.
+explanation: >-
+  kill PID envoie SIGTERM, la demande d’arrêt propre. kill -9 PID envoie SIGKILL, que le
+  processus ne peut pas ignorer et qui ne lui laisse pas le temps de fermer ses
+  fichiers. On commence par TERM. kill -l liste les noms. Le shell a aussi un kill
+  interne, capable de viser un job avec %1. Un PID qui n’est pas le vôtre demande
+  l’administrateur. kill ne cherche pas par nom : c’est pkill ou killall.
+pitfalls:
+  - >-
+    kill -9 est un dernier recours. Le processus n’écrit pas ses tampons et ne retire
+    pas son fichier de verrou.
+subcommands:
+  - name: TERM
+    summary: Demande l’arrêt propre.
+    explanation: >-
+      `kill PID` envoie SIGTERM. On commence par là. `-l` liste les noms. Le shell a
+      aussi un kill interne, capable de viser `%1`.
+    examples:
+      - title: Demander
+        command: kill 1234
+        comment: Remplacez 1234 par un PID vu dans ps.
+  - name: "-9"
+    summary: SIGKILL, que le processus ne peut pas ignorer.
+    explanation: >-
+      `kill -9` ne laisse pas le temps de fermer les fichiers. C’est un dernier recours,
+      après un TERM resté sans effet.
+    examples:
+      - title: Forcer
+        command: kill -9 1234
+        comment: Le processus disparaît sans nettoyage.
+see_also:
+  - pkill
+  - killall
+  - trap
+  - jobs
+examples:
+  - title: Demander l’arrêt
+    command: kill 1234
+    comment: Envoie SIGTERM au PID 1234. Remplacez 1234 par un PID vu dans ps.
+  - title: Liste des signaux
+    command: kill -l
+    comment: "Écrit les noms : TERM, KILL, HUP, STOP, et les autres."
+status: courante
+package:
+  debian: procps
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox

@@ -1,0 +1,65 @@
+name: service
+themes:
+  - services
+summary: Wrapper historique pour démarrer un service. Sur systemd, on appelle systemctl.
+explanation: >-
+  service ssh restart existe encore sur Debian comme compatibilité et finit par appeler
+  systemctl. Ce n’est plus l’interface à écrire dans un script neuf : les options et les
+  noms d’unités se lisent mieux avec systemctl. Sur Arch, le wrapper n’est pas le chemin
+  documenté. Sur Alpine, la commande du système est rc-service, pas service. chkconfig,
+  qui activait les services au démarrage sur SysV, est retiré des familles systemd
+  actuelles.
+subcommands:
+  - name: status
+    summary: Ancien wrapper, qui appelle systemctl sur Debian.
+    explanation: >-
+      `service ssh status` existe encore comme compatibilité. Les scripts neufs
+      appellent `systemctl`. Sur Alpine, la commande est `rc-service`.
+    examples:
+      - title: Forme actuelle
+        command: systemctl status ssh.service
+        comment: Sur Red Hat, SUSE et Arch, l’unité s’appelle sshd.service.
+see_also:
+  - systemctl
+  - chkconfig
+  - rc-service
+replaced_by: systemctl
+examples:
+  - title: Forme actuelle
+    command: systemctl restart ssh.service
+    comment: Sur Red Hat, SUSE et Arch, l’unité SSH s’appelle sshd.service.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Ancien wrapper Debian
+    command: service ssh status
+    comment: Fonctionne encore souvent et appelle systemd. À ne plus enseigner.
+    families:
+      - debian
+status: obsolète
+package:
+  debian: sysvinit-utils
+  redhat: initscripts
+  suse: aaa_base
+  arch: systemd
+  alpine: openrc
+overrides:
+  debian:
+    note: >-
+      Encore là, et redirige vers systemctl. Les documentations actuelles montrent
+      systemctl.
+  redhat:
+    note: >-
+      Peut rester comme compatibilité. systemctl est l’interface de RHEL 10 et Fedora
+      45.
+  suse:
+    note: Compatibilité éventuelle. systemctl est l’interface.
+  arch:
+    status: retirée
+    note: Pas de scripts SysV dans l’installation. systemctl seul.
+  alpine:
+    status: absente
+    package: openrc
+    note: La commande équivalente s’appelle rc-service.

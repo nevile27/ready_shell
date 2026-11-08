@@ -1,0 +1,111 @@
+name: find
+themes:
+  - fichiers
+summary: Parcourt une arborescence et sélectionne des fichiers.
+explanation: >-
+  `find` part d’un répertoire, applique des tests, puis une action. L’action par défaut
+  est d’écrire le nom. Les tests se combinent de gauche à droite. `-delete` et `-exec`
+  agissent vraiment : on vérifie d’abord avec `-print`.
+pitfalls:
+  - >-
+    find . -delete agit tout de suite. Placez -delete après les tests, jamais avant, et
+    essayez d’abord avec -print.
+subcommands:
+  - name: "-name"
+    summary: Garde les fichiers dont le nom correspond au motif.
+    explanation: >-
+      Le motif est celui du shell, mais il doit être cité pour que `find` le lise, pas
+      le shell. `-name '*.log'` est sensible à la casse. `-iname` ne l’est pas. Le motif
+      ne porte que sur le nom, pas sur le chemin : pour le chemin entier, c’est `-path`.
+    examples:
+      - title: Par le nom
+        command: find /var/log -name '*.gz'
+        comment: Fichiers dont le nom se termine par .gz.
+      - title: Sans tenir compte de la casse
+        command: find . -iname 'lisezmoi*'
+        comment: Lisezmoi, LISEZMOI et les variantes.
+  - name: "-type"
+    summary: "Garde un type : fichier, répertoire, lien."
+    explanation: >-
+      `-type f` est un fichier régulier, `-type d` un répertoire, `-type l` un lien
+      symbolique. Sans ce test, `find` rend aussi les répertoires dont le nom
+      correspond. On le place avant une action destructive.
+    examples:
+      - title: Fichiers seulement
+        command: find /etc -type f -name '*.conf'
+        comment: Ignore les répertoires qui s’appelleraient aussi .conf.
+  - name: "-mtime"
+    summary: Garde les fichiers selon leur âge, en jours.
+    explanation: >-
+      `-mtime -7` a été modifié il y a moins de sept jours. `+7` a été modifié il y a
+      plus de sept jours. `-mmin` compte en minutes. `-size +10M` filtre par taille. Ces
+      tests se chaînent : un fichier doit tous les satisfaire.
+    examples:
+      - title: Modifiés depuis hier
+        command: find /etc -type f -mtime -1
+        comment: Moins d’un jour, fichiers réguliers.
+      - title: Plus gros que dix mégaoctets
+        command: find /var -type f -size +10M
+        comment: La taille est celle du fichier, pas l’espace du disque entier.
+  - name: "-print0"
+    summary: Sépare les noms par un octet nul, pour les passer à xargs.
+    explanation: >-
+      Un nom peut contenir un espace ou un saut de ligne. `-print` les écrit tels quels
+      et le lecteur suivant les découpe mal. `-print0` termine chaque nom par un octet
+      nul. `xargs -0` relit ce format. C’est la forme à utiliser dès que les noms ne
+      sont pas les vôtres.
+    examples:
+      - title: Liste sûre
+        command: find /var/log -name '*.gz' -print0 | xargs -0 ls -l
+        comment: Les espaces dans les noms ne coupent pas la commande.
+  - name: "-delete"
+    summary: Supprime ce qui a passé les tests.
+    explanation: >-
+      `-delete` retire les fichiers correspondants, sans corbeille. Il se place après
+      les tests, jamais avant : `find` évalue de gauche à droite. On lance d’abord la
+      même commande avec `-print` pour voir ce qui partirait. `-delete` ne demande pas
+      de confirmation.
+    pitfalls:
+      - >-
+        `find . -delete` sans test préalable efface tout ce que find peut parcourir
+        depuis le point de départ.
+    examples:
+      - title: Voir d’abord
+        command: find /tmp/demo -type f -name '*.bak' -print
+        comment: La liste. Remplacez -print par -delete seulement quand elle est la bonne.
+  - name: "-exec"
+    summary: Lance une commande pour chaque fichier trouvé.
+    explanation: >-
+      `-exec commande {} ;` remplace `{}` par le fichier et lance la commande une fois
+      par fichier. Le point-virgule se cite. `-exec commande {} +` groupe plusieurs
+      fichiers dans un seul lancement, comme `xargs`. `-execdir` se place d’abord dans
+      le répertoire du fichier, ce qui évite qu’un nom piégé soit lu depuis le
+      répertoire de départ.
+    examples:
+      - title: Une commande par fichier
+        command: find /tmp/demo -type f -name '*.log' -exec ls -l {} \;
+        comment: Le ; est cité pour que le shell le laisse à find.
+      - title: Groupé
+        command: find /tmp/demo -type f -name '*.log' -exec ls -l {} +
+        comment: "Moins de processus : ls reçoit plusieurs noms à la fois."
+see_also:
+  - xargs
+  - locate
+  - grep
+examples:
+  - title: Fichiers modifiés aujourd’hui
+    command: find /etc -type f -mtime -1 -print
+    comment: Liste les fichiers réguliers de /etc modifiés depuis moins d’un jour.
+  - title: Noms robustes
+    command: find /var/log -name '*.gz' -print0 | xargs -0 ls -l
+    comment: Le séparateur nul protège les noms inhabituels.
+status: courante
+package:
+  debian: findutils
+  redhat: findutils
+  suse: findutils
+  arch: findutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox plus courte. Le paquet findutils apporte la version GNU.

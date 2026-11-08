@@ -1,0 +1,47 @@
+name: cpio
+themes:
+  - archives
+summary: Archive des fichiers dont la liste arrive sur l’entrée standard.
+explanation: >-
+  cpio -o crée une archive à partir des noms lus sur l’entrée, cpio -i les extrait, cpio
+  -t les liste. -d crée les répertoires à l’extraction, -H newc choisit le format des
+  initramfs. On le rencontre dans les images de démarrage et dans les paquets RPM, moins
+  souvent à la main. find . -print0 | cpio -0 -o produit une archive qui accepte les
+  noms bizarres. Pour le travail courant, tar est plus direct.
+subcommands:
+  - name: "-o"
+    summary: Crée une archive à partir de noms lus sur l’entrée.
+    explanation: >-
+      `find -print0 | cpio -0 -o` accepte les noms avec des espaces. `-H newc` est le
+      format des initramfs. Pour le travail courant, `tar` est plus direct.
+    examples:
+      - title: Créer
+        command: find /etc/hostname -print0 | cpio -0 -o > /tmp/hote.cpio
+        comment: Archive les chemins produits par find.
+  - name: "-t"
+    summary: Liste une archive.
+    explanation: "`-t` écrit les noms. `-i` extrait. `-d` crée les répertoires à l’extraction."
+    examples:
+      - title: Lister
+        command: cpio -t < /tmp/hote.cpio
+        comment: Les noms, si l’archive existe.
+see_also:
+  - tar
+  - find
+  - rpm
+examples:
+  - title: Lister une archive
+    command: cpio -t < /tmp/archive.cpio
+    comment: >-
+      Écrit les noms. L’archive doit exister ; sinon la commande attend l’entrée ou
+      échoue.
+  - title: Créer depuis find
+    command: find /etc/hostname -print0 | cpio -0 -o > /tmp/hote.cpio
+    comment: Archive les chemins produits par find. -0 aligne le séparateur nul.
+status: courante
+package:
+  debian: cpio
+  redhat: cpio
+  suse: cpio
+  arch: cpio
+  alpine: cpio

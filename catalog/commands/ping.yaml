@@ -1,0 +1,46 @@
+name: ping
+themes:
+  - reseau
+summary: Envoie des requêtes ICMP pour voir si un hôte répond.
+explanation: >-
+  ping hote envoie des échos jusqu’à Ctrl+C. -c 4 s’arrête après quatre essais, -W 1
+  attend au plus une seconde la réponse. Une absence de réponse ne prouve pas que l’hôte
+  est éteint : un pare-feu peut jeter l’ICMP alors que le port utile est ouvert. ping -6
+  ou ping -4 force la famille d’adresses. Sur les versions actuelles, le binaire est
+  souvent capable des deux.
+subcommands:
+  - name: "-c"
+    summary: S’arrête après un nombre d’essais.
+    explanation: >-
+      `ping` envoie des échos ICMP jusqu’à Ctrl+C. `-c 4` en fait quatre. `-W 1` attend
+      au plus une seconde chaque réponse. Une absence de réponse peut venir d’un
+      pare-feu.
+    examples:
+      - title: Quatre essais
+        command: ping -c 4 127.0.0.1
+        comment: Doit répondre. Le résumé est en bas.
+  - name: "-4"
+    summary: Force IPv4 ou IPv6.
+    explanation: "`-4` reste en IPv4, `-6` en IPv6. `ping -c 2 ::1` teste la pile locale."
+    examples:
+      - title: IPv6 local
+        command: ping -c 2 ::1
+        comment: Échoue si IPv6 est désactivé.
+see_also:
+  - tracepath
+  - ip
+  - ss
+examples:
+  - title: Quatre essais locaux
+    command: ping -c 4 127.0.0.1
+    comment: Doit répondre. statistics en bas résument pertes et délais.
+  - title: IPv6 local
+    command: ping -c 2 ::1
+    comment: Teste la pile IPv6 locale. Échoue si IPv6 est désactivé.
+status: courante
+package:
+  debian: iputils-ping
+  redhat: iputils
+  suse: iputils
+  arch: iputils
+  alpine: busybox

@@ -1,0 +1,48 @@
+name: ifconfig
+themes:
+  - reseau
+summary: >-
+  Ancien affichage des interfaces. Remplacé par ip, et absent des installations par
+  défaut.
+explanation: >-
+  ifconfig montrait les adresses et, sans option, seulement les interfaces actives. Le
+  paquet net-tools n’est plus installé sur un Debian, Ubuntu, RHEL ou Fedora actuel. La
+  commande peut manquer entièrement. BusyBox sur Alpine a encore un ifconfig court : il
+  suffit pour un conteneur, pas pour remplacer ip. Les scripts neufs appellent ip -br
+  addr.
+subcommands:
+  - name: "-a"
+    summary: Ancienne liste des interfaces, y compris les inactives.
+    explanation: >-
+      `ifconfig` vient de net-tools, absent des installations par défaut. `ip -br addr`
+      le remplace. BusyBox sur Alpine a encore un ifconfig court.
+    examples:
+      - title: À la place
+        command: ip -br addr
+        comment: Adresses et état, avec iproute2.
+see_also:
+  - ip
+  - route
+  - netstat
+replaced_by: ip
+examples:
+  - title: À la place
+    command: ip -br addr
+    comment: Adresses et état de chaque interface, installé par défaut avec iproute2.
+  - title: Ancienne commande
+    command: ifconfig -a
+    comment: >-
+      Peut répondre « commande introuvable ». Le paquet net-tools la ramène, sans la
+      rendre recommandée.
+status: obsolète
+package:
+  debian: net-tools
+  redhat: net-tools
+  suse: net-tools
+  arch: net-tools
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      Applet BusyBox encore présente. iproute2 est le outil complet, à installer s’il
+      manque.

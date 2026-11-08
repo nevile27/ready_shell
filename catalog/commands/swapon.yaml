@@ -1,0 +1,42 @@
+name: swapon
+themes:
+  - disques
+summary: Active l’espace d’échange.
+explanation: >-
+  swapon /dev/sdb2 active une zone préparée par mkswap. swapon -a active tout ce que
+  fstab marque comme swap. swapon --show liste les zones actives. Sans préparation
+  mkswap, l’activation échoue. L’espace d’échange ne remplace pas la RAM : il ralentit,
+  et il évite qu’un pic mémoire tue des processus tout de suite.
+subcommands:
+  - name: "--show"
+    summary: Liste les zones actives.
+    explanation: >-
+      `swapon /dev/sdb2` active une zone préparée. `-a` active tout ce que fstab marque
+      comme swap.
+    examples:
+      - title: Actives
+        command: swapon --show
+        comment: Nom, taille et priorité. Rien si aucun swap n’est actif.
+see_also:
+  - swapoff
+  - mkswap
+  - free
+examples:
+  - title: Zones actives
+    command: swapon --show
+    comment: Nom, type, taille et priorité. Rien si aucun swap n’est actif.
+  - title: Tout fstab
+    command: sudo swapon -a
+    comment: Active les entrées swap de fstab qui ne le sont pas encore.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

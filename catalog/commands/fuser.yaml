@@ -1,0 +1,51 @@
+name: fuser
+themes:
+  - processus
+summary: Dit quels processus utilisent un fichier ou un point de montage.
+explanation: >-
+  fuser /mnt écrit les PID qui ont quelque chose d’ouvert sous ce point de montage. -v
+  détaille la commande, -m considère le montage. fuser -k envoie SIGKILL à ces processus
+  : c’est brutal, on regarde d’abord sans -k. Utile quand umount refuse avec « target is
+  busy ».
+subcommands:
+  - name: "-v"
+    summary: Détaille qui utilise un fichier ou un montage.
+    explanation: >-
+      `fuser -vm /mnt` liste les PID. `-k` leur envoie SIGKILL : on regarde d’abord sans
+      `-k`. Utile quand `umount` dit que la cible est occupée.
+    examples:
+      - title: Qui bloque
+        command: sudo fuser -vm /mnt
+        comment: Les PID. Ne tue rien.
+  - name: "-k"
+    summary: Envoie un signal aux processus trouvés.
+    explanation: >-
+      Le signal par défaut de `-k` est SIGKILL. `-TERM` est plus doux si la version
+      l’accepte. Identifiez les PID avant.
+    examples:
+      - title: Port
+        command: sudo fuser -v 22/tcp
+        comment: Montre le processus. ss -lpt fait le même travail.
+see_also:
+  - lsof
+  - umount
+  - kill
+examples:
+  - title: Qui occupe un montage
+    command: sudo fuser -vm /mnt
+    comment: Liste les PID et le type d’accès. Ne tue rien.
+  - title: Port TCP
+    command: sudo fuser -v 22/tcp
+    comment: >-
+      Montre le processus qui tient le port 22. ss -lpt fait le même travail côté
+      réseau.
+status: courante
+package:
+  debian: psmisc
+  redhat: psmisc
+  suse: psmisc
+  arch: psmisc
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet psmisc apporte la version GNU.

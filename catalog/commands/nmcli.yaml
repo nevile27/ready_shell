@@ -1,0 +1,55 @@
+name: nmcli
+themes:
+  - reseau
+summary: Pilote NetworkManager depuis le terminal.
+explanation: >-
+  `nmcli` parle à NetworkManager. `device` voit les interfaces, `connection` voit les
+  profils enregistrés. Si la machine est réglée seulement par systemd-networkd, ces
+  profils n’existent pas : `networkctl` et `ip` sont alors les outils.
+subcommands:
+  - name: device
+    summary: Montre les interfaces et qui les gère.
+    explanation: >-
+      `device status` résume l’état. `device show` détaille adresses et DNS d’une
+      interface. `device disconnect` coupe sans effacer le profil. Ce n’est pas `ip
+      link` : NetworkManager peut remettre l’état qu’il a enregistré.
+    examples:
+      - title: État
+        command: nmcli device status
+        comment: TYPE, STATE et le profil actif. Échoue si NetworkManager n’est pas lancé.
+  - name: connection
+    summary: Liste, active ou modifie un profil.
+    explanation: >-
+      `connection show` liste les profils. `connection up nom` active celui-ci, `down`
+      le coupe. `connection modify` change une propriété durable, par exemple l’adresse
+      ou la passerelle. Le nom du profil n’est pas toujours le nom de l’interface.
+    examples:
+      - title: Profils
+        command: nmcli -t -f NAME,DEVICE connection show
+        comment: Liste courte, un profil par ligne.
+      - title: Activer
+        command: nmcli connection up nom-du-profil
+        comment: Applique le profil. Le nom vient de connection show.
+see_also:
+  - networkctl
+  - ip
+  - hostnamectl
+examples:
+  - title: Périphériques
+    command: nmcli device status
+    comment: TYPE, STATE et CONNECTION. Échoue si NetworkManager n’est pas lancé.
+  - title: Profils
+    command: nmcli -t -f NAME,DEVICE connection show
+    comment: Liste courte des connexions enregistrées.
+status: courante
+package: network-manager
+overrides:
+  arch:
+    note: >-
+      Paquet networkmanager. Pas installé par le groupe base : beaucoup de serveurs Arch
+      règlent le réseau autrement.
+  alpine:
+    status: absente
+    note: >-
+      Pas l’outil du système. Le réseau passe par les interfaces BusyBox, iproute2 ou un
+      fichier /etc/network/interfaces.

@@ -1,0 +1,47 @@
+name: tune2fs
+themes:
+  - disques
+summary: Règle les paramètres d’un système ext.
+explanation: >-
+  tune2fs -l /dev/sdb1 affiche label, UUID, nombre de montages, taille de bloc. -L
+  change le label, -m le pourcentage réservé à root, -c la fréquence des vérifications.
+  Ce n’est pas un redimensionnement : resize2fs change la taille. On peut ajuster un
+  système monté pour une partie des options, pas pour toutes. Lisez -l avant de
+  modifier.
+subcommands:
+  - name: "-l"
+    summary: Affiche label, UUID et paramètres.
+    explanation: >-
+      `tune2fs -l` ne modifie rien. `-L` change le label, `-m` le pourcentage réservé à
+      root. Le redimensionnement, c’est `resize2fs`.
+    examples:
+      - title: Lire
+        command: sudo tune2fs -l /dev/sdb1
+        comment: La fiche technique ext4.
+  - name: "-L"
+    summary: Change le label.
+    explanation: >-
+      Le label se retrouve avec `blkid`. `-c` règle la fréquence des vérifications.
+      Certaines options acceptent un système monté, pas toutes.
+    examples:
+      - title: Label
+        command: sudo tune2fs -L archives /dev/sdb1
+        comment: blkid montrera LABEL archives.
+see_also:
+  - e2fsck
+  - resize2fs
+  - dumpe2fs
+examples:
+  - title: Paramètres
+    command: sudo tune2fs -l /dev/sdb1
+    comment: "Fiche technique ext4 : UUID, état, options."
+  - title: Label
+    command: sudo tune2fs -L archives /dev/sdb1
+    comment: Pose le label archives. blkid le montrera.
+status: courante
+package:
+  debian: e2fsprogs
+  redhat: e2fsprogs
+  suse: e2fsprogs
+  arch: e2fsprogs
+  alpine: e2fsprogs

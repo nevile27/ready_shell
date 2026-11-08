@@ -1,0 +1,40 @@
+name: reset
+themes:
+  - shell
+summary: Réinitialise complètement le terminal.
+explanation: >-
+  reset envoie une initialisation complète : utile après un binaire qui a laissé le
+  terminal en mode brut, sans écho et sans retour à la ligne. C’est plus énergique que
+  clear. Sur Alpine minimale, la commande arrive avec ncurses ; en attendant, stty sane
+  répare souvent la ligne de commande.
+subcommands:
+  - name: terminal
+    summary: Réinitialise complètement le terminal.
+    explanation: >-
+      `reset` envoie une initialisation complète, après un programme qui a laissé le
+      terminal en mode brut. C’est plus énergique que `clear`.
+    examples:
+      - title: Réinitialiser
+        command: reset
+        comment: Le prompt revient dans un mode normal.
+see_also:
+  - tput
+  - stty
+  - clear
+examples:
+  - title: Terminal illisible
+    command: reset
+    comment: Réinitialise le terminal. Le prompt revient dans un mode normal.
+  - title: Équivalent via tput
+    command: tput reset
+    comment: Même famille de séquences, depuis ncurses.
+status: courante
+package:
+  debian: ncurses-bin
+  redhat: ncurses
+  suse: ncurses-utils
+  arch: ncurses
+  alpine: ncurses
+overrides:
+  alpine:
+    note: Paquet ncurses. stty sane, fourni par BusyBox, couvre le cas le plus courant.

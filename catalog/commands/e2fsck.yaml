@@ -1,0 +1,38 @@
+name: e2fsck
+themes:
+  - disques
+summary: Vérifie un système ext2, ext3 ou ext4.
+explanation: >-
+  e2fsck /dev/sdb1 est le vérificateur qu’fsck lance pour ext4. -n répond non à toutes
+  les réparations et sert de diagnostic. -p répare sans questions ce qui est sans
+  ambiguïté. Le système doit être démonté, ou monté en lecture seule dans le cas du
+  système racine au démarrage. -f force la vérification même si le système est marqué
+  propre.
+subcommands:
+  - name: "-n"
+    summary: Diagnostic en répondant non à tout.
+    explanation: >-
+      `-n` ne modifie rien. `-p` répare sans questions ce qui est sans ambiguïté. `-f`
+      force la vérification même si le système est marqué propre.
+    examples:
+      - title: Lire
+        command: sudo e2fsck -n /dev/sdb1
+        comment: Ce qui serait réparé, sans l’écrire.
+see_also:
+  - fsck
+  - tune2fs
+  - mkfs.ext4
+examples:
+  - title: Diagnostic
+    command: sudo e2fsck -n /dev/sdb1
+    comment: Ne modifie rien. Signale ce qui serait réparé.
+  - title: Réparation prudente
+    command: sudo e2fsck -p /dev/sdb1
+    comment: Corrige les cas sûrs. Le périphérique est démonté.
+status: courante
+package:
+  debian: e2fsprogs
+  redhat: e2fsprogs
+  suse: e2fsprogs
+  arch: e2fsprogs
+  alpine: e2fsprogs

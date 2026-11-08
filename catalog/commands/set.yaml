@@ -1,0 +1,70 @@
+name: set
+themes:
+  - shell
+summary: Règle les options du shell et les paramètres positionnels.
+explanation: >-
+  set -e arrête le script à la première commande en échec. set -u traite une variable
+  non définie comme une erreur. set -o pipefail, propre à bash, fait échouer un pipeline
+  si l’un de ses maillons échoue. set -x trace les commandes. set -- remet les
+  paramètres positionnels. set sans argument liste les variables. Ces options changent
+  le shell courant, pas un sous-processus, sauf si le script les pose lui-même.
+pitfalls:
+  - >-
+    set -e ne sort pas sur l’échec d’une commande dans une condition if, ni toujours sur
+    un maillon de pipeline. Avec bash, ajoutez set -o pipefail si l’échec au milieu du
+    tube doit compter.
+subcommands:
+  - name: "-e"
+    summary: Arrête le script à la première commande en échec.
+    explanation: >-
+      `set -e` ne sort pas sur l’échec d’une commande dans un `if`, ni toujours au
+      milieu d’un pipeline. En bash, `set -o pipefail` compte aussi cet échec.
+    examples:
+      - title: Mode strict bash
+        command: set -euo pipefail
+        comment: Échec immédiat, variable non définie interdite, pipeline strict.
+  - name: "-u"
+    summary: Rend une variable non définie fatale.
+    explanation: >-
+      `set -u` fait échouer l’expansion d’un nom qui n’existe pas. Cela attrape une
+      faute de frappe avant qu’elle ne devienne une chaîne vide.
+    examples:
+      - title: Variable obligatoire
+        command: set -u
+        comment: echo "$inconnue" échoue ensuite au lieu d’écrire une ligne vide.
+  - name: "-x"
+    summary: Trace les commandes de ce shell.
+    explanation: "`set -x` écrit chaque commande développée sur l’erreur. `set +x` arrête la trace."
+    examples:
+      - title: Tracer
+        command: set -x
+        comment: Les commandes suivantes sont recopiées avant d’être lancées.
+  - name: "-o"
+    summary: Active une option nommée.
+    explanation: >-
+      `set -o pipefail` fait échouer un pipeline si un maillon échoue. `set -o` sans nom
+      liste les options. `pipefail` n’existe pas dans dash.
+    examples:
+      - title: Pipeline strict
+        command: set -o pipefail
+        comment: false | true renvoie ensuite un échec.
+see_also:
+  - shopt
+  - trap
+  - export
+examples:
+  - title: Mode strict en tête de script bash
+    command: set -euo pipefail
+    comment: >-
+      Échec immédiat, variable non définie interdite, pipeline strict. pipefail n’existe
+      pas dans dash.
+  - title: Tracer un script
+    command: set -x
+    comment: Le shell écrit chaque commande sur la sortie d’erreur avant de l’exécuter.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

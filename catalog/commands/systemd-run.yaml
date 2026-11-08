@@ -1,0 +1,60 @@
+name: systemd-run
+themes:
+  - services
+summary: Lance une commande dans une unité systemd éphémère.
+explanation: >-
+  systemd-run commande démarre la commande sous systemd, avec un journal et une durée de
+  vie indépendante du terminal. --uid choisit l’utilisateur, -p MemoryMax=512M pose une
+  limite, --on-calendar= 'hourly' planifie. C’est le remplaçant moderne d’un nohup quand
+  on veut des limites et un journal. --user vise le systemd de votre session, pas celui
+  du système.
+subcommands:
+  - name: "--user"
+    summary: Lance dans le systemd de votre session.
+    explanation: >-
+      `systemd-run` crée une unité éphémère, avec un journal. `--user` ne demande pas
+      l’administrateur. `--collect` efface l’unité une fois terminée.
+    examples:
+      - title: Une commande
+        command: systemd-run --user --collect pwd
+        comment: pwd tourne dans une unité. Le journal utilisateur en garde la sortie.
+  - name: "-p"
+    summary: Pose une limite, par exemple la mémoire.
+    explanation: >-
+      `-p MemoryMax=256M` arrête le processus s’il dépasse. `--on-calendar=` planifie.
+      C’est plus encadré qu’un `nohup`.
+    examples:
+      - title: Mémoire
+        command: systemd-run -p MemoryMax=256M -- sleep 1
+        comment: sleep est borné en mémoire, puis l’unité se termine.
+see_also:
+  - systemctl
+  - nohup
+  - crontab
+examples:
+  - title: Tâche isolée
+    command: systemd-run --user --collect pwd
+    comment: >-
+      Lance pwd dans une unité utilisateur. journalctl --user -u de cette unité en
+      montre la sortie.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Limite mémoire
+    command: systemd-run -p MemoryMax=256M -- command
+    comment: >-
+      Le processus est arrêté s’il dépasse 256 Mio. Remplacez command par le programme à
+      borner.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

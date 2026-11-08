@@ -1,0 +1,46 @@
+name: host
+themes:
+  - reseau
+summary: Résout un nom ou une adresse en quelques lignes.
+explanation: >-
+  host exemple.fr écrit les adresses de façon plus courte que dig. host -t MX demande le
+  courrier, host 192.0.2.1 tente le nom inverse. C’est le bon outil pour une
+  vérification rapide. Pour les drapeaux, le TTL et une comparaison de résolveurs, dig
+  est plus complet. Le paquet est le même que dig.
+subcommands:
+  - name: nom
+    summary: Résout en quelques lignes.
+    explanation: >-
+      `host` est plus court que `dig`. `-t MX` ne demande que le courrier. `-t NS`
+      demande les serveurs de noms.
+    examples:
+      - title: Adresses
+        command: host exemple.fr
+        comment: Quelques lignes, une par enregistrement utile.
+  - name: "-t"
+    summary: Choisit le type d’enregistrement.
+    explanation: >-
+      Les types courants sont A, AAAA, MX, NS et TXT. L’inverse, une adresse vers un
+      nom, se demande en donnant l’adresse.
+    examples:
+      - title: Serveurs de noms
+        command: host -t NS exemple.fr
+        comment: Les NS du domaine.
+see_also:
+  - dig
+  - nslookup
+  - getent
+examples:
+  - title: Nom vers adresses
+    command: host exemple.fr
+    comment: Quelques lignes, une par enregistrement utile.
+  - title: Type précis
+    command: host -t NS exemple.fr
+    comment: Affiche les serveurs de noms du domaine.
+status: courante
+package:
+  debian: bind9-dnsutils
+  redhat: bind-utils
+  suse: bind-utils
+  arch: bind
+  alpine: bind-tools

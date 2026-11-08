@@ -1,0 +1,58 @@
+name: rpm
+themes:
+  - paquets
+summary: Interroge ou installe un fichier RPM, sans résoudre les dépendances.
+explanation: >-
+  rpm -q nom dit si le paquet est installé, -ql liste ses fichiers, -qf /usr/bin/ls
+  trouve qui fournit un chemin. rpm -ivh fichier.rpm installe ce fichier et s’arrête si
+  une dépendance manque : dnf ou zypper doivent faire l’installation. rpm -V vérifie que
+  les fichiers n’ont pas changé depuis l’installation. Red Hat et SUSE partagent cet
+  outil de bas niveau. Ce n’est pas le gestionnaire du quotidien.
+subcommands:
+  - name: "-q"
+    summary: Interroge la base locale.
+    explanation: >-
+      `rpm -q nom` dit si le paquet est installé. `-ql` liste ses fichiers. `-qf
+      /chemin` trouve le propriétaire. L’installation avec dépendances se fait par `dnf`
+      ou `zypper`.
+    examples:
+      - title: Propriétaire
+        command: rpm -qf /usr/bin/ls
+        comment: Nom et version du paquet.
+  - name: "-V"
+    summary: Vérifie que les fichiers n’ont pas changé.
+    explanation: >-
+      `-V` compare aux métadonnées d’installation. Une ligne vide signifie que rien n’a
+      bougé. `-ivh fichier.rpm` installe un fichier et s’arrête si une dépendance
+      manque.
+    examples:
+      - title: Vérifier
+        command: rpm -V coreutils
+        comment: Silence si les fichiers sont conformes.
+see_also:
+  - dnf
+  - zypper
+  - dpkg
+examples:
+  - title: Qui fournit un fichier
+    command: rpm -qf /usr/bin/ls
+    comment: Écrit le nom et la version du paquet.
+    families:
+      - redhat
+      - suse
+  - title: Fichiers installés
+    command: rpm -ql coreutils
+    comment: Liste les chemins. Le paquet doit être installé.
+    families:
+      - redhat
+      - suse
+status: absente
+overrides:
+  redhat:
+    status: spécifique
+    package: rpm
+    note: Les installations passent par dnf.
+  suse:
+    status: spécifique
+    package: rpm
+    note: Les installations passent par zypper.

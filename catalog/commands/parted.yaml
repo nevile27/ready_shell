@@ -1,0 +1,48 @@
+name: parted
+themes:
+  - disques
+summary: Partitionne un disque, y compris en GPT, en ligne de commande.
+explanation: >-
+  parted -l liste les disques. parted /dev/sdb print montre une table. Les
+  sous-commandes mklabel, mkpart et rm modifient. -s évite les questions, ce qui est
+  pratique et dangereux dans un script. parted sait redimensionner certaines tables ; il
+  ne redimensionne pas à lui seul le système de fichiers. On élargit d’abord la
+  partition, puis le système de fichiers avec resize2fs ou l’outil du type concerné.
+subcommands:
+  - name: "-l"
+    summary: Liste les disques et leurs tables.
+    explanation: >-
+      `parted -l` ne modifie rien. `print` dans une session montre une table. `-s` évite
+      les questions, ce qui est pratique et dangereux.
+    examples:
+      - title: Inventaire
+        command: sudo parted -l
+        comment: Tables et tailles.
+  - name: print
+    summary: Montre une table.
+    explanation: >-
+      `unit GiB print` affiche en gibioctets dans la session interactive. `mklabel`,
+      `mkpart` et `rm` modifient. Parted ne redimensionne pas à lui seul le système de
+      fichiers.
+    examples:
+      - title: Une table
+        command: sudo parted /dev/sdb print
+        comment: N’écrit rien.
+see_also:
+  - fdisk
+  - sfdisk
+  - resize2fs
+examples:
+  - title: Inventaire
+    command: sudo parted -l
+    comment: Tables et tailles. Lecture seule.
+  - title: Une table
+    command: sudo parted /dev/sdb print
+    comment: N’écrit rien. unit GiB print affiche en gibioctets dans la session interactive.
+status: courante
+package:
+  debian: parted
+  redhat: parted
+  suse: parted
+  arch: parted
+  alpine: parted

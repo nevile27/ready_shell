@@ -1,0 +1,64 @@
+name: xargs
+themes:
+  - shell
+summary: Construit des commandes à partir de l’entrée standard.
+explanation: >-
+  xargs lit des mots et les passe en arguments à une commande. Cela évite la limite de
+  longueur d’une ligne développée par le shell. Avec des noms de fichiers, l’entrée doit
+  être séparée par des octets nuls, produite par find -print0 et lue par xargs -0, sinon
+  un espace ou un saut de ligne dans un nom casse la liste. -n limite le nombre
+  d’arguments par lancement, -P le nombre de processus en parallèle sur la version GNU.
+pitfalls:
+  - >-
+    xargs sans -0 découpe sur les espaces. Ne l’utilisez pas sur des noms de fichiers
+    arbitraires sans find -print0.
+subcommands:
+  - name: "-0"
+    summary: Lit des noms séparés par un octet nul.
+    explanation: >-
+      `xargs -0` se couple à `find -print0`. Sans `-0`, un espace dans un nom coupe la
+      liste.
+    examples:
+      - title: Noms sûrs
+        command: find /tmp -name '*.bak' -print0 | xargs -0 rm -f
+        comment: Les espaces ne sont plus des séparateurs.
+  - name: "-n"
+    summary: Limite le nombre d’arguments par lancement.
+    explanation: >-
+      `-n 1` lance la commande une fois par mot. Sans `-n`, xargs groupe autant
+      d’arguments que la ligne le permet.
+    examples:
+      - title: Un par un
+        command: printf '%s\n' a b | xargs -n 1 printf 'élément %s\n'
+        comment: Deux lancements de printf.
+  - name: "-P"
+    summary: Lance plusieurs processus en parallèle.
+    explanation: >-
+      `-P` est la version GNU. `-P 4` autorise quatre commandes à la fois. L’ordre des
+      sorties n’est plus celui de l’entrée.
+    examples:
+      - title: Quatre à la fois
+        command: printf '%s\n' a b c d | xargs -P 4 -n 1 sleep
+        comment: Jusqu’à quatre sleep simultanés. Chacun reçoit un argument.
+see_also:
+  - find
+  - grep
+examples:
+  - title: Effacer une liste sûre
+    command: find /tmp/demo -name '*.bak' -print0 | xargs -0 rm -f
+    comment: Le séparateur nul protège les noms qui contiennent des espaces.
+  - title: Paquets d’arguments
+    command: printf '%s\n' a b c | xargs -n 1 printf 'élément %s\n'
+    comment: Lance printf une fois par mot lu.
+status: courante
+package:
+  debian: findutils
+  redhat: findutils
+  suse: findutils
+  arch: findutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: >-
+      Applet BusyBox plus courte. Le paquet findutils apporte la version GNU, avec -0 et
+      -P.

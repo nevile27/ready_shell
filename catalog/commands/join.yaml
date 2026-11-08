@@ -1,0 +1,52 @@
+name: join
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Joint deux fichiers triés sur un champ commun.
+explanation: >-
+  join fichier1 fichier2 écrit les lignes dont le premier champ est commun. Les deux
+  fichiers doivent être triés sur ce champ, dans le même ordre d’octets. -1 2 -2 1
+  choisit d’autres colonnes, -t: change le séparateur. Ce n’est pas un tableur : un
+  fichier non trié produit des trous silencieux.
+subcommands:
+  - name: champ
+    summary: Joint deux fichiers triés sur le premier champ.
+    explanation: >-
+      Les deux fichiers doivent être triés sur la clé, dans le même ordre d’octets. Un
+      fichier non trié produit des trous silencieux.
+    examples:
+      - title: Commun
+        command: join <(printf '%s\n' 'a 1' 'b 2') <(printf '%s\n' 'a x' 'c y')
+        comment: Écrit a 1 x. Nécessite bash pour <().
+  - name: "-t"
+    summary: Change le séparateur et les colonnes.
+    explanation: >-
+      `-t:` coupe sur le deux-points. `-1 2` prend le deuxième champ du premier fichier.
+      `-a 1` garde aussi les lignes sans correspondance.
+    examples:
+      - title: Préparer
+        command: LC_ALL=C sort -k1,1 fichier.txt
+        comment: Trie sur le premier champ avant join.
+see_also:
+  - sort
+  - paste
+  - comm
+examples:
+  - title: Champ commun
+    command: join <(printf '%s\n' 'a 1' 'b 2') <(printf '%s\n' 'a x' 'c y')
+    comment: Écrit « a 1 x ». b et c n’ont pas de correspondance. Nécessite bash pour <().
+  - title: Préparer le tri
+    command: LC_ALL=C sort -k1,1 fichier.tsv
+    comment: Trie sur le premier champ avant de passer le fichier à join.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    package: coreutils
+    note: Pas dans BusyBox. Le paquet coreutils le fournit.

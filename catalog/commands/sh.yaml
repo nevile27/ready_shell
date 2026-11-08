@@ -1,0 +1,48 @@
+name: sh
+themes:
+  - shell
+summary: "Le shell POSIX du système, celui des scripts #!/bin/sh."
+explanation: >-
+  sh n’est pas un logiciel unique. C’est le shell que la famille a choisi pour /bin/sh.
+  Debian et Ubuntu y mettent dash. Red Hat, SUSE et Arch y mettent bash, lancé en mode
+  POSIX quand on l’appelle sh. Alpine y met ash, l’applet BusyBox. Un script portable
+  s’en tient à ce que POSIX décrit : pas de tableaux, pas de [[ ]], pas de source à la
+  place du point.
+subcommands:
+  - name: "-c"
+    summary: Exécute une chaîne avec le /bin/sh du système.
+    explanation: >-
+      `sh -c` passe par le shell POSIX de la famille : dash sur Debian et Ubuntu, bash
+      sur Red Hat, SUSE et Arch, ash sur Alpine.
+    examples:
+      - title: Fragment POSIX
+        command: sh -c 'printf "%s\n" "$HOME"'
+        comment: Utilise /bin/sh, pas forcément bash.
+  - name: "-n"
+    summary: Vérifie la syntaxe sans exécuter.
+    explanation: >-
+      `sh -n fichier` refuse les constructions que ce shell ne connaît pas. Sur Debian,
+      cela détecte ce qui casserait dans un script `#!/bin/sh`.
+    examples:
+      - title: Contrôle
+        command: sh -n script.sh
+        comment: Aucune sortie et un code 0 si la syntaxe est acceptable.
+see_also:
+  - bash
+  - dash
+  - ash
+  - test
+examples:
+  - title: Voir où pointe sh
+    command: readlink -f /bin/sh
+    comment: "Affiche le binaire réel : dash, bash ou busybox selon la famille."
+  - title: Exécuter un fragment POSIX
+    command: sh -c 'printf "%s\n" "$HOME"'
+    comment: Passe par le /bin/sh du système, pas forcément par bash.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

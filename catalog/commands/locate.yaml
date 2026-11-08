@@ -1,0 +1,50 @@
+name: locate
+themes:
+  - fichiers
+summary: Cherche un nom de fichier dans un index, pas sur le disque en direct.
+explanation: >-
+  locate motif interroge une base construite par updatedb, en général la nuit. La
+  réponse est rapide et peut être périmée : un fichier créé à l’instant n’y est pas
+  encore, un fichier supprimé peut encore y figurer. -e ne garde que les noms qui
+  existent encore. Le paquet n’est pas toujours installé par défaut. Sur les versions
+  actuelles, plocate a remplacé mlocate.
+subcommands:
+  - name: motif
+    summary: Cherche un nom dans l’index, pas sur le disque.
+    explanation: >-
+      `locate` peut être périmé : un fichier créé à l’instant n’y est pas. `-i` ignore
+      la casse. `-r` traite le motif comme une expression rationnelle.
+    examples:
+      - title: Par le nom
+        command: locate os-release
+        comment: Chemins indexés qui contiennent os-release.
+  - name: "-e"
+    summary: Ne garde que les chemins qui existent encore.
+    explanation: >-
+      `-e` retire les noms que l’index connaît mais que le disque n’a plus. `updatedb`
+      reconstruit l’index.
+    examples:
+      - title: Existants
+        command: locate -e sshd_config
+        comment: Ignore les chemins déjà supprimés.
+see_also:
+  - updatedb
+  - find
+examples:
+  - title: Par le nom
+    command: locate os-release
+    comment: >-
+      Liste les chemins indexés qui contiennent os-release. La base doit avoir été
+      construite.
+  - title: Seulement s’ils existent
+    command: locate -e sshd_config
+    comment: >-
+      Retire de la réponse les chemins que l’index connaît encore mais que le disque n’a
+      plus.
+status: courante
+package:
+  debian: plocate
+  redhat: plocate
+  suse: plocate
+  arch: plocate
+  alpine: plocate

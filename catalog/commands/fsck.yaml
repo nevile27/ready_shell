@@ -1,0 +1,52 @@
+name: fsck
+themes:
+  - disques
+summary: Vérifie et répare un système de fichiers démonté.
+explanation: >-
+  fsck /dev/sdb1 appelle le vérificateur du type détecté, par exemple e2fsck pour ext4.
+  On ne vérifie pas un système monté en écriture. -N montre ce qui serait lancé sans le
+  lancer. -A parcourt fstab. Une réparation peut supprimer des données abîmées : on
+  travaille sur une image si les données comptent. XFS se répare avec xfs_repair, que
+  fsck finit par appeler si le lien fsck.xfs est là.
+subcommands:
+  - name: "-N"
+    summary: Montre l’outil qui serait appelé, sans l’appeler.
+    explanation: >-
+      `fsck` délègue à `e2fsck` ou `xfs_repair` selon le type. On ne vérifie pas un
+      système monté en écriture.
+    examples:
+      - title: Voir
+        command: sudo fsck -N /dev/sdb1
+        comment: Affiche la commande réelle.
+  - name: "-A"
+    summary: Parcourt les systèmes listés dans fstab.
+    explanation: >-
+      `-A` suit l’ordre du sixième champ. `-y` répond oui à tout et peut donc effacer.
+      Une réparation peut supprimer des données abîmées.
+    examples:
+      - title: Un périphérique démonté
+        command: sudo fsck /dev/sdb1
+        comment: Peut poser des questions. Le système ne doit pas être monté en écriture.
+see_also:
+  - e2fsck
+  - xfs_repair
+  - mount
+examples:
+  - title: Voir l’outil qui serait appelé
+    command: sudo fsck -N /dev/sdb1
+    comment: N’écrit pas sur le périphérique. Affiche la commande réelle.
+  - title: Vérifier un système démonté
+    command: sudo fsck /dev/sdb1
+    comment: Peut poser des questions. -y répond oui à tout, et peut donc effacer.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

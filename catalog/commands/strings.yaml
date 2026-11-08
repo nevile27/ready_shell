@@ -1,0 +1,45 @@
+name: strings
+themes:
+  - texte
+summary: Extrait les suites de caractères lisibles d’un binaire.
+explanation: >-
+  strings fichier écrit les séquences d’au moins quatre caractères imprimables. On
+  repère ainsi une version, une URL ou un message d’erreur dans un exécutable sans le
+  désassembler. -n 8 relève le minimum. Ce n’est pas une analyse : beaucoup de chaînes
+  sont des restes, et un binaire peut n’en avoir presque pas s’il est compressé.
+subcommands:
+  - name: "-n"
+    summary: Ignore les suites plus courtes que N.
+    explanation: >-
+      Par défaut, `strings` garde les suites d’au moins quatre caractères imprimables.
+      `-n 8` relève le seuil. `-t x` ajoute le décalage.
+    examples:
+      - title: Suites longues
+        command: strings -n 8 /bin/ls
+        comment: Moins de bruit que le défaut.
+  - name: "-a"
+    summary: Parcourt tout le fichier.
+    explanation: >-
+      Selon la version, `strings` ne regarde que les sections de données d’un ELF. `-a`
+      force la lecture de tout le fichier.
+    examples:
+      - title: Tout
+        command: strings -a /bin/ls | head
+        comment: Le début des textes embarqués.
+see_also:
+  - hexdump
+  - file
+examples:
+  - title: Chaînes d’un binaire
+    command: strings /bin/ls | head
+    comment: Montre le début des textes embarqués. head limite l’affichage.
+  - title: Suites plus longues
+    command: strings -n 8 /bin/ls
+    comment: Ignore les suites de moins de huit caractères.
+status: courante
+package:
+  debian: binutils
+  redhat: binutils
+  suse: binutils
+  arch: binutils
+  alpine: binutils

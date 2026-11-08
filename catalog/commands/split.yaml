@@ -1,0 +1,50 @@
+name: split
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Découpe un fichier en plusieurs morceaux.
+explanation: >-
+  split -l 1000 fichier écrit des morceaux de mille lignes, nommés xaa, xab, et ainsi de
+  suite. -b 10M découpe par taille. -d numérote au lieu d’utiliser des lettres. La
+  sortie se place dans le répertoire courant, sauf si un préfixe est donné en dernier
+  argument. Pour réassembler, cat dans l’ordre des noms suffit.
+subcommands:
+  - name: "-l"
+    summary: Découpe en morceaux d’un nombre de lignes.
+    explanation: >-
+      Les morceaux s’appellent xaa, xab, sauf si un préfixe est donné. `-d` numérote.
+      `-a` fixe la longueur du suffixe.
+    examples:
+      - title: Deux lignes
+        command: split -l 2 -d /etc/passwd /tmp/passe-
+        comment: Crée /tmp/passe-00, /tmp/passe-01, et la suite.
+  - name: "-b"
+    summary: Découpe par taille.
+    explanation: >-
+      `-b 10M` fait des morceaux de dix mégaoctets. `cat` dans l’ordre des noms
+      réassemble.
+    examples:
+      - title: Réassembler
+        command: cat /tmp/passe-* > /tmp/passe-tout
+        comment: L’ordre lexicographique des noms numérotés reconstitue le fichier.
+see_also:
+  - cat
+  - csplit
+examples:
+  - title: Par lignes
+    command: split -l 2 -d /etc/passwd /tmp/passe-
+    comment: Crée /tmp/passe-00, /tmp/passe-01, etc., deux lignes chacun.
+  - title: Réassembler
+    command: cat /tmp/passe-* > /tmp/passe-tout
+    comment: L’ordre lexicographique des noms numérotés reconstitue le fichier.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU.

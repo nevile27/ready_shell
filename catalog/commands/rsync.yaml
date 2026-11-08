@@ -1,0 +1,60 @@
+name: rsync
+themes:
+  - fichiers
+summary: Synchronise des arborescences, en local ou à travers SSH.
+explanation: >-
+  rsync -a conserve droits, dates, liens et récursion. -v montre les fichiers, -h les
+  tailles lisibles. --delete retire de la destination ce qui n’est plus dans la source :
+  c’est utile pour un miroir et destructeur si la source est la mauvaise. Une source
+  répertoire/ avec slash copie le contenu ; sans slash, elle copie le répertoire
+  lui-même. À distance, -e ssh est le transport par défaut des versions actuelles.
+pitfalls:
+  - >-
+    rsync -a --delete source/ destination/ efface dans la destination tout ce qui n’est
+    pas dans la source. Relisez les deux chemins avant.
+subcommands:
+  - name: "-a"
+    summary: "Archive : récursion, droits, dates et liens."
+    explanation: >-
+      `-a` est le socle d’une copie d’administration. `-H` garde les liens durs. `-v`
+      liste les fichiers. Un slash final sur la source copie le contenu, pas le
+      répertoire lui-même.
+    examples:
+      - title: Miroir local
+        command: rsync -aH /etc/ssh/ /tmp/ssh-copie/
+        comment: Recopie le contenu. Relancer ne transfère que ce qui a changé.
+  - name: "--delete"
+    summary: Retire de la destination ce qui n’est plus dans la source.
+    explanation: >-
+      `--delete` fait un miroir. Il est destructeur si la source est la mauvaise. `-n`
+      montre ce qui serait fait sans écrire.
+    examples:
+      - title: Essai
+        command: rsync -aH -n --delete /etc/ssh/ /tmp/ssh-copie/
+        comment: Liste les actions. Rien n’est modifié.
+    pitfalls:
+      - Relisez les deux chemins avant un --delete sans -n.
+  - name: "-e"
+    summary: Choisit le transport distant.
+    explanation: >-
+      Sans `-e`, la forme `user@hôte:` passe déjà par SSH. `-e ssh` le rend explicite.
+      `-z` compresse pendant le transfert.
+    examples:
+      - title: Vers une machine
+        command: rsync -aH ./site/ user@hote:/var/www/site/
+        comment: Passe par SSH. Le slash final copie le contenu.
+see_also:
+  - cp
+  - scp
+  - ssh
+examples:
+  - title: Miroir local
+    command: rsync -aH /etc/ssh/ /tmp/ssh-copie/
+    comment: Recopie le contenu de /etc/ssh. Relancer ne transfère que ce qui a changé.
+  - title: Vers une autre machine
+    command: rsync -aH ./site/ user@hote:/var/www/site/
+    comment: >-
+      Passe par SSH. Le slash final de la source copie le contenu, pas le dossier site
+      lui-même.
+status: courante
+package: rsync

@@ -1,0 +1,41 @@
+name: nohup
+themes:
+  - shell
+tags:
+  - coreutils
+summary: Lance une commande qui ignore la fermeture du terminal.
+explanation: >-
+  nohup commande fait ignorer SIGHUP, le signal envoyé quand le terminal se ferme. La
+  sortie va dans nohup.out du répertoire courant si elle n’est pas déjà redirigée. Le
+  processus peut quand même mourir avec la session systemd d’un poste : pour un service
+  durable, une unité systemd ou un service OpenRC est le bon outil. nohup ne met pas non
+  plus la commande en arrière-plan : on ajoute &.
+subcommands:
+  - name: commande
+    summary: Ignore la fermeture du terminal.
+    explanation: >-
+      `nohup commande &` lance en arrière-plan et ignore SIGHUP. Sans redirection, la
+      sortie va dans `nohup.out`. Un service systemd ou OpenRC est plus durable qu’un
+      nohup.
+    examples:
+      - title: Avec journal
+        command: nohup ./long.sh > long.log 2>&1 &
+        comment: Sortie dans long.log. Le processus survit à la fermeture du terminal.
+see_also:
+  - bg
+  - systemd-run
+  - systemctl
+examples:
+  - title: Survivre à la fermeture du terminal
+    command: nohup ./long.sh > long.log 2>&1 &
+    comment: Lance le script en arrière-plan, sortie dans long.log, et ignore SIGHUP.
+  - title: Sans redirection
+    command: nohup ./long.sh &
+    comment: Écrit dans nohup.out. Le message de nohup le rappelle sur l’erreur.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

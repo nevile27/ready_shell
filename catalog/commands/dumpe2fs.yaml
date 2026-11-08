@@ -1,0 +1,35 @@
+name: dumpe2fs
+themes:
+  - disques
+summary: Affiche le superbloc et les groupes de blocs ext.
+explanation: >-
+  dumpe2fs /dev/sdb1 détaille ce que tune2fs -l résume, plus les groupes de blocs. -h ne
+  garde que le superbloc. On s’en sert pour comprendre la taille des inodes ou l’espace
+  réservé avant une opération risquée. La commande ne modifie rien.
+subcommands:
+  - name: "-h"
+    summary: Ne garde que le superbloc.
+    explanation: >-
+      Sans `-h`, `dumpe2fs` ajoute la liste des groupes de blocs, longue. La commande ne
+      modifie rien.
+    examples:
+      - title: Résumé
+        command: sudo dumpe2fs -h /dev/sdb1
+        comment: UUID, état et options, sans les groupes.
+see_also:
+  - tune2fs
+  - e2fsck
+examples:
+  - title: Superbloc
+    command: sudo dumpe2fs -h /dev/sdb1
+    comment: Résumé, sans la liste des groupes de blocs.
+  - title: Tout
+    command: sudo dumpe2fs /dev/sdb1 | less
+    comment: Sortie longue. less permet de chercher un champ.
+status: courante
+package:
+  debian: e2fsprogs
+  redhat: e2fsprogs
+  suse: e2fsprogs
+  arch: e2fsprogs
+  alpine: e2fsprogs

@@ -1,0 +1,37 @@
+name: userdel
+themes:
+  - utilisateurs
+summary: Supprime un compte.
+explanation: >-
+  userdel ada retire l’entrée du compte. -r supprime aussi le répertoire personnel et la
+  file d’attente de courrier. Les fichiers ailleurs sur le disque, qui portent encore
+  l’UID, ne sont pas parcourus. -f force même si l’utilisateur est encore connecté, ce
+  qui laisse des processus orphelins. Vérifiez les processus avec pgrep -u ada avant.
+subcommands:
+  - name: "-r"
+    summary: Supprime aussi le répertoire personnel.
+    explanation: >-
+      Sans `-r`, `/home/ada` reste. `-r` ne parcourt pas le reste du disque : des
+      fichiers ailleurs gardent l’ancien UID. `-f` force même si l’utilisateur est
+      connecté.
+    examples:
+      - title: Compte et maison
+        command: sudo userdel -r ada
+        comment: Retire le compte et /home/ada.
+see_also:
+  - useradd
+  - groupdel
+examples:
+  - title: Compte seul
+    command: sudo userdel ada
+    comment: Retire le compte. /home/ada reste sur le disque.
+  - title: Compte et répertoire
+    command: sudo userdel -r ada
+    comment: Retire aussi /home/ada. Les fichiers hors de ce répertoire ne sont pas cherchés.
+status: courante
+package:
+  debian: passwd
+  redhat: shadow-utils
+  suse: shadow
+  arch: shadow
+  alpine: shadow

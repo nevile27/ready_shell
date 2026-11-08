@@ -1,0 +1,52 @@
+name: mv
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Déplace ou renomme un fichier.
+explanation: >-
+  mv ancien nouveau renomme dans le même système de fichiers, en général sans recopier
+  les données. D’un système de fichiers à un autre, mv copie puis supprime. Si la cible
+  est un répertoire, le fichier y est placé sous le même nom. Sur Ubuntu 26.04, mv reste
+  le binaire GNU. mv ne fusionne pas deux répertoires comme le ferait rsync : si la
+  cible existe déjà comme répertoire, la source est déplacée dedans.
+subcommands:
+  - name: renommer
+    summary: Change le nom dans le même répertoire.
+    explanation: >-
+      `mv ancien nouveau` renomme sans recopier les données quand la destination est sur
+      le même système de fichiers. `--` protège un nom qui commence par un tiret.
+    examples:
+      - title: Renommer
+        command: mv brouillon.txt note.txt
+        comment: Le fichier change de nom.
+  - name: "-i"
+    summary: Demande avant d’écraser la cible.
+    explanation: >-
+      `-n` refuse d’écraser. `-t répertoire` déplace tous les fichiers suivants dans ce
+      répertoire, ce qui clarifie une longue liste.
+    examples:
+      - title: Sans écraser
+        command: mv -n note.txt /tmp/
+        comment: Ne remplace pas /tmp/note.txt s’il existe.
+see_also:
+  - cp
+  - rm
+  - rename
+examples:
+  - title: Renommer
+    command: mv brouillon.txt note.txt
+    comment: Le fichier change de nom dans le même répertoire.
+  - title: Ranger dans un dossier
+    command: mv note.txt /tmp/
+    comment: Place note.txt dans /tmp. L’ancien chemin n’existe plus.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

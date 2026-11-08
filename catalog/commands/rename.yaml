@@ -1,0 +1,77 @@
+name: rename
+themes:
+  - fichiers
+summary: >-
+  Renomme plusieurs fichiers. Le langage n’est pas le même sur Debian et sur les autres
+  familles.
+explanation: >-
+  Deux commandes portent ce nom. Sur Debian et Ubuntu, rename vient du paquet Perl
+  rename : rename 's/\.bak$//' *.bak applique une expression Perl. Ailleurs, rename
+  vient d’util-linux : rename .bak .txt *.bak remplace la première occurrence d’une
+  chaîne. Installer le mauvais réflexe casse un script copié d’un tutoriel. ls montre le
+  résultat attendu avant de lancer la commande ; beaucoup de versions ont un mode essai,
+  -n sur l’une et l’autre, dont il faut vérifier le sens avec --help.
+pitfalls:
+  - >-
+    Un script qui appelle rename n’est pas portable entre Debian et Red Hat. Pour un
+    renommage simple et portable, une boucle mv est explicite.
+subcommands:
+  - name: perl
+    summary: Expression Perl, sur Debian et Ubuntu.
+    explanation: >-
+      Le `rename` du paquet Perl applique `s/ancien/nouveau/`. Ailleurs, `rename` vient
+      d’util-linux et remplace une sous-chaîne. Un script qui appelle `rename` n’est pas
+      portable.
+    examples:
+      - title: Suffixe, famille Debian
+        command: rename 's/\.bak$//' *.bak
+        comment: Retire .bak. C’est le rename Perl.
+  - name: util-linux
+    summary: Remplace une sous-chaîne dans les noms.
+    explanation: >-
+      Sur Red Hat, SUSE et Arch, `rename .bak .txt *.bak` remplace la première
+      occurrence. `-n` ou `--dry-run`, selon la version, montre sans renommer : vérifiez
+      `--help`.
+    examples:
+      - title: Sous-chaîne
+        command: rename .bak .txt *.bak
+        comment: Remplace .bak par .txt dans chaque nom.
+see_also:
+  - mv
+  - ls
+examples:
+  - title: Debian et Ubuntu, expression Perl
+    command: rename 's/\.bak$//' *.bak
+    comment: Retire le suffixe .bak. C’est le rename du paquet Perl.
+    families:
+      - debian
+  - title: util-linux
+    command: rename .bak .txt *.bak
+    comment: Remplace la première occurrence de .bak par .txt dans chaque nom.
+    families:
+      - redhat
+      - suse
+      - arch
+status: spécifique
+overrides:
+  debian:
+    status: spécifique
+    package: rename
+    note: rename Perl. La commande util-linux s’appelle rename.ul.
+  redhat:
+    status: spécifique
+    package: util-linux
+    note: "rename d’util-linux : remplacement d’une sous-chaîne, pas une expression Perl."
+  suse:
+    status: spécifique
+    package: util-linux
+    note: rename d’util-linux.
+  arch:
+    status: spécifique
+    package: util-linux
+    note: >-
+      rename d’util-linux. Le rename Perl s’installe sous un autre paquet si vous le
+      voulez.
+  alpine:
+    status: absente
+    note: Ni le rename Perl ni celui d’util-linux ne sont dans BusyBox. Utilisez mv.

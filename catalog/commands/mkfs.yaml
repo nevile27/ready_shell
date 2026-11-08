@@ -1,0 +1,47 @@
+name: mkfs
+themes:
+  - disques
+summary: Crée un système de fichiers. La forme générique est dépréciée au profit de mkfs.type.
+explanation: >-
+  mkfs -t ext4 /dev/sdb1 crée un système ext4 en appelant mkfs.ext4. util-linux
+  considère l’appel générique comme déprécié : on appelle mkfs.ext4, mkfs.xfs ou
+  mkfs.btrfs directement. Créer un système de fichiers efface ce qui était lisible sur
+  la partition. On vérifie le nom dans lsblk juste avant. mkfs ne monte pas le résultat
+  et ne l’ajoute pas à fstab.
+pitfalls:
+  - >-
+    mkfs sur la mauvaise partition détruit les données qui y étaient. Il n’y a pas
+    d’annulation.
+subcommands:
+  - name: "-t"
+    summary: Choisit le type, forme dépréciée.
+    explanation: >-
+      util-linux demande d’appeler `mkfs.ext4`, `mkfs.xfs` ou `mkfs.btrfs` directement.
+      `mkfs -t ext4` fait encore le même travail. Créer un système de fichiers efface la
+      partition.
+    examples:
+      - title: Forme explicite
+        command: sudo mkfs.ext4 /dev/sdb1
+        comment: À lancer sur une partition vide, jamais sur le disque du système.
+    pitfalls:
+      - Le mauvais nom de partition détruit les données. Il n’y a pas d’annulation.
+see_also:
+  - mkfs.ext4
+  - wipefs
+  - mount
+examples:
+  - title: Forme explicite
+    command: sudo mkfs.ext4 /dev/sdb1
+    comment: >-
+      Crée un ext4 sur sdb1. Remplacez par une partition vide, jamais par le disque du
+      système.
+  - title: Forme générique, à éviter
+    command: sudo mkfs -t ext4 /dev/sdb1
+    comment: Fait le même travail aujourd’hui. util-linux demande d’appeler mkfs.ext4.
+status: obsolète
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux

@@ -1,0 +1,238 @@
+export const fiches = [
+  {
+    name: "ps",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "busybox" },
+    overrides: {
+      alpine: { note: "Applet BusyBox limitée. Le paquet procps apporte la syntaxe GNU complète." },
+    },
+    summary: "Liste les processus.",
+    explanation: "ps montre les processus au moment de l’appel. ps aux, syntaxe BSD, liste tout le monde avec le terminal et l’heure de départ. ps -ef, syntaxe System V, fait le même travail avec d’autres colonnes. ps -eo pid,user,cmd choisit les colonnes. ps ne suit pas en continu : c’est top. La sortie n’est pas un format stable pour un script ; pgrep ou une lecture de /proc le sont davantage.",
+    see_also: ["top", "pgrep", "pstree"],
+    examples: [
+      { title: "Tout voir", command: "ps aux", comment: "Une ligne par processus, avec l’utilisateur, le CPU, la mémoire et la commande." },
+      { title: "Colonnes choisies", command: "ps -eo pid,user,ni,cmd", comment: "PID, utilisateur, politesse et ligne de commande." },
+    ],
+  },
+  {
+    name: "top",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "busybox" },
+    overrides: {
+      alpine: { note: "Applet BusyBox plus simple. Le paquet procps apporte le top de procps." },
+    },
+    summary: "Affiche en continu les processus qui consomment le plus.",
+    explanation: "top rafraîchit un écran : charge, mémoire, puis les processus. P trie par CPU, M par mémoire, k envoie un signal, q quitte. -b -n 1 produit un instantané exploitable dans un tube, sans l’écran interactif. top lit le système au moment du rafraîchissement ; un pic très court peut lui échapper. htop est un autre programme, à installer à part, et ne fait pas partie de cette fiche.",
+    see_also: ["ps", "free", "uptime"],
+    examples: [
+      { title: "Écran interactif", command: "top", comment: "q quitte. P et M changent le tri pendant que l’écran tourne." },
+      { title: "Un seul passage", command: "top -b -n 1 | head -n 20", comment: "Écrit un instantané en texte et s’arrête. Utile dans un script ou un journal." },
+    ],
+  },
+  {
+    name: "kill",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "util-linux", suse: "util-linux", arch: "util-linux", alpine: "busybox" },
+    summary: "Envoie un signal à un processus, par son PID.",
+    explanation: "kill PID envoie SIGTERM, la demande d’arrêt propre. kill -9 PID envoie SIGKILL, que le processus ne peut pas ignorer et qui ne lui laisse pas le temps de fermer ses fichiers. On commence par TERM. kill -l liste les noms. Le shell a aussi un kill interne, capable de viser un job avec %1. Un PID qui n’est pas le vôtre demande l’administrateur. kill ne cherche pas par nom : c’est pkill ou killall.",
+    pitfalls: ["kill -9 est un dernier recours. Le processus n’écrit pas ses tampons et ne retire pas son fichier de verrou."],
+    see_also: ["pkill", "killall", "trap", "jobs"],
+    examples: [
+      { title: "Demander l’arrêt", command: "kill 1234", comment: "Envoie SIGTERM au PID 1234. Remplacez 1234 par un PID vu dans ps." },
+      { title: "Liste des signaux", command: "kill -l", comment: "Écrit les noms : TERM, KILL, HUP, STOP, et les autres." },
+    ],
+  },
+  {
+    name: "killall",
+    themes: ["processus"],
+    package: { debian: "psmisc", redhat: "psmisc", suse: "psmisc", arch: "psmisc", alpine: "busybox" },
+    overrides: {
+      alpine: { note: "Applet BusyBox. Le paquet psmisc apporte la version GNU, avec -w et -r." },
+    },
+    summary: "Envoie un signal à tous les processus d’un nom.",
+    explanation: "killall nom vise les processus dont le nom de commande est nom. Sans option, le signal est SIGTERM. -u user limite à un utilisateur, -i demande confirmation sur la version GNU. Ce n’est pas la même commande que sur certains Unix, où killall arrêtait tout. Vérifiez avec pgrep nom avant. Sur un système très chargé, le nom peut être partagé par plusieurs services.",
+    see_also: ["pkill", "pgrep", "kill"],
+    examples: [
+      { title: "Voir avant d’arrêter", command: "pgrep -a sleep", comment: "Liste les PID dont le nom est sleep, avec leur ligne de commande." },
+      { title: "Demander l’arrêt", command: "killall sleep", comment: "Envoie SIGTERM à chaque processus nommé sleep." },
+    ],
+  },
+  {
+    name: "pkill",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "procps" },
+    overrides: {
+      alpine: { note: "Paquet procps. BusyBox fournit killall, pas toujours pkill." },
+    },
+    summary: "Envoie un signal aux processus dont le nom correspond à un motif.",
+    explanation: "pkill motif sélectionne comme pgrep, puis envoie SIGTERM. -f compare à la ligne de commande complète, pas seulement au nom court. -u user limite à un utilisateur. -x exige le nom exact. C’est plus précis que killall quand plusieurs commandes partagent un préfixe. Le motif est une expression rationnelle.",
+    see_also: ["pgrep", "kill", "killall"],
+    examples: [
+      { title: "Correspondance exacte", command: "pkill -x sleep", comment: "SIGTERM aux processus dont le nom est exactement sleep." },
+      { title: "Ligne de commande", command: "pkill -f 'sleep 30'", comment: "Vise les commandes dont la ligne complète contient sleep 30." },
+    ],
+  },
+  {
+    name: "pgrep",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "procps" },
+    overrides: {
+      alpine: { note: "Paquet procps, pas dans BusyBox." },
+    },
+    summary: "Écrit les PID dont le nom correspond à un motif.",
+    explanation: "pgrep sshd écrit un PID par ligne. Le code de retour est 0 si au moins un processus correspond. -a ajoute la ligne de commande, -u user filtre, -x exige l’égalité, -f cherche dans la ligne complète. C’est le moyen habituel de savoir si un service tourne sans découper la sortie de ps.",
+    see_also: ["pkill", "pidof", "ps"],
+    examples: [
+      { title: "PID d’un nom", command: "pgrep -a sshd", comment: "Liste les démons SSH avec leur commande. Le nom d’unité, lui, diffère selon la famille." },
+      { title: "Test dans un script", command: "pgrep -x cron >/dev/null && printf '%s\\n' \"présent\"", comment: "N’écrit les PID nulle part. Le texte n’apparaît que si un processus s’appelle exactement cron." },
+    ],
+  },
+  {
+    name: "pidof",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "busybox" },
+    summary: "Écrit les PID d’un nom de programme exact.",
+    explanation: "pidof sshd écrit les PID sur une seule ligne. Contrairement à pgrep, le nom n’est pas une expression rationnelle. -s ne garde qu’un PID, -x inclut les scripts invoqués par leur nom. BusyBox et procps ont tous deux pidof, avec des options pas tout à fait identiques.",
+    see_also: ["pgrep", "kill"],
+    examples: [
+      { title: "PID sur une ligne", command: "pidof sshd", comment: "Peut écrire plusieurs numéros séparés par des espaces, ou rien si le démon n’est pas lancé." },
+      { title: "Un seul PID", command: "pidof -s init", comment: "Sur un système systemd, init est souvent PID 1. -s n’en écrit qu’un." },
+    ],
+  },
+  {
+    name: "pstree",
+    themes: ["processus"],
+    package: { debian: "psmisc", redhat: "psmisc", suse: "psmisc", arch: "psmisc", alpine: "psmisc" },
+    overrides: {
+      alpine: { note: "Paquet psmisc, absent d’une image BusyBox minimale." },
+    },
+    summary: "Dessine l’arbre des processus.",
+    explanation: "pstree part de PID 1 et montre qui a lancé qui. -p ajoute les PID, -u les utilisateurs, -s PID ne garde que les ancêtres de ce processus. Un service qui double-fork disparaît de l’arbre comme enfant de son lanceur et se raccroche à init ou à systemd. pstree ne remplace pas ps pour les colonnes de CPU.",
+    see_also: ["ps", "top"],
+    examples: [
+      { title: "Arbre avec PID", command: "pstree -p", comment: "Toute la session et les démons, avec les numéros entre parenthèses." },
+      { title: "Ancêtres d’un PID", command: "pstree -sp 1", comment: "Montre PID 1 et ce qu’il a sous lui au premier niveau selon l’option. -s 1 limite à la chaîne vers init." },
+    ],
+  },
+  {
+    name: "uptime",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "busybox" },
+    summary: "Affiche depuis quand le système tourne, et la charge.",
+    explanation: "uptime écrit l’heure, la durée depuis le démarrage, le nombre d’utilisateurs et la charge moyenne sur 1, 5 et 15 minutes. La charge compte les processus prêts à calculer ou bloqués sur le disque, pas un pourcentage de CPU. Sur une machine à quatre cœurs, une charge de 4 peut être un plein emploi, pas un blocage. -p, sur procps, écrit la durée en mots.",
+    see_also: ["top", "w", "free"],
+    examples: [
+      { title: "Résumé", command: "uptime", comment: "Une ligne : heure, uptime, utilisateurs, charge." },
+      { title: "Durée seule, procps", command: "uptime -p", comment: "Par exemple « up 3 days, 2 hours ». BusyBox peut ignorer -p." },
+    ],
+  },
+  {
+    name: "free",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "busybox" },
+    summary: "Résume la mémoire vive et l’espace d’échange.",
+    explanation: "free -h montre la RAM et le swap en unités lisibles. La colonne available, sur procps, est celle qui dit ce qui peut encore servir aux applications : la mémoire en cache n’est pas perdue, le noyau la rend s’il le faut. available absente d’un vieux free ou d’un BusyBox très court : ne concluez pas qu’il n’y a plus de RAM parce que free est bas et buff/cache est haut.",
+    see_also: ["vmstat", "top"],
+    examples: [
+      { title: "Unités lisibles", command: "free -h", comment: "RAM et swap. Regardez available plutôt que la seule colonne free." },
+      { title: "En mébioctets", command: "free -m", comment: "Nombres entiers en Mio, plus stables à comparer qu’un affichage en Gio." },
+    ],
+  },
+  {
+    name: "vmstat",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "procps" },
+    overrides: {
+      alpine: { note: "Paquet procps, pas dans BusyBox." },
+    },
+    summary: "Résume périodiquement mémoire, swap et processeur.",
+    explanation: "vmstat 2 affiche une ligne toutes les deux secondes. La première ligne est une moyenne depuis le démarrage ; les suivantes sont l’intervalle. si et so sont les pages échangées vers le swap : les voir monter en continu dit qu’il manque de RAM. wa est le temps perdu à attendre les disques. vmstat ne nomme pas les processus : c’est top ou ps.",
+    see_also: ["free", "top", "iostat"],
+    examples: [
+      { title: "Trois mesures", command: "vmstat 2 3", comment: "Une ligne de moyenne, puis deux intervalles de deux secondes, puis la commande s’arrête." },
+      { title: "Mémoire", command: "vmstat -s", comment: "Compteurs cumulés depuis le démarrage, en une liste." },
+    ],
+  },
+  {
+    name: "iostat",
+    themes: ["processus", "disques"],
+    package: { debian: "sysstat", redhat: "sysstat", suse: "sysstat", arch: "sysstat", alpine: "sysstat" },
+    summary: "Affiche la charge des disques et du processeur.",
+    explanation: "iostat -xz 2 répète toutes les deux secondes un bilan CPU et disques. %util proche de 100 et await qui monte indiquent un disque saturé. Le paquet sysstat n’est pas installé par défaut partout, et son service de collecte historique (sar) est un autre usage du même paquet. La première ligne est encore une moyenne depuis le démarrage.",
+    see_also: ["vmstat", "df"],
+    examples: [
+      { title: "Disques, deux échantillons", command: "iostat -xz 2 2", comment: "Ignorez en partie la première mesure : la seconde porte sur les deux dernières secondes." },
+      { title: "Un disque", command: "iostat -x sda 1 1", comment: "Remplacez sda par le nom vu dans lsblk. Une seule mesure, moyenne depuis le démarrage." },
+    ],
+  },
+  {
+    name: "lsof",
+    themes: ["processus"],
+    package: "lsof",
+    summary: "Liste les fichiers ouverts par les processus.",
+    explanation: "lsof montre fichiers, sockets et bibliothèques tenus ouverts. lsof -p PID limite à un processus, lsof +D /var cherche qui occupe un répertoire, lsof -i :22 qui écoute ou parle sur le port 22. Un fichier supprimé mais encore ouvert apparaît avec (deleted) et continue d’occuper de l’espace jusqu’à la fermeture. La commande a souvent besoin de droits d’administration pour voir les processus des autres.",
+    see_also: ["fuser", "ss", "ps"],
+    examples: [
+      { title: "Qui écoute sur le port 22", command: "sudo lsof -i :22", comment: "Liste les processus SSH liés à ce port, en TCP ou UDP." },
+      { title: "Fichiers d’un PID", command: "sudo lsof -p 1", comment: "Tout ce que le processus 1 garde ouvert." },
+    ],
+  },
+  {
+    name: "fuser",
+    themes: ["processus"],
+    package: { debian: "psmisc", redhat: "psmisc", suse: "psmisc", arch: "psmisc", alpine: "busybox" },
+    overrides: {
+      alpine: { note: "Applet BusyBox. Le paquet psmisc apporte la version GNU." },
+    },
+    summary: "Dit quels processus utilisent un fichier ou un point de montage.",
+    explanation: "fuser /mnt écrit les PID qui ont quelque chose d’ouvert sous ce point de montage. -v détaille la commande, -m considère le montage. fuser -k envoie SIGKILL à ces processus : c’est brutal, on regarde d’abord sans -k. Utile quand umount refuse avec « target is busy ».",
+    see_also: ["lsof", "umount", "kill"],
+    examples: [
+      { title: "Qui occupe un montage", command: "sudo fuser -vm /mnt", comment: "Liste les PID et le type d’accès. Ne tue rien." },
+      { title: "Port TCP", command: "sudo fuser -v 22/tcp", comment: "Montre le processus qui tient le port 22. ss -lpt fait le même travail côté réseau." },
+    ],
+  },
+  {
+    name: "nice",
+    themes: ["processus"],
+    package: { debian: "coreutils", redhat: "coreutils", suse: "coreutils", arch: "coreutils", alpine: "busybox" },
+    tags: ["coreutils"],
+    summary: "Lance une commande avec une politesse CPU différente.",
+    explanation: "nice -n 10 commande baisse la priorité CPU : le nombre va de -20 (le plus favorisé) à 19 (le plus effacé). Sans -n, nice ajoute 10. Un utilisateur ordinaire ne peut que diminuer sa priorité, pas l’augmenter. nice ne limite pas la mémoire et ne confine pas le processus. Pour un service, la directive Nice= d’une unité systemd survit au redémarrage.",
+    see_also: ["renice", "systemd-run", "timeout"],
+    examples: [
+      { title: "Tâche de fond discrète", command: "nice -n 19 ./index.sh", comment: "Le script ne prend du CPU que si personne d’autre n’en veut." },
+      { title: "Voir la politesse", command: "ps -eo pid,ni,cmd | head", comment: "La colonne NI est la valeur nice. 0 est le défaut." },
+    ],
+  },
+  {
+    name: "renice",
+    themes: ["processus"],
+    package: { debian: "util-linux", redhat: "util-linux", suse: "util-linux", arch: "util-linux", alpine: "util-linux" },
+    overrides: {
+      alpine: { note: "Paquet util-linux. BusyBox a parfois un renice plus court." },
+    },
+    summary: "Change la politesse d’un processus déjà lancé.",
+    explanation: "renice -n 15 -p PID pose la politesse du processus. -u user vise tous les processus d’un utilisateur. Comme nice, un utilisateur non privilégié ne peut pas rendre un processus plus favorisé qu’il ne l’est. Le changement vaut jusqu’à la fin du processus, pas au prochain démarrage.",
+    see_also: ["nice", "ps", "top"],
+    examples: [
+      { title: "Rendre un PID plus discret", command: "renice -n 10 -p 1234", comment: "Remplacez 1234 par un PID à vous. ps montrera NI à 10." },
+      { title: "Tous les processus d’un compte", command: "sudo renice -n 5 -u backup", comment: "Pose la politesse 5 pour les processus actuels de backup." },
+    ],
+  },
+  {
+    name: "pmap",
+    themes: ["processus"],
+    package: { debian: "procps", redhat: "procps-ng", suse: "procps", arch: "procps-ng", alpine: "procps" },
+    overrides: {
+      alpine: { note: "Paquet procps, pas dans BusyBox." },
+    },
+    summary: "Montre la carte mémoire d’un processus.",
+    explanation: "pmap PID liste les zones mémoire : code, bibliothèques, tas, pile. pmap -x ajoute la taille résidente. On s’en sert pour voir quelle bibliothèque est chargée ou pourquoi un processus grossit. Il faut le droit de lire /proc/PID/maps. Ce n’est pas un profilage dans le temps : relancez-le pour comparer.",
+    see_also: ["ps", "top", "free"],
+    examples: [
+      { title: "Carte du processus 1", command: "sudo pmap -x 1", comment: "Détaille les zones de PID 1, avec la colonne résidente." },
+      { title: "Total seulement", command: "pmap -d 1 | tail -n 1", comment: "La dernière ligne résume. Le détail est au-dessus." },
+    ],
+  },
+];

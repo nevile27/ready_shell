@@ -1,0 +1,86 @@
+name: tar
+themes:
+  - archives
+summary: Rassemble une arborescence dans une archive, avec ou sans compression.
+explanation: >-
+  `tar` réunit des fichiers dans une archive. `-c` crée, `-x` extrait, `-t` liste, `-f`
+  donne le nom du fichier. La compression se choisit avec `-z` pour gzip, `-J` pour xz,
+  `-j` pour bzip2, `--zstd` pour zstd. On regarde `-t` avant d’extraire.
+pitfalls:
+  - >-
+    tar -xzf archive.tar.gz à la racine d’un projet peut écraser des fichiers. Regardez
+    tar -tf avant, et extrayez dans un répertoire vide.
+subcommands:
+  - name: "-c"
+    summary: Crée une archive.
+    explanation: >-
+      `-c` lit les chemins donnés ensuite et les range dans l’archive. `-f` doit nommer
+      le fichier de sortie. `-v` liste ce qui est pris. `-C` change de répertoire avant
+      d’ajouter les noms, ce qui évite de stocker un préfixe absolu. L’ordre lisible est
+      `tar -czf archive.tar.gz -C source .`
+    examples:
+      - title: Archive gzip d’un répertoire
+        command: tar -czf /tmp/etc-ssh.tar.gz -C /etc ssh
+        comment: Stocke ssh/…, pas /etc/ssh. -z compresse avec gzip.
+  - name: "-x"
+    summary: Extrait une archive.
+    explanation: >-
+      `-x` recrée les fichiers. `-C /tmp/dest` choisit le répertoire de destination, qui
+      doit exister. Sans `-C`, l’extraction part du répertoire courant. Une archive qui
+      contient des chemins absolus ou `..` peut écrire hors de l’endroit prévu : on
+      liste avant.
+    pitfalls:
+      - >-
+        Extraire à la racine d’un projet peut écraser des fichiers du même nom. Créez un
+        répertoire vide et utilisez -C.
+    examples:
+      - title: Extraire à part
+        command: mkdir -p /tmp/out && tar -xzf /tmp/etc-ssh.tar.gz -C /tmp/out
+        comment: Le contenu apparaît dans /tmp/out.
+  - name: "-t"
+    summary: Liste le contenu sans l’extraire.
+    explanation: >-
+      `-t` écrit les noms stockés. La lettre de compression doit être la bonne, ou `tar`
+      la devine sur les versions récentes à partir du suffixe. Un nom qui commence par
+      `/` ou qui contient `..` est une raison de ne pas extraire tel quel.
+    examples:
+      - title: Lister
+        command: tar -tzf /tmp/etc-ssh.tar.gz
+        comment: Les chemins, un par ligne. Rien n’est écrit sur le disque.
+  - name: "-C"
+    summary: Change de répertoire pour la suite des arguments.
+    explanation: >-
+      `-C` s’applique à ce qui suit, pas à toute la commande. On peut en mettre
+      plusieurs : `-C /etc ssh -C /var log` prend ssh dans /etc puis log dans /var. À
+      l’extraction, un seul `-C` vers un répertoire vide suffit presque toujours.
+    examples:
+      - title: Deux origines
+        command: tar -cf /tmp/melange.tar -C /etc hostname -C /var log
+        comment: L’archive contient hostname et le répertoire log, sans leurs préfixes.
+see_also:
+  - gzip
+  - xz
+  - zstd
+  - zip
+examples:
+  - title: Créer une archive gzip
+    command: tar -czf /tmp/etc-ssh.tar.gz -C /etc ssh
+    comment: >-
+      Archive le répertoire ssh, pas le préfixe /etc. -C change de répertoire avant
+      d’ajouter ssh.
+  - title: Lister avant d’extraire
+    command: tar -tzf /tmp/etc-ssh.tar.gz
+    comment: Montre les chemins stockés. S’ils commencent par /, méfiez-vous.
+status: courante
+package:
+  debian: tar
+  redhat: tar
+  suse: tar
+  arch: tar
+  alpine: tar
+overrides:
+  alpine:
+    package: busybox
+    note: >-
+      Applet BusyBox suffisante pour créer et extraire. Le paquet tar apporte la version
+      GNU.

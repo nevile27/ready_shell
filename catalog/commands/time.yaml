@@ -1,0 +1,50 @@
+name: time
+themes:
+  - shell
+summary: Mesure le temps passé par une commande.
+explanation: >-
+  Dans bash, time est d’abord un mot réservé : time commande mesure cette commande, y
+  compris un pipeline. Le binaire /usr/bin/time, paquet time, ajoute un rapport détaillé
+  avec -v. Les deux n’ont pas les mêmes options. type -a time montre lequel sera
+  utilisé. Le temps affiché se sépare en réel (montre), utilisateur (CPU en mode
+  utilisateur) et système (CPU dans le noyau).
+subcommands:
+  - name: builtin
+    summary: Mesure avec le mot réservé du shell.
+    explanation: >-
+      Dans bash, `time commande` mesure même un pipeline. Le temps se sépare en réel,
+      utilisateur et système. `type -a time` dit si le builtin cache le binaire.
+    examples:
+      - title: Mesure
+        command: time sleep 1
+        comment: Affiche le temps réel, proche d’une seconde.
+  - name: "-v"
+    summary: Rapport détaillé du binaire /usr/bin/time.
+    explanation: >-
+      `/usr/bin/time -v` ajoute mémoire et changements de contexte. Le paquet `time`
+      doit être installé. Ce n’est pas le même programme que le mot réservé.
+    examples:
+      - title: Détail
+        command: /usr/bin/time -v sleep 1
+        comment: Plusieurs lignes de statistiques, pas seulement trois temps.
+see_also:
+  - type
+  - timeout
+examples:
+  - title: Mesure du shell
+    command: time sleep 1
+    comment: >-
+      Affiche le temps réel, utilisateur et système. Dans bash, c’est le mot réservé,
+      pas forcément le binaire.
+  - title: Rapport du binaire GNU
+    command: /usr/bin/time -v sleep 1
+    comment: >-
+      Détaille la mémoire et les changements de contexte. Le paquet time doit être
+      installé.
+status: courante
+package:
+  debian: time
+  redhat: time
+  suse: time
+  arch: time
+  alpine: busybox

@@ -1,0 +1,65 @@
+name: ls
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Liste les fichiers d’un répertoire.
+explanation: >-
+  ls écrit les noms du répertoire courant, ou de ceux passés en argument. -l ajoute les
+  droits, le propriétaire, la taille et la date. -a inclut les noms qui commencent par
+  un point. -h rend les tailles lisibles. L’ordre et les couleurs dépendent de la locale
+  et de LS_COLORS. ls ne descend pas dans les sous-répertoires : c’est find ou tree.
+pitfalls:
+  - >-
+    Ne parsez pas la sortie de ls dans un script. Les noms peuvent contenir des espaces
+    et des sauts de ligne. Utilisez find -print0 ou une boucle sur un glob.
+subcommands:
+  - name: "-l"
+    summary: "Liste longue : droits, propriétaire, taille et date."
+    explanation: >-
+      `ls -l` écrit une ligne par nom. `-h` rend les tailles lisibles. `-a` ajoute les
+      noms qui commencent par un point.
+    examples:
+      - title: Longue, avec les cachés
+        command: ls -la
+        comment: Droits, propriétaire, taille et date, y compris les fichiers cachés.
+  - name: "-t"
+    summary: Trie par date de modification.
+    explanation: >-
+      `-t` met le plus récent en premier. `-r` inverse. `-S` trie par taille. `-u`
+      utilise la date d’accès.
+    examples:
+      - title: Plus récents
+        command: ls -lt
+        comment: Le fichier modifié en dernier apparaît en haut.
+  - name: "-d"
+    summary: Ne descend pas dans un répertoire donné en argument.
+    explanation: >-
+      `ls -ld répertoire` décrit le répertoire lui-même au lieu de son contenu. Utile
+      avec un glob de répertoires.
+    examples:
+      - title: Le répertoire, pas son contenu
+        command: ls -ld /tmp
+        comment: Une seule ligne, celle de /tmp.
+see_also:
+  - stat
+  - find
+  - tree
+  - du
+examples:
+  - title: Liste longue
+    command: ls -la
+    comment: Montre les cachés, les droits, le propriétaire, la taille et la date.
+  - title: Plus récents d’abord
+    command: ls -lt
+    comment: Trie par date de modification, du plus récent au plus ancien.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

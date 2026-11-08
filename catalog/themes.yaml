@@ -1,0 +1,38 @@
+themes:
+  - id: shell
+    title: Shell et commandes internes
+    summary: bash, dash, ash, zsh, et les commandes internes utilisées dans les scripts et au prompt.
+  - id: fichiers
+    title: Fichiers et répertoires
+    summary: Copier, déplacer, lister, chercher et inspecter des fichiers.
+  - id: texte
+    title: Texte
+    summary: Filtrer, transformer, comparer et assembler du texte.
+  - id: processus
+    title: Processus et signaux
+    summary: Voir ce qui tourne, et l’arrêter ou le limiter.
+  - id: utilisateurs
+    title: Utilisateurs et droits
+    summary: Comptes, groupes, mots de passe et élévation de privilèges.
+  - id: disques
+    title: Disques et systèmes de fichiers
+    summary: Partitions, systèmes de fichiers, montage, espace et modules.
+  - id: reseau
+    title: Réseau
+    summary: Interfaces, routes, sockets, noms, transferts et pare-feu.
+  - id: services
+    title: Services et journaux
+    summary: systemd, OpenRC, tâches planifiées et journaux.
+  - id: paquets
+    title: Paquets
+    summary: apt, dnf, pacman, zypper, apk, et les outils de bas niveau.
+  - id: archives
+    title: Archives et compression
+    summary: tar, gzip, bzip2, xz, zstd, zip et cpio.
+  - id: obsolescence
+    title: Registre d’obsolescence
+    virtual: true
+    summary: |
+      Vue calculée des commandes obsolètes ou retirées, et des commandes
+      encore courantes qui gardent une option dépréciée. Chaque ligne ouvre
+      la fiche et le remplaçant.

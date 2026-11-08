@@ -1,0 +1,87 @@
+name: apk
+themes:
+  - paquets
+summary: Installe et met à jour les paquets sur Alpine.
+explanation: >-
+  `apk` est le gestionnaire d’Alpine. `update` rafraîchit l’index, `upgrade` met à jour,
+  `add` installe, `del` retire. Dans une image, `--no-cache` évite de conserver l’index.
+subcommands:
+  - name: update
+    summary: Rafraîchit l’index des dépôts.
+    explanation: >-
+      `update` lit /etc/apk/repositories et télécharge les index. Il n’installe pas les
+      mises à jour : c’est `upgrade`. Dans un script d’image, on préfère souvent `add
+      --no-cache`, qui rafraîchit et n’écrit pas l’index dans le système.
+    examples:
+      - title: Rafraîchir
+        command: doas apk update
+        comment: Met les index à jour. doas est l’élévation habituelle.
+        families:
+          - alpine
+  - name: upgrade
+    summary: Met à jour les paquets installés.
+    explanation: >-
+      `upgrade` applique les versions des index. `-a` inclut aussi les changements de
+      dépendances plus larges. Sans `update` récent, la commande ne voit pas les
+      nouveautés.
+    examples:
+      - title: Mettre à jour
+        command: doas apk update && doas apk upgrade
+        comment: Index, puis paquets.
+        families:
+          - alpine
+  - name: add
+    summary: Installe un paquet.
+    explanation: >-
+      `add` installe le nom demandé. `--no-cache` met l’index à jour pour cette commande
+      et ne le laisse pas sur le disque. Plusieurs noms se donnent à la suite. `del`
+      retire un paquet.
+    examples:
+      - title: Installer sans garder l’index
+        command: doas apk add --no-cache curl
+        comment: Habituel dans une image minimale.
+        families:
+          - alpine
+      - title: Retirer
+        command: doas apk del curl
+        comment: Désinstalle le paquet.
+        families:
+          - alpine
+  - name: search
+    summary: Cherche un paquet, ou liste les fichiers d’un paquet installé.
+    explanation: >-
+      `search` interroge les index. `info` décrit un paquet. `info -L` liste les
+      fichiers qu’il a installés. `search -e` exige le nom exact plutôt qu’un fragment.
+    examples:
+      - title: Chercher
+        command: apk search curl
+        comment: Noms qui correspondent.
+        families:
+          - alpine
+      - title: Fichiers installés
+        command: apk info -L busybox
+        comment: Chemins fournis par le paquet.
+        families:
+          - alpine
+see_also:
+  - apt
+  - dnf
+  - pacman
+examples:
+  - title: Installer sans garder l’index
+    command: apk add --no-cache curl
+    comment: >-
+      Met l’index à jour, installe, puis retire l’index. Habituel dans une image. doas
+      ou root selon le contexte.
+    families:
+      - alpine
+  - title: Fichiers d’un paquet
+    command: apk info -L busybox
+    comment: Liste les chemins fournis par busybox.
+    families:
+      - alpine
+status: absente
+overrides:
+  alpine:
+    status: spécifique
+    package: apk-tools

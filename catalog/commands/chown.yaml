@@ -1,0 +1,55 @@
+name: chown
+themes:
+  - fichiers
+  - utilisateurs
+tags:
+  - coreutils
+summary: Change le propriétaire ou le groupe d’un fichier.
+explanation: >-
+  chown user fichier donne le fichier à user. chown user:groupe change les deux. chown
+  :groupe ne change que le groupe. L’opération demande en pratique l’administrateur : un
+  utilisateur ne cède pas ses fichiers à un autre. -R parcourt un répertoire. --from ne
+  modifie que si le propriétaire actuel est celui attendu, ce qui évite une course dans
+  un script.
+subcommands:
+  - name: user
+    summary: Donne le fichier à un utilisateur.
+    explanation: >-
+      `chown user fichier` demande en pratique l’administrateur. `user:groupe` change
+      les deux. `:groupe` ne change que le groupe.
+    examples:
+      - title: Propriétaire
+        command: sudo chown root:root /tmp/demo-chown
+        comment: Le fichier doit exister. root en devient le propriétaire.
+  - name: "-R"
+    summary: Parcourt un répertoire.
+    explanation: >-
+      `--from` ne modifie que si le propriétaire actuel est celui attendu. Les liens
+      symboliques se règlent avec `-h` sur la version GNU, sans suivre la cible.
+    examples:
+      - title: Arborescence
+        command: sudo chown -R user:user /srv/données
+        comment: À lancer seulement sur le répertoire voulu.
+see_also:
+  - chmod
+  - chgrp
+  - stat
+examples:
+  - title: Propriétaire et groupe
+    command: sudo chown root:root /tmp/demo-chown
+    comment: Le fichier doit exister. root en devient le propriétaire.
+  - title: Groupe seul
+    command: sudo chown :adm /var/log/syslog
+    comment: >-
+      Ne change pas le propriétaire. Le groupe adm est celui qui lit souvent les
+      journaux sur Debian.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

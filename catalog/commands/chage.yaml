@@ -1,0 +1,46 @@
+name: chage
+themes:
+  - utilisateurs
+summary: Règle la durée de vie d’un mot de passe.
+explanation: >-
+  chage -l user affiche la date du dernier changement, l’expiration et l’inactivité. -M
+  90 impose un changement tous les 90 jours, -E 2026-12-31 ferme le compte à cette date,
+  -d 0 force un changement à la prochaine connexion. Ce n’est pas le verrouillage
+  immédiat : passwd -l ou usermod -L font cela. Les politiques fines passent aussi par
+  PAM, pas seulement par chage.
+subcommands:
+  - name: "-l"
+    summary: Affiche les dates d’expiration.
+    explanation: >-
+      `chage -l` montre le dernier changement, l’expiration du mot de passe et celle du
+      compte.
+    examples:
+      - title: État
+        command: sudo chage -l ada
+        comment: Les dates, ou never.
+  - name: "-d"
+    summary: Force un changement à la prochaine connexion.
+    explanation: >-
+      `-d 0` marque le mot de passe comme périmé. `-M 90` impose un changement tous les
+      90 jours. `-E` ferme le compte à une date.
+    examples:
+      - title: Forcer
+        command: sudo chage -d 0 ada
+        comment: La prochaine connexion par mot de passe devra en choisir un nouveau.
+see_also:
+  - passwd
+  - usermod
+examples:
+  - title: État
+    command: sudo chage -l ada
+    comment: Dates d’expiration du mot de passe et du compte.
+  - title: Forcer un changement
+    command: sudo chage -d 0 ada
+    comment: La prochaine connexion par mot de passe devra en choisir un nouveau.
+status: courante
+package:
+  debian: passwd
+  redhat: shadow-utils
+  suse: shadow
+  arch: shadow
+  alpine: shadow

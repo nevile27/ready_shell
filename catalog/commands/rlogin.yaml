@@ -1,0 +1,40 @@
+name: rlogin
+themes:
+  - reseau
+summary: Ouverture de session distante sans chiffrement. Remplacée par ssh.
+explanation: >-
+  rlogin hote ouvrait un shell distant dans la famille rsh. Le protocole n’est plus
+  acceptable sur un réseau. Les installations de novembre 2026 ne le mettent pas en
+  place. ssh est le remplaçant direct, avec des clés plutôt qu’un fichier .rhosts.
+subcommands:
+  - name: session
+    summary: Ancienne ouverture de session sans chiffrement.
+    explanation: >-
+      `rlogin` appartient à la même famille que `rsh`. `ssh` est le remplaçant, avec des
+      clés plutôt qu’un fichier `.rhosts`.
+    examples:
+      - title: Session
+        command: ssh user@hote
+        comment: Session chiffrée.
+see_also:
+  - ssh
+  - rsh
+replaced_by: ssh
+examples:
+  - title: Session chiffrée
+    command: ssh user@hote
+    comment: Remplace rlogin hote.
+  - title: Avec une clé
+    command: ssh-copy-id user@hote
+    comment: Évite ensuite le mot de passe. À faire une fois, vers une machine à vous.
+status: obsolète
+package:
+  debian: rsh-client
+  redhat: rsh
+  suse: rsh
+  arch: inetutils
+  alpine: busybox
+overrides:
+  alpine:
+    status: absente
+    note: Absent du système. La session distante est ssh.

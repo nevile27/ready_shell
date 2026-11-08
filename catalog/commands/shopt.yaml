@@ -1,0 +1,45 @@
+name: shopt
+themes:
+  - shell
+summary: Active les options propres à bash.
+explanation: >-
+  shopt règle ce que set -o ne couvre pas : nullglob retire les motifs sans
+  correspondance au lieu de les laisser tels quels, globstar permet à ** de descendre
+  dans les sous-répertoires, nocaseglob ignore la casse. shopt -s active, shopt -u
+  désactive, shopt -p affiche l’état. dash et ash n’ont pas shopt.
+subcommands:
+  - name: "-s"
+    summary: Active une option bash.
+    explanation: >-
+      `shopt -s nullglob` retire les motifs sans correspondance au lieu de les laisser
+      tels quels. `globstar` permet à `**` de descendre dans les sous-répertoires.
+    examples:
+      - title: Motif vide
+        command: shopt -s nullglob
+        comment: Un *.log qui ne trouve rien devient une liste vide.
+  - name: "-u"
+    summary: Désactive une option.
+    explanation: >-
+      `shopt -u` remet le comportement précédent. `shopt -p` affiche l’état sous une
+      forme que l’on peut relire.
+    examples:
+      - title: État
+        command: shopt -p nullglob
+        comment: Écrit shopt -s ou shopt -u selon que l’option est active.
+see_also:
+  - set
+  - bash
+examples:
+  - title: Motif sans correspondance
+    command: shopt -s nullglob
+    comment: Un motif *.log qui ne trouve rien devient une liste vide, au lieu du texte *.log.
+  - title: Voir une option
+    command: shopt globstar
+    comment: Dit si ** parcourt les sous-répertoires dans ce bash.
+status: courante
+package: bash
+overrides:
+  alpine:
+    note: >-
+      Commande de bash, absente d’ash. Sur Alpine, /bin/sh est ash ; installez le paquet
+      bash pour l’utiliser.

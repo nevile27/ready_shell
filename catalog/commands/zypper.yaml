@@ -1,0 +1,81 @@
+name: zypper
+themes:
+  - paquets
+summary: Installe et met à jour les paquets sur openSUSE et SLES.
+explanation: >-
+  `zypper` pilote les paquets d’openSUSE et de SLES. `refresh` met les dépôts à jour,
+  `update` applique les correctifs de la même version. `dup` change de distribution : ce
+  n’est pas la commande du mardi matin.
+subcommands:
+  - name: refresh
+    summary: Rafraîchit les index des dépôts.
+    explanation: >-
+      `refresh` télécharge les métadonnées. Il n’installe rien. `repos` ou `lr` liste
+      les dépôts connus. Un dépôt en erreur s’affiche ici.
+    examples:
+      - title: Rafraîchir
+        command: sudo zypper refresh
+        comment: Met les index à jour.
+        families:
+          - suse
+  - name: update
+    summary: Installe les mises à jour de la version en cours.
+    explanation: >-
+      `update` applique correctifs et nouvelles versions sans changer d’édition de Leap
+      ou de SLES. Il suppose des index récents : enchaînez `refresh`. `patch` ne prend
+      que les correctifs marqués comme tels, plus étroit que `update`.
+    examples:
+      - title: Mettre à jour
+        command: sudo zypper refresh && sudo zypper update
+        comment: Index, puis paquets.
+        families:
+          - suse
+  - name: install
+    summary: Installe un paquet et ses dépendances.
+    explanation: >-
+      `install` accepte un nom ou un chemin. `remove` retire. La résolution se confirme
+      avant téléchargement. `info` affiche la fiche sans installer.
+    examples:
+      - title: Installer
+        command: sudo zypper install curl
+        comment: Affiche ce qui sera ajouté.
+        families:
+          - suse
+      - title: Fiche
+        command: zypper info curl
+        comment: Version et dépôt, sans installation.
+        families:
+          - suse
+  - name: search
+    summary: Cherche un paquet dans les dépôts.
+    explanation: >-
+      `search` interroge les noms et les résumés. `--installed-only` ne regarde que la
+      machine. La recherche ne modifie rien.
+    examples:
+      - title: Chercher
+        command: zypper search curl
+        comment: Tableau des paquets correspondants.
+        families:
+          - suse
+see_also:
+  - rpm
+  - dnf
+  - apt
+examples:
+  - title: Mettre à jour
+    command: sudo zypper refresh && sudo zypper update
+    comment: >-
+      refresh met les index à jour. update applique les correctifs de la même version de
+      Leap ou de SLES.
+    families:
+      - suse
+  - title: Chercher
+    command: zypper search curl
+    comment: Ne demande pas les droits d’administration. Rien n’est installé.
+    families:
+      - suse
+status: absente
+overrides:
+  suse:
+    status: spécifique
+    package: zypper

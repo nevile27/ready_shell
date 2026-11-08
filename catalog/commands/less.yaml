@@ -1,0 +1,41 @@
+name: less
+themes:
+  - fichiers
+summary: Lit un fichier page par page, en avant et en arrière.
+explanation: >-
+  less fichier ouvre un visualiseur. Espace avance d’un écran, b recule, /motif cherche,
+  n recommence la recherche, q quitte. less n’a pas besoin de lire tout le fichier pour
+  afficher la première page, contrairement à more sur certains cas. Les tubes y passent
+  : systemctl status lance souvent less tout seul quand la sortie est un terminal.
+subcommands:
+  - name: lecture
+    summary: Ouvre le fichier page par page.
+    explanation: >-
+      Espace avance, `b` recule, `/motif` cherche, `n` recommence, `q` quitte. `less`
+      n’a pas besoin de tout lire pour afficher la première page.
+    examples:
+      - title: Ouvrir
+        command: less /etc/passwd
+        comment: q quitte sans modifier le fichier.
+  - name: +motif
+    summary: Cherche dès l’ouverture.
+    explanation: >-
+      `less +/root fichier` place la première occurrence en haut. `-N` numérote les
+      lignes. `-S` ne replie pas les lignes longues.
+    examples:
+      - title: Chercher
+        command: less +/root /etc/passwd
+        comment: S’ouvre sur la première ligne qui contient root.
+see_also:
+  - more
+  - cat
+  - tail
+examples:
+  - title: Lire un long fichier
+    command: less /etc/passwd
+    comment: Ouvre le fichier. q quitte sans modifier quoi que ce soit.
+  - title: Chercher dès l’ouverture
+    command: less +/root /etc/passwd
+    comment: Place la première occurrence de root en haut de l’écran.
+status: courante
+package: less

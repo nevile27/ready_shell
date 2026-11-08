@@ -1,0 +1,52 @@
+name: fstab
+themes:
+  - disques
+summary: >-
+  Fichier /etc/fstab : les montages appliqués au démarrage. La commande de contrôle est
+  findmnt.
+explanation: >-
+  Ce n’est pas un binaire. Chaque ligne de /etc/fstab décrit une source (de préférence
+  UUID=), un point de montage, un type, des options, puis deux chiffres de dump et de
+  passage fsck. mount -a applique le fichier. Une ligne fausse peut empêcher le
+  démarrage : on la vérifie avec findmnt --verify, ou en montant à la main avant de
+  redémarrer. systemd-fstab-generator transforme ces lignes en unités sur les familles
+  systemd. Alpine les lit via OpenRC.
+subcommands:
+  - name: UUID
+    summary: Désigne le système de fichiers par son identifiant.
+    explanation: >-
+      Une ligne de `/etc/fstab` porte la source, le point de montage, le type, les
+      options, puis deux chiffres. `UUID=` reste valable si le nom `/dev/sda1` change.
+      `blkid` donne l’UUID.
+    examples:
+      - title: Lire
+        command: cat /etc/fstab
+        comment: "Les lignes # sont des commentaires."
+  - name: options
+    summary: "Règle le montage : defaults, noatime, ro."
+    explanation: >-
+      `defaults` est le socle. `noatime` évite d’écrire la date d’accès. `nofail`
+      n’empêche pas le démarrage si le disque est absent. `findmnt --verify` contrôle le
+      fichier.
+    examples:
+      - title: Vérifier
+        command: sudo findmnt --verify
+        comment: Signale une ligne fausse avant le prochain démarrage.
+see_also:
+  - mount
+  - findmnt
+  - blkid
+examples:
+  - title: Lire le fichier
+    command: cat /etc/fstab
+    comment: "Sources, points de montage et options. Les lignes # sont des commentaires."
+  - title: UUID à y inscrire
+    command: sudo blkid
+    comment: Copiez l’UUID dans fstab sous la forme UUID=..., plus stable que /dev/sda1.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox

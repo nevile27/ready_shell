@@ -1,0 +1,11 @@
+#!/bin/sh
+# Ouvre le catalogue déjà construit. Ne télécharge rien.
+cd "$(dirname "$0")" || exit 1
+if [ ! -f web/dist/index.html ]; then
+  echo "Le site n'est pas construit. Depuis la racine du dépôt :" >&2
+  echo "  npm install && npm run build" >&2
+  exit 1
+fi
+port="${1:-8765}"
+echo "Catalogue local : http://127.0.0.1:${port}/"
+exec python3 -m http.server "$port" --bind 127.0.0.1 --directory web/dist

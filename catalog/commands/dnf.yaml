@@ -1,0 +1,105 @@
+name: dnf
+themes:
+  - paquets
+summary: Installe et met à jour les paquets sur RHEL et Fedora.
+explanation: >-
+  `dnf` installe et met à jour les paquets de RHEL et de Fedora. L’index se rafraîchit
+  tout seul au besoin. `yum` n’est plus qu’un renvoi vers `dnf`. SUSE utilise `zypper`.
+subcommands:
+  - name: upgrade
+    summary: Met à jour les paquets installés.
+    explanation: >-
+      `upgrade` calcule les nouvelles versions et les propose. `-y` confirme.
+      `check-update` se contente de lister, sans installer. Le cache se reconstruit si
+      les métadonnées sont trop vieilles.
+    examples:
+      - title: Mettre à jour
+        command: sudo dnf upgrade
+        comment: Liste les paquets et attend la confirmation.
+        families:
+          - redhat
+      - title: Seulement voir
+        command: dnf check-update
+        comment: >-
+          N’installe rien. Un code de retour non nul peut simplement signifier qu’il y a
+          des mises à jour.
+        families:
+          - redhat
+  - name: install
+    summary: Installe un paquet et ses dépendances.
+    explanation: >-
+      `install` accepte un nom, un fichier .rpm local, ou un chemin fourni par un dépôt.
+      Il retire aussi, dans la même transaction, ce qui entrerait en conflit. La
+      transaction se revoit ensuite avec `history`.
+    examples:
+      - title: Installer
+        command: sudo dnf install curl
+        comment: Résout les dépendances avant de télécharger.
+        families:
+          - redhat
+  - name: remove
+    summary: Retire un paquet et ce qui ne sert plus qu’à lui.
+    explanation: >-
+      `remove` propose aussi le retrait des dépendances devenues inutiles. Lisez la
+      liste avant de confirmer : elle peut être plus large que le seul nom demandé.
+    examples:
+      - title: Retirer
+        command: sudo dnf remove curl
+        comment: Affiche ce qui partirait avec le paquet.
+        families:
+          - redhat
+  - name: search
+    summary: Cherche dans les noms et les résumés.
+    explanation: >-
+      `search` trouve un mot. `info` affiche la fiche d’un paquet précis. `list
+      installed` ne garde que ce qui est déjà là. `provides` dit quel paquet livre un
+      fichier, même s’il n’est pas installé.
+    examples:
+      - title: Chercher
+        command: dnf search curl
+        comment: Ne demande pas les droits d’administration.
+        families:
+          - redhat
+      - title: Qui fournit un fichier
+        command: dnf provides /usr/bin/curl
+        comment: Le paquet qui contient ce chemin.
+        families:
+          - redhat
+  - name: history
+    summary: Liste les transactions et peut en annuler une.
+    explanation: >-
+      `history` numérote ce que `dnf` a installé, mis à jour ou retiré. `history undo
+      identifiant` tente de revenir à l’état d’avant cette transaction. Ce n’est pas
+      toujours possible si une transaction plus récente a modifié les mêmes paquets.
+    examples:
+      - title: Transactions
+        command: dnf history
+        comment: Date, action et nombre de paquets.
+        families:
+          - redhat
+      - title: Annuler la dernière
+        command: sudo dnf history undo last
+        comment: Revient en arrière si les paquets le permettent.
+        families:
+          - redhat
+see_also:
+  - yum
+  - rpm
+  - zypper
+examples:
+  - title: Mettre à jour
+    command: sudo dnf upgrade
+    comment: Propose les paquets à changer. -y évite la question dans un script.
+    families:
+      - redhat
+  - title: Historique
+    command: dnf history
+    comment: Transactions passées, avec leur identifiant pour un undo.
+    families:
+      - redhat
+status: absente
+overrides:
+  redhat:
+    status: spécifique
+    package: dnf
+    note: RHEL 10 et Fedora 45. yum est une compatibilité.

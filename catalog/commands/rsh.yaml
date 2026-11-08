@@ -1,0 +1,42 @@
+name: rsh
+themes:
+  - reseau
+summary: Shell distant sans chiffrement. Remplacé par ssh.
+explanation: >-
+  rsh hote commande exécutait une commande distante en faisant confiance à l’adresse
+  source. Pas de chiffrement, authentification trop faible. Les versions actuelles ne
+  l’installent pas. Le paquet, quand il existe encore, est là pour un système ancien
+  impossible à migrer tout de suite. Les scripts neufs appellent ssh.
+subcommands:
+  - name: commande
+    summary: Ancien shell distant sans chiffrement.
+    explanation: >-
+      `rsh` faisait confiance à l’adresse source. `ssh user@hôte commande` le remplace.
+      Les installations actuelles ne le mettent pas en place.
+    examples:
+      - title: Commande
+        command: ssh user@hote 'uname -r'
+        comment: Le noyau distant, via SSH.
+see_also:
+  - ssh
+  - rlogin
+  - rcp
+replaced_by: ssh
+examples:
+  - title: Commande distante
+    command: ssh user@hote 'uname -r'
+    comment: Remplace rsh hote uname -r.
+  - title: Session
+    command: ssh user@hote
+    comment: Remplace aussi bien rsh sans commande que rlogin.
+status: obsolète
+package:
+  debian: rsh-client
+  redhat: rsh
+  suse: rsh
+  arch: inetutils
+  alpine: busybox
+overrides:
+  alpine:
+    status: absente
+    note: Pas un outil du système. Utilisez ssh.

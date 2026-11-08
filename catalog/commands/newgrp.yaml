@@ -1,0 +1,38 @@
+name: newgrp
+themes:
+  - utilisateurs
+summary: Ouvre un shell avec un autre groupe principal.
+explanation: >-
+  newgrp dev démarre un shell dont le GID principal est dev, si vous en êtes membre ou
+  si le groupe a un mot de passe. Les fichiers créés ensuite prennent ce groupe. exit
+  revient au shell précédent. Pour un groupe supplémentaire déjà actif, newgrp est
+  inutile : les droits de groupe s’appliquent sans changer le groupe principal. sg
+  commande fait une seule commande au lieu d’un shell.
+subcommands:
+  - name: groupe
+    summary: Ouvre un shell avec un autre groupe principal.
+    explanation: >-
+      `newgrp dev` exige d’être membre, ou le mot de passe du groupe. Les fichiers créés
+      ensuite prennent ce groupe. `exit` revient. `sg` lance une seule commande.
+    examples:
+      - title: Changer
+        command: newgrp dev
+        comment: id montre dev comme gid. exit quitte ce shell.
+see_also:
+  - groups
+  - chgrp
+  - id
+examples:
+  - title: Changer de groupe principal
+    command: newgrp dev
+    comment: Nouveau shell. id montre dev comme gid. exit quitte ce shell.
+  - title: Une commande
+    command: sg dev -c 'id'
+    comment: Lance id avec dev comme groupe principal, sans rester dans un nouveau shell.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: shadow
+  alpine: shadow

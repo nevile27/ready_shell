@@ -1,0 +1,41 @@
+name: ntpdate
+themes:
+  - services
+summary: Réglait l’heure une fois, en interrogeant un serveur NTP. Retiré des systèmes actuels.
+explanation: >-
+  ntpdate serveur décalait l’horloge d’un coup. Les distributions ont retiré cet outil
+  au profit d’un démon qui ajuste en continu : chrony, ou systemd-timesyncd. Un grand
+  saut d’horloge casse des journaux et des certificats. Sur Debian 13, Ubuntu 26.04,
+  RHEL 10, Fedora 45, Leap 16 et Alpine 3.24, on ne l’installe plus comme méthode. Si
+  une vieille doc le cite, on installe chrony et l’on regarde chronyc tracking.
+subcommands:
+  - name: serveur
+    summary: Ancien réglage ponctuel, retiré.
+    explanation: >-
+      `ntpdate` décalait l’horloge d’un coup. Les systèmes actuels utilisent chrony ou
+      systemd-timesyncd. Un grand saut casse des journaux.
+    examples:
+      - title: À la place
+        command: chronyc tracking
+        comment: Le démon ajuste en continu, s’il tourne.
+see_also:
+  - chronyc
+  - timedatectl
+  - date
+replaced_by: chronyc
+examples:
+  - title: Voir si l’heure est suivie
+    command: chronyc tracking
+    comment: Remplace un appel ponctuel à ntpdate. Le démon doit tourner.
+  - title: Côté systemd
+    command: timedatectl status
+    comment: La ligne NTP active ou non. Sur Ubuntu 26.04, le service derrière est chrony.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: retirée
+overrides:
+  alpine:
+    note: Pas dans le système. chronyd fait l’ajustement continu.

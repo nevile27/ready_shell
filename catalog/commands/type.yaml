@@ -1,0 +1,51 @@
+name: type
+themes:
+  - shell
+summary: Dit si un nom est une commande, un alias, une fonction ou un mot réservé.
+explanation: >-
+  type ls répond par le chemin ou par la nature du nom. type -a montre toutes les
+  définitions, dans l’ordre où le shell les trouve. C’est le moyen le plus sûr de savoir
+  si l’on va lancer un builtin, un alias ou un binaire. dash, utilisé comme /bin/sh sur
+  Debian et Ubuntu, n’a pas type.
+subcommands:
+  - name: "-t"
+    summary: "Répond par un seul mot : alias, function, builtin ou file."
+    explanation: >-
+      `type -t` est fait pour un script bash. Dash, le `/bin/sh` de Debian, n’a pas
+      `type` : utilisez `command -v`.
+    examples:
+      - title: Sorte
+        command: type -t ls
+        comment: Écrit file si ls est un binaire.
+  - name: "-a"
+    summary: Montre toutes les définitions, dans l’ordre de recherche.
+    explanation: >-
+      `type -a` révèle un alias qui cache un binaire, ou un builtin et un fichier du
+      même nom.
+    examples:
+      - title: Toutes
+        command: type -a time
+        comment: Peut montrer le mot réservé du shell et /usr/bin/time.
+see_also:
+  - command
+  - which
+  - alias
+examples:
+  - title: Nature d’un nom
+    command: type cd
+    comment: Répond que cd est une commande interne du shell.
+  - title: Toutes les correspondances
+    command: type -a time
+    comment: Peut montrer à la fois le mot réservé du shell et le binaire /usr/bin/time.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox
+overrides:
+  debian:
+    note: >-
+      Disponible dans bash. dash, donc /bin/sh, ne connaît pas type : utilisez command
+      -v.

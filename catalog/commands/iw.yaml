@@ -1,0 +1,41 @@
+name: iw
+themes:
+  - reseau
+summary: Configure le Wi-Fi. C’est le remplaçant d’iwconfig.
+explanation: >-
+  iw dev liste les interfaces sans fil. iw dev wlan0 link montre le réseau associé, le
+  débit et le signal. iw scan déclenche un balayage. iwconfig, du paquet wireless-tools,
+  est l’outil WEXT abandonné. Les cartes actuelles parlent nl80211, donc iw. Associer un
+  réseau au quotidien se fait plutôt avec NetworkManager ; iw sert au diagnostic.
+subcommands:
+  - name: dev
+    summary: Liste les interfaces sans fil.
+    explanation: >-
+      `iw dev` nomme les cartes. `iwconfig` est l’outil WEXT abandonné. Associer un
+      réseau au quotidien se fait plutôt avec NetworkManager.
+    examples:
+      - title: Interfaces
+        command: iw dev
+        comment: Les cartes Wi-Fi et si elles sont gérées.
+  - name: link
+    summary: Montre le réseau associé.
+    explanation: >-
+      `iw dev wlan0 link` écrit le SSID, la fréquence et le signal. `iw dev wlan0 scan`
+      déclenche un balayage. Le nom wlan0 vient de `iw dev`.
+    examples:
+      - title: Lien
+        command: iw dev wlan0 link
+        comment: SSID et signal, si une association est en cours.
+see_also:
+  - iwconfig
+  - nmcli
+  - ip
+examples:
+  - title: Interfaces
+    command: iw dev
+    comment: Nomme les cartes Wi-Fi et dit si elles sont gérées.
+  - title: Lien actuel
+    command: iw dev wlan0 link
+    comment: SSID, fréquence et signal. Le nom wlan0 est à remplacer par celui de iw dev.
+status: courante
+package: iw

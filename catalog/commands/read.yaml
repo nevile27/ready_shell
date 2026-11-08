@@ -1,0 +1,62 @@
+name: read
+themes:
+  - shell
+summary: Lit une ligne depuis l’entrée standard vers une variable.
+explanation: >-
+  read est interne au shell. Il dépose la ligne lue dans la variable demandée, ou dans
+  REPLY si aucun nom n’est donné. IFS découpe la ligne quand plusieurs variables sont
+  citées. read -r ne touche pas aux contre-obliques : c’est presque toujours ce que l’on
+  veut en lisant un fichier.
+pitfalls:
+  - >-
+    read sans -r interprète les contre-obliques. Un chemin Windows ou une expression
+    rationnelle peut être modifié.
+subcommands:
+  - name: "-r"
+    summary: Ne touche pas aux contre-obliques.
+    explanation: >-
+      `read -r` range la ligne telle qu’elle est tapée. Sans `-r`, une contre-oblique
+      mange le caractère suivant, y compris le saut de ligne.
+    examples:
+      - title: Ligne brute
+        command: read -r ligne
+        comment: Attend une ligne et la range dans ligne.
+  - name: "-p"
+    summary: Affiche une invite, en bash.
+    explanation: >-
+      `read -p` écrit le texte avant de lire. C’est du bash : dash et ash n’ont pas
+      `-p`. L’invite portable s’écrit avec `printf`, puis `read -r`.
+    examples:
+      - title: Invite bash
+        command: "read -r -p \"Nom : \" nom"
+        comment: "Affiche Nom : et range la réponse dans nom."
+  - name: "-s"
+    summary: Ne montre pas la frappe.
+    explanation: >-
+      `read -s` coupe l’écho, pour un mot de passe. C’est une extension bash. Le secret
+      reste dans la variable du shell : ne l’exportez pas.
+    examples:
+      - title: Secret
+        command: "read -r -s -p \"Mot de passe : \" secret"
+        comment: La frappe n’apparaît pas. Le shell garde secret.
+see_also:
+  - export
+  - printf
+examples:
+  - title: Lire une ligne
+    command: read -r nom
+    comment: >-
+      Attend une ligne au clavier et la range dans nom, sans interpréter les
+      contre-obliques.
+  - title: Lire un fichier ligne à ligne
+    command: while IFS= read -r ligne; do printf '%s\n' "$ligne"; done < fichier.txt
+    comment: >-
+      IFS vide conserve les espaces en début de ligne. La redirection alimente toute la
+      boucle.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

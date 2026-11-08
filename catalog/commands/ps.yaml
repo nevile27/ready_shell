@@ -1,0 +1,50 @@
+name: ps
+themes:
+  - processus
+summary: Liste les processus.
+explanation: >-
+  ps montre les processus au moment de l’appel. ps aux, syntaxe BSD, liste tout le monde
+  avec le terminal et l’heure de départ. ps -ef, syntaxe System V, fait le même travail
+  avec d’autres colonnes. ps -eo pid,user,cmd choisit les colonnes. ps ne suit pas en
+  continu : c’est top. La sortie n’est pas un format stable pour un script ; pgrep ou
+  une lecture de /proc le sont davantage.
+subcommands:
+  - name: aux
+    summary: Liste tout le monde, syntaxe BSD.
+    explanation: >-
+      `ps aux` montre l’utilisateur, le CPU, la mémoire et la commande. La sortie n’est
+      pas un format stable pour un script.
+    examples:
+      - title: Tout voir
+        command: ps aux
+        comment: Une ligne par processus.
+  - name: "-ef"
+    summary: Liste tout le monde, syntaxe System V.
+    explanation: >-
+      `ps -ef` montre le PID, le PPID et l’heure de départ. `-o` choisit les colonnes :
+      `ps -eo pid,user,cmd`.
+    examples:
+      - title: Colonnes
+        command: ps -eo pid,user,ni,cmd
+        comment: PID, utilisateur, politesse et commande.
+see_also:
+  - top
+  - pgrep
+  - pstree
+examples:
+  - title: Tout voir
+    command: ps aux
+    comment: Une ligne par processus, avec l’utilisateur, le CPU, la mémoire et la commande.
+  - title: Colonnes choisies
+    command: ps -eo pid,user,ni,cmd
+    comment: PID, utilisateur, politesse et ligne de commande.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox limitée. Le paquet procps apporte la syntaxe GNU complète.

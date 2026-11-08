@@ -1,0 +1,48 @@
+name: umount
+themes:
+  - disques
+summary: Détache un système de fichiers.
+explanation: >-
+  umount /mnt détache ce qui est monté sur /mnt. Le nom se termine par un seul u : ce
+  n’est pas unmount. La commande échoue si un processus a encore un fichier ouvert ou
+  son répertoire courant dessous. fuser -vm /mnt ou lsof +f -- /mnt montrent qui. umount
+  -l détache dès que possible même si c’est occupé : le répertoire se vide pour les
+  nouveaux accès, les anciens finissent plus tard. -l n’est pas un substitut à trouver
+  le processus.
+subcommands:
+  - name: point
+    summary: Détache un montage.
+    explanation: >-
+      Le nom est `umount`, avec un seul u. La commande échoue si un processus a encore
+      un fichier ouvert ou son répertoire courant dessous. `fuser -vm` montre qui.
+    examples:
+      - title: Démonter
+        command: sudo umount /mnt
+        comment: Échoue avec target is busy si quelqu’un est encore dedans.
+  - name: "-l"
+    summary: Détache dès que possible, même si c’est occupé.
+    explanation: >-
+      `-l` vide le point de montage pour les nouveaux accès. Les anciens finissent plus
+      tard. Ce n’est pas un substitut à trouver le processus.
+    examples:
+      - title: Paresseux
+        command: sudo umount -l /mnt
+        comment: Le chemin se libère. Les processus encore dedans gardent leurs fichiers.
+see_also:
+  - mount
+  - fuser
+  - findmnt
+examples:
+  - title: Démonter
+    command: sudo umount /mnt
+    comment: Échoue avec « target is busy » si quelqu’un est encore dedans.
+  - title: Voir qui bloque
+    command: sudo fuser -vm /mnt
+    comment: Les PID à quitter avant de relancer umount.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox

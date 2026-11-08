@@ -1,0 +1,52 @@
+name: chgrp
+themes:
+  - fichiers
+  - utilisateurs
+tags:
+  - coreutils
+summary: Change le groupe d’un fichier.
+explanation: >-
+  chgrp groupe fichier est l’équivalent de chown :groupe fichier. Un utilisateur peut
+  donner un fichier à un groupe dont il est membre, selon la politique du système. -R
+  descend dans les sous-répertoires. Pour changer le propriétaire en même temps, chown
+  est plus direct.
+subcommands:
+  - name: groupe
+    summary: Change le groupe du fichier.
+    explanation: >-
+      `chgrp` équivaut à `chown :groupe`. Un utilisateur peut donner un fichier à un
+      groupe dont il est membre.
+    examples:
+      - title: Groupe
+        command: chgrp users notes.txt
+        comment: Réussit si vous êtes propriétaire et membre du groupe users.
+  - name: "-R"
+    summary: Descend dans les sous-répertoires.
+    explanation: >-
+      `-R` applique le groupe à toute l’arborescence. `-h` vise le lien, pas la cible,
+      sur la version GNU.
+    examples:
+      - title: Répertoire
+        command: chgrp -R users dossier
+        comment: Tous les noms sous dossier, si les droits le permettent.
+see_also:
+  - chown
+  - chmod
+  - groups
+examples:
+  - title: Groupe d’un fichier
+    command: chgrp users notes.txt
+    comment: Réussit si vous êtes propriétaire et membre du groupe users.
+  - title: Vérifier
+    command: stat -c '%G' notes.txt
+    comment: Écrit le groupe actuel. Format GNU de stat.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

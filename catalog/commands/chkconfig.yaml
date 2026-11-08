@@ -1,0 +1,50 @@
+name: chkconfig
+themes:
+  - services
+summary: Activait les services au démarrage sur SysV. Retiré des versions systemd actuelles.
+explanation: >-
+  chkconfig sshd on créait les liens de démarrage. RHEL 10, Fedora 45, openSUSE Leap 16
+  et SLES 16 utilisent systemd : systemctl enable remplace chkconfig on, systemctl
+  disable remplace off. Debian n’en a jamais fait son outil principal. Arch non plus.
+  Alpine utilise rc-update. Un script d’installation qui appelle encore chkconfig date
+  d’une génération précédente.
+subcommands:
+  - name: "on"
+    summary: Ancien lien de démarrage SysV.
+    explanation: >-
+      `chkconfig sshd on` est retiré des familles systemd actuelles. `systemctl enable`
+      le remplace. Alpine utilise `rc-update`.
+    examples:
+      - title: Activer
+        command: sudo systemctl enable ssh.service
+        comment: Remplace chkconfig. Hors Debian, l’unité s’appelle sshd.service.
+see_also:
+  - systemctl
+  - service
+  - rc-update
+replaced_by: systemctl
+examples:
+  - title: Activer au démarrage
+    command: sudo systemctl enable ssh.service
+    comment: Remplace chkconfig ssh on. Nom d’unité sshd.service hors Debian.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Voir si c’est activé
+    command: systemctl is-enabled ssh.service
+    comment: Répond enabled ou disabled. Remplace chkconfig --list.
+    families:
+      - debian
+status: retirée
+overrides:
+  alpine:
+    status: absente
+    note: OpenRC s’administre avec rc-update add et rc-update del.
+  debian:
+    status: absente
+    note: Jamais l’outil de Debian. systemctl enable est le geste durable.
+  arch:
+    status: absente
+    note: systemd uniquement. systemctl enable.

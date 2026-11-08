@@ -1,0 +1,36 @@
+name: route
+themes:
+  - reseau
+summary: Ancienne table de routage. Remplacée par ip route.
+explanation: >-
+  route -n affichait les routes sans DNS. route add default gw ... ajoutait une
+  passerelle. La commande est dans net-tools, absente des systèmes neufs. ip route show
+  et ip route add font le travail. Sur Alpine, BusyBox a parfois encore route. Un script
+  d’installation actuel ne l’appelle plus.
+subcommands:
+  - name: "-n"
+    summary: Ancienne table de routage, sans DNS.
+    explanation: >-
+      `route -n` est dans net-tools. `ip route` le remplace. `ip route show default` ne
+      garde que la passerelle.
+    examples:
+      - title: Table
+        command: ip route
+        comment: Remplace route -n.
+see_also:
+  - ip
+  - ifconfig
+replaced_by: ip
+examples:
+  - title: Table actuelle
+    command: ip route
+    comment: Remplace route -n.
+  - title: Passerelle
+    command: ip route show default
+    comment: Remplace la ligne default de l’ancienne commande route.
+status: obsolète
+package: net-tools
+overrides:
+  alpine:
+    package: busybox
+    note: Peut exister comme applet. ip route, paquet iproute2, est la forme à écrire.

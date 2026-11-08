@@ -1,0 +1,55 @@
+name: tee
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Duplique l’entrée standard vers un fichier et vers la sortie.
+explanation: >-
+  commande | tee fichier montre la sortie et l’enregistre en même temps. -a ajoute à la
+  fin au lieu de remplacer le fichier. tee peut recevoir plusieurs noms de fichiers.
+  Avec sudo, la redirection > est faite par le shell avant sudo : echo x | sudo tee
+  fichier écrit dans un fichier protégé, là où sudo echo x > fichier échoue.
+pitfalls:
+  - >-
+    sudo commande > /etc/fichier ne passe pas par sudo pour la redirection. echo ligne |
+    sudo tee /etc/fichier > /dev/null écrit avec les droits d’administration.
+subcommands:
+  - name: fichier
+    summary: Montre la sortie et l’enregistre.
+    explanation: >-
+      `commande | tee fichier` écrit à l’écran et dans le fichier. Avec `sudo`, c’est le
+      moyen d’écrire dans un fichier protégé, là où une redirection est faite par le
+      shell avant sudo.
+    examples:
+      - title: Voir et garder
+        command: printf '%s\n' trace | tee /tmp/trace.txt
+        comment: Affiche trace et crée le fichier.
+  - name: "-a"
+    summary: Ajoute à la fin du fichier.
+    explanation: >-
+      Sans `-a`, `tee` remplace le fichier. On peut donner plusieurs noms : la même
+      entrée est copiée dans chacun.
+    examples:
+      - title: Ajouter
+        command: printf '%s\n' suite | tee -a /tmp/trace.txt
+        comment: N’efface pas les lignes déjà là.
+see_also:
+  - cat
+  - sudo
+examples:
+  - title: Voir et enregistrer
+    command: printf '%s\n' "trace" | tee /tmp/trace.txt
+    comment: Affiche trace et crée /tmp/trace.txt avec la même ligne.
+  - title: Ajouter
+    command: printf '%s\n' "suite" | tee -a /tmp/trace.txt
+    comment: Ajoute une ligne sans effacer les précédentes.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

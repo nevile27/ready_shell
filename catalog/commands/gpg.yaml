@@ -1,0 +1,53 @@
+name: gpg
+themes:
+  - paquets
+summary: Chiffre, signe et vérifie. Ici, surtout pour déposer une clé de dépôt.
+explanation: >-
+  gpg --dearmor transforme une clé ASCII en fichier binaire que apt, rpm ou pacman
+  peuvent citer. gpg --show-keys fichier affiche l’empreinte à comparer avec celle
+  publiée par l’éditeur. --import ajoute une clé à votre trousseau personnel, ce qui
+  n’est pas la même chose que d’autoriser un dépôt. Cette fiche ne couvre pas le
+  chiffrement de courrier : elle fixe le geste qui a remplacé apt-key add. Le nom du
+  paquet varie : gpg, gnupg2 ou gnupg.
+subcommands:
+  - name: "--show-keys"
+    summary: Affiche l’empreinte d’une clé.
+    explanation: >-
+      `--show-keys` sert à comparer l’empreinte à celle publiée par l’éditeur, avant
+      d’en faire une clé de dépôt. `--import` ajoute la clé à votre trousseau personnel,
+      ce qui n’autorise pas un dépôt.
+    examples:
+      - title: Empreinte
+        command: gpg --show-keys cle.asc
+        comment: Comparez-la au site officiel.
+  - name: "--dearmor"
+    summary: Passe une clé ASCII en fichier binaire.
+    explanation: >-
+      `--dearmor` produit le fichier que apt cite avec Signed-By, ou qu’un rpm peut
+      importer. Ce n’est pas `apt-key add`.
+    examples:
+      - title: Binaire
+        command: gpg --dearmor < cle.asc > exemple.gpg
+        comment: Le fichier à placer dans /etc/apt/keyrings sur Debian.
+see_also:
+  - apt-key
+  - apt
+  - rpm
+examples:
+  - title: Voir l’empreinte
+    command: gpg --show-keys cle.asc
+    comment: >-
+      Affiche l’empreinte. Comparez-la à celle du site officiel avant d’en faire une clé
+      de dépôt.
+  - title: Format binaire pour apt
+    command: gpg --dearmor < cle.asc > exemple.gpg
+    comment: >-
+      Produit le fichier à placer dans /etc/apt/keyrings. Voir apt-key pour la suite
+      Debian.
+status: courante
+package:
+  debian: gpg
+  redhat: gnupg2
+  suse: gpg2
+  arch: gnupg
+  alpine: gnupg

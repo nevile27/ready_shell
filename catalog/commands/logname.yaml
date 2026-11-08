@@ -1,0 +1,44 @@
+name: logname
+themes:
+  - utilisateurs
+tags:
+  - coreutils
+summary: Écrit le nom de l’utilisateur connecté sur ce terminal.
+explanation: >-
+  logname lit l’entrée de connexion, pas l’UID effectif. Après sudo, logname reste
+  l’utilisateur qui s’est connecté, alors que whoami devient root. Sans terminal de
+  connexion, par exemple sous un service, logname échoue. Ce n’est pas un annuaire des
+  comptes.
+subcommands:
+  - name: session
+    summary: Nom de l’utilisateur connecté sur ce terminal.
+    explanation: >-
+      `logname` ne suit pas l’UID effectif. Après sudo, il reste l’utilisateur de la
+      connexion. Sans terminal, il échoue.
+    examples:
+      - title: Connexion
+        command: logname
+        comment: Le compte qui a ouvert le terminal, quand il est connu.
+see_also:
+  - whoami
+  - who
+  - id
+examples:
+  - title: Auteur de la connexion
+    command: logname
+    comment: >-
+      Le compte qui a ouvert le terminal, même si un su est en cours, quand le terminal
+      le sait.
+  - title: Contraste avec l’effectif
+    command: whoami; logname
+    comment: Les deux lignes divergent dès que l’UID effectif n’est plus celui de la connexion.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: Pas toujours dans BusyBox. Le paquet coreutils le fournit.

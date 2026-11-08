@@ -1,0 +1,45 @@
+name: command
+themes:
+  - shell
+summary: Lance ou localise une commande en ignorant les alias et les fonctions.
+explanation: >-
+  command ls appelle ls même si un alias ls existe. command -v nom écrit le chemin ou le
+  type retenu, et c’est le test portable dans un script POSIX : dash et ash le
+  connaissent, alors que which est un binaire à part et que type manque à dash. Un code
+  de retour non nul signifie que le nom est introuvable.
+subcommands:
+  - name: "-v"
+    summary: Écrit le chemin ou le type retenu.
+    explanation: >-
+      `command -v` est le test portable, y compris sous dash et ash. Un code non nul
+      signifie que le nom est introuvable.
+    examples:
+      - title: Localiser
+        command: command -v grep
+        comment: Écrit /usr/bin/grep, ou le builtin, et renvoie 0 s’il existe.
+  - name: "-V"
+    summary: Décrit le nom plus longuement.
+    explanation: >-
+      `command -V` ressemble à `type`. Il ignore les alias et les fonctions quand on
+      lance ensuite `command ls`.
+    examples:
+      - title: Description
+        command: command -V cd
+        comment: Dit que cd est une commande interne.
+see_also:
+  - type
+  - which
+examples:
+  - title: Localiser de façon portable
+    command: command -v grep
+    comment: Écrit /usr/bin/grep, ou le builtin, et renvoie 0 s’il existe.
+  - title: Contourner un alias
+    command: command ls
+    comment: Exécute ls, pas l’alias ls éventuellement défini dans le shell.
+status: courante
+package:
+  debian: bash
+  redhat: bash
+  suse: bash
+  arch: bash
+  alpine: busybox

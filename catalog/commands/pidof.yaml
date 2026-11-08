@@ -1,0 +1,38 @@
+name: pidof
+themes:
+  - processus
+summary: Écrit les PID d’un nom de programme exact.
+explanation: >-
+  pidof sshd écrit les PID sur une seule ligne. Contrairement à pgrep, le nom n’est pas
+  une expression rationnelle. -s ne garde qu’un PID, -x inclut les scripts invoqués par
+  leur nom. BusyBox et procps ont tous deux pidof, avec des options pas tout à fait
+  identiques.
+subcommands:
+  - name: nom
+    summary: Écrit les PID sur une seule ligne.
+    explanation: >-
+      `pidof` n’interprète pas le nom comme une expression, contrairement à `pgrep`.
+      `-s` n’en garde qu’un.
+    examples:
+      - title: Une ligne
+        command: pidof sshd
+        comment: Plusieurs numéros séparés par des espaces, ou rien.
+see_also:
+  - pgrep
+  - kill
+examples:
+  - title: PID sur une ligne
+    command: pidof sshd
+    comment: >-
+      Peut écrire plusieurs numéros séparés par des espaces, ou rien si le démon n’est
+      pas lancé.
+  - title: Un seul PID
+    command: pidof -s init
+    comment: Sur un système systemd, init est souvent PID 1. -s n’en écrit qu’un.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: busybox

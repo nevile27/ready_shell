@@ -1,0 +1,125 @@
+name: journalctl
+themes:
+  - services
+summary: Lit le journal collecté par systemd.
+explanation: >-
+  `journalctl` lit le journal de systemd. Sans option, c’est tout le journal, du plus
+  ancien au plus récent. Les options croisent une unité, un démarrage, une priorité ou
+  une période. Sans droits, vous ne voyez que votre propre journal.
+subcommands:
+  - name: "-u"
+    summary: Limite le journal à une unité.
+    explanation: >-
+      `-u` choisit le service. On peut le répéter pour en suivre plusieurs. Le nom est
+      le même que pour `systemctl` : `ssh.service` sur Debian et Ubuntu, `sshd.service`
+      ailleurs. `-e` saute à la fin, ce qui évite de parcourir des mois de lignes.
+    examples:
+      - title: Journal du SSH
+        command: journalctl -u ssh.service -e
+        comment: Place la fin du journal à l’écran. q quitte le visualiseur.
+        families:
+          - debian
+      - title: Deux unités
+        command: journalctl -u ssh.service -u ssh.socket
+        comment: Les lignes des deux unités, dans l’ordre du temps.
+        families:
+          - debian
+  - name: "-b"
+    summary: Limite au démarrage en cours, ou à un démarrage précédent.
+    explanation: >-
+      `-b` ne garde que le boot actuel. `-b -1` est le démarrage précédent, utile après
+      un plantage. `-b -2` remonte d’un cran de plus. `journalctl --list-boots` numérote
+      les démarrages encore conservés.
+    examples:
+      - title: Ce démarrage
+        command: journalctl -b -p err
+        comment: Erreurs et priorités plus graves depuis le boot.
+      - title: Le démarrage d’avant
+        command: journalctl -b -1 -p err
+        comment: Même filtre, sur le boot précédent, s’il est encore dans le journal.
+  - name: "-f"
+    summary: Suit les lignes nouvelles, comme tail -f.
+    explanation: >-
+      `-f` reste ouvert et affiche ce qui arrive. Ctrl+C arrête. On le combine avec `-u`
+      pour ne suivre qu’un service. Ce n’est pas un enregistrement : fermer le terminal
+      arrête la lecture, pas le journal.
+    examples:
+      - title: Suivre un service
+        command: journalctl -u ssh.service -f
+        comment: Les nouvelles lignes du SSH. Ctrl+C quitte.
+        families:
+          - debian
+  - name: "-p"
+    summary: "Filtre par priorité : err, warning, info."
+    explanation: >-
+      `-p err` garde la priorité erreur et tout ce qui est plus grave. `-p warning`
+      inclut aussi les avertissements. Les noms vont de emerg à debug. Sans `-p`, le
+      journal mélange le bruit et les pannes.
+    examples:
+      - title: Erreurs seulement
+        command: journalctl -b -p err
+        comment: Depuis ce démarrage. Ajoutez -u pour un seul service.
+  - name: "--since"
+    summary: Borne le journal dans le temps.
+    explanation: >-
+      `--since today` part de minuit. `--since '1 hour ago'` et `--until '10 min ago'`
+      acceptent une date ou une durée relative. `--since` et `--until` se combinent. Le
+      format d’affichage se change avec `-o short-iso` quand un script doit relire
+      l’heure.
+    examples:
+      - title: Depuis ce matin
+        command: journalctl --since today -p warning
+        comment: Avertissements et erreurs depuis minuit.
+      - title: Heure stable
+        command: journalctl -u ssh.service -o short-iso --since today
+        comment: Horodatage ISO, plus simple à recopier qu’une heure locale.
+        families:
+          - debian
+  - name: "-k"
+    summary: Ne garde que les messages du noyau.
+    explanation: >-
+      `-k` est le journal du noyau vu par systemd, proche de `dmesg`, avec les mêmes
+      filtres de temps et de priorité. `-k -b -1` relit le noyau du démarrage précédent,
+      ce que le tampon de `dmesg` ne peut plus faire une fois écrasé.
+    examples:
+      - title: Noyau de ce boot
+        command: journalctl -k -b -p err
+        comment: Erreurs noyau depuis le démarrage.
+  - name: "--disk-usage"
+    summary: Dit combien de place le journal occupe, et permet d’en rendre.
+    explanation: >-
+      `--disk-usage` écrit la taille conservée. `--vacuum-time=14d` efface ce qui est
+      plus vieux que quatorze jours. `--vacuum-size=200M` borne la taille. Ce sont des
+      nettoyages immédiats. La limite durable se règle dans /etc/systemd/journald.conf,
+      pas seulement avec ces options.
+    examples:
+      - title: Place utilisée
+        command: journalctl --disk-usage
+        comment: Une ligne avec la taille du journal.
+      - title: Garder deux semaines
+        command: sudo journalctl --vacuum-time=14d
+        comment: Supprime les archives plus anciennes. Le journal en cours reste.
+see_also:
+  - systemctl
+  - logger
+  - dmesg
+examples:
+  - title: Erreurs depuis le démarrage
+    command: journalctl -b -p err
+    comment: Priorité erreur et au-dessus, pour ce boot seulement.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Suivre une unité
+    command: journalctl -u ssh.service -f
+    comment: Sur Red Hat, SUSE et Arch, remplacez ssh.service par sshd.service. Ctrl+C arrête.
+    families:
+      - debian
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Alpine utilise OpenRC. Cette commande systemd n’est pas l’outil du système.

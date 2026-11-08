@@ -1,0 +1,48 @@
+name: tput
+themes:
+  - shell
+summary: Interroge les capacités du terminal.
+explanation: >-
+  tput cols écrit le nombre de colonnes, tput lines le nombre de lignes, tput setaf 2
+  règle une couleur d’avant-plan, tput sgr0 revient au style normal. Les scripts s’en
+  servent pour éviter d’envoyer des séquences brutes qui dépendent du terminal. tput
+  reset réinitialise un terminal dont l’affichage est devenu illisible.
+subcommands:
+  - name: cols
+    summary: Écrit le nombre de colonnes.
+    explanation: >-
+      `tput cols` et `tput lines` lisent la taille du terminal. Les scripts s’en servent
+      au lieu d’envoyer des séquences brutes.
+    examples:
+      - title: Largeur
+        command: tput cols
+        comment: Un nombre, par exemple 120.
+  - name: setaf
+    summary: Choisit une couleur d’avant-plan.
+    explanation: >-
+      `tput setaf 2` passe au vert sur beaucoup de terminaux. `tput sgr0` revient au
+      style normal. `tput reset` réinitialise un terminal illisible.
+    examples:
+      - title: Remettre à zéro
+        command: tput sgr0
+        comment: Annule couleur et gras pour la suite.
+see_also:
+  - clear
+  - stty
+examples:
+  - title: Largeur utile
+    command: tput cols
+    comment: Écrit le nombre de colonnes, par exemple 120.
+  - title: Remettre les styles à zéro
+    command: tput sgr0
+    comment: Annule couleur et gras pour la suite de l’affichage.
+status: courante
+package:
+  debian: ncurses-bin
+  redhat: ncurses
+  suse: ncurses-utils
+  arch: ncurses
+  alpine: ncurses
+overrides:
+  alpine:
+    note: Paquet ncurses, pas dans l’image minimale BusyBox.

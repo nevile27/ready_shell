@@ -1,0 +1,36 @@
+name: groupdel
+themes:
+  - utilisateurs
+summary: Supprime un groupe qui n’est le groupe principal de personne.
+explanation: >-
+  groupdel dev retire le groupe. La commande refuse si dev est encore le groupe
+  principal d’un compte. Les fichiers qui appartenaient à ce GID gardent le numéro, que
+  ls affichera alors comme un nombre. Il n’y a pas d’option pour parcourir le disque et
+  les réattribuer.
+subcommands:
+  - name: nom
+    summary: Supprime un groupe qui n’est le groupe principal de personne.
+    explanation: >-
+      `groupdel` refuse si un compte a encore ce groupe comme groupe principal. Les
+      fichiers qui portaient ce GID gardent le numéro.
+    examples:
+      - title: Supprimer
+        command: sudo groupdel dev
+        comment: Échoue avec un message clair si le groupe est encore principal.
+see_also:
+  - groupadd
+  - userdel
+examples:
+  - title: Supprimer
+    command: sudo groupdel dev
+    comment: Échoue avec un message clair si un compte a encore dev comme groupe principal.
+  - title: Vérifier avant
+    command: getent group dev
+    comment: Montre le nom, le GID et les membres. Rien ne s’affiche si le groupe n’existe pas.
+status: courante
+package:
+  debian: passwd
+  redhat: shadow-utils
+  suse: shadow
+  arch: shadow
+  alpine: shadow

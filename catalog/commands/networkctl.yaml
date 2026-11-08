@@ -1,0 +1,50 @@
+name: networkctl
+themes:
+  - reseau
+  - services
+summary: Montre l’état des liens vus par systemd-networkd.
+explanation: >-
+  networkctl status liste les interfaces que networkd connaît. networkctl status eth0
+  détaille adresses et DNS de l’une d’elles. Si la machine est gérée par NetworkManager,
+  networkctl voit les liens mais ce n’est pas lui qui les configure : nmcli est alors
+  l’outil. Alpine n’a pas networkd.
+subcommands:
+  - name: status
+    summary: État des liens vus par systemd-networkd.
+    explanation: >-
+      `networkctl status` liste les interfaces. Un nom d’interface en argument détaille
+      l’une d’elles. Si NetworkManager gère la machine, `nmcli` est l’outil de
+      configuration.
+    examples:
+      - title: Liens
+        command: networkctl status
+        comment: L’état de chaque interface.
+see_also:
+  - nmcli
+  - ip
+  - resolvectl
+examples:
+  - title: Liens
+    command: networkctl status
+    comment: État de chaque interface vue par networkd ou par udev.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Une interface
+    command: networkctl status lo
+    comment: Détail de l’interface de boucle, présente partout.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+status: courante
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: >-
+      Pas de systemd-networkd. ip et les fichiers /etc/network sont les outils du
+      système.

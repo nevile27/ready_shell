@@ -1,0 +1,54 @@
+name: cat
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Écrit le contenu d’un fichier sur la sortie standard.
+explanation: >-
+  cat fichier affiche le fichier en entier. Plusieurs noms sont concaténés dans l’ordre.
+  cat sert à alimenter un tube. Pour lire un long fichier page par page, less est plus
+  confortable. cat -A montre les caractères non imprimables sur les coreutils GNU. Un
+  binaire envoyé dans un terminal peut y laisser des séquences indésirables : file
+  permet de vérifier avant.
+subcommands:
+  - name: fichier
+    summary: Écrit le fichier sur la sortie standard.
+    explanation: >-
+      `cat` concatène les fichiers dans l’ordre. Pour un long fichier, `less` est plus
+      confortable. Un binaire envoyé dans le terminal peut y laisser des séquences.
+    examples:
+      - title: Court
+        command: cat /etc/os-release
+        comment: Le fichier tel quel.
+  - name: "-n"
+    summary: Numérote les lignes.
+    explanation: >-
+      `-A` montre les caractères non imprimables sur les coreutils GNU. `-s` réduit les
+      suites de lignes vides à une seule.
+    examples:
+      - title: Numéros
+        command: cat -n /etc/hostname
+        comment: Le numéro devant le nom de la machine.
+see_also:
+  - less
+  - tac
+  - tee
+examples:
+  - title: Afficher un fichier court
+    command: cat /etc/os-release
+    comment: >-
+      Écrit le fichier tel quel. C’est le moyen habituel de voir l’identité de la
+      distribution.
+  - title: Numéros de ligne
+    command: cat -n /etc/hostname
+    comment: Préfixe chaque ligne de son numéro. Option GNU et de beaucoup de BusyBox.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

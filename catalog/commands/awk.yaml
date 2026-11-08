@@ -1,0 +1,55 @@
+name: awk
+themes:
+  - texte
+summary: Découpe des lignes en champs et calcule dessus.
+explanation: >-
+  awk lit des lignes, les coupe selon FS (espaces et tabulations par défaut) et exécute
+  un programme. $1 est le premier champ, $0 la ligne entière. NR est le numéro de ligne.
+  Un motif avant l’accolade sélectionne les lignes. Sur Debian et Ubuntu, la commande
+  awk pointe vers mawk, plus petit que gawk. Les extensions GNU (gensub, IGNORECASE,
+  certains tableaux) demandent le paquet gawk. Alpine fournit un awk BusyBox ; gawk
+  s’installe à part.
+subcommands:
+  - name: "-F"
+    summary: Choisit le séparateur de champs.
+    explanation: >-
+      `-F:` coupe sur le deux-points. `$1` est le premier champ, `$0` la ligne. `NR` est
+      le numéro de ligne. Sur Debian, `awk` pointe souvent vers mawk.
+    examples:
+      - title: Nom et UID
+        command: "awk -F: '{ print $1, $3 }' /etc/passwd"
+        comment: Le nom du compte et son UID.
+  - name: motif
+    summary: N’exécute le bloc que sur certaines lignes.
+    explanation: >-
+      Un motif avant l’accolade filtre. Les extensions GNU (`gensub`, tableaux à
+      plusieurs dimensions) demandent `gawk`, pas mawk ni BusyBox.
+    examples:
+      - title: UID élevés
+        command: "awk -F: '$3 >= 1000 { print $1 }' /etc/passwd"
+        comment: Comptes dont l’UID vaut au moins 1000.
+see_also:
+  - sed
+  - cut
+  - sort
+examples:
+  - title: Premier et troisième champ
+    command: "awk -F: '{ print $1, $3 }' /etc/passwd"
+    comment: Le séparateur est le deux-points. Affiche le nom du compte et son UID.
+  - title: Filtrer puis afficher
+    command: "awk -F: '$3 >= 1000 { print $1 }' /etc/passwd"
+    comment: Ne garde que les comptes dont l’UID est au moins 1000.
+status: courante
+package:
+  debian: mawk
+  redhat: gawk
+  suse: gawk
+  arch: gawk
+  alpine: busybox
+overrides:
+  debian:
+    note: >-
+      awk est mawk par défaut. Installez gawk pour les scripts qui exigent les
+      extensions GNU.
+  alpine:
+    note: Applet BusyBox. Le paquet gawk apporte les extensions GNU.

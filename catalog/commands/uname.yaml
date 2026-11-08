@@ -1,0 +1,49 @@
+name: uname
+themes:
+  - shell
+tags:
+  - coreutils
+summary: Affiche le nom et la version du noyau.
+explanation: >-
+  uname -s est le nom du système, en pratique Linux. uname -r est la version du noyau en
+  cours d’exécution, pas la version de la distribution. uname -m est l’architecture
+  matérielle, x86_64 ou aarch64. Pour le nom et la version de la distribution, lisez
+  /etc/os-release. uname -a rassemble le tout en une ligne.
+subcommands:
+  - name: "-r"
+    summary: Version du noyau en cours d’exécution.
+    explanation: >-
+      `uname -r` n’est pas la version de la distribution. Celle-ci est dans
+      `/etc/os-release`.
+    examples:
+      - title: Noyau
+        command: uname -r
+        comment: Par exemple 7.0.0, le noyau qui tourne.
+  - name: "-m"
+    summary: Architecture matérielle.
+    explanation: >-
+      `uname -m` écrit x86_64 ou aarch64. `-s` est le nom du système, en pratique Linux.
+      `-a` rassemble le tout.
+    examples:
+      - title: Architecture
+        command: uname -m
+        comment: L’architecture pour laquelle les paquets doivent être construits.
+see_also:
+  - hostname
+  - date
+examples:
+  - title: Noyau en service
+    command: uname -r
+    comment: Écrit la version du noyau qui tourne, par exemple 7.0.0.
+  - title: Identité de la distribution
+    command: . /etc/os-release && printf '%s %s\n' "$NAME" "$VERSION"
+    comment: >-
+      Ce n’est pas uname : le fichier os-release porte le nom Debian, Ubuntu, Fedora, et
+      la version.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox

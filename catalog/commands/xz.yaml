@@ -1,0 +1,45 @@
+name: xz
+themes:
+  - archives
+summary: Compresse un fichier en .xz, taux élevé.
+explanation: >-
+  xz fichier crée fichier.xz. -d décompresse, -k conserve la source, -c écrit sur la
+  sortie. tar -J produit un .tar.xz, format très répandu pour les sources et les
+  paquets. La compression est plus lente que gzip et le fichier plus petit. unxz et xz
+  -d sont la même opération. -T0 utilise tous les cœurs sur les versions récentes, ce
+  qui compte sur un gros fichier.
+subcommands:
+  - name: "-k"
+    summary: Compresse en .xz et garde l’original.
+    explanation: >-
+      `xz` vise un meilleur taux que gzip, plus lentement. `tar -J` produit un
+      `.tar.xz`. `-T0` utilise tous les cœurs sur les versions récentes.
+    examples:
+      - title: Compresser
+        command: cp /etc/hostname /tmp/hote && xz -k /tmp/hote
+        comment: Crée /tmp/hote.xz.
+  - name: "-d"
+    summary: Décompresse.
+    explanation: "`unxz` et `xz -d` sont la même opération. `xzcat` écrit sur la sortie."
+    examples:
+      - title: Archive
+        command: tar -cJf /tmp/ssh.tar.xz -C /etc ssh
+        comment: "-J choisit xz."
+see_also:
+  - gzip
+  - zstd
+  - tar
+examples:
+  - title: Compresser
+    command: xz -k /etc/hostname
+    comment: Crée hostname.xz et garde hostname.
+  - title: Archive tar
+    command: tar -cJf /tmp/ssh.tar.xz -C /etc ssh
+    comment: "-J choisit xz. L’archive est souvent plus petite qu’en gzip."
+status: courante
+package:
+  debian: xz-utils
+  redhat: xz
+  suse: xz
+  arch: xz
+  alpine: xz

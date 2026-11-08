@@ -1,0 +1,46 @@
+name: logger
+themes:
+  - services
+summary: Envoie une ligne au journal du système.
+explanation: >-
+  logger -t sauvegarde "copie terminée" écrit un message que journalctl ou syslog pourra
+  retrouver, avec l’étiquette sauvegarde. -p user.warning choisit facilité et priorité.
+  Dans un script, c’est plus propre qu’un echo dans un fichier à soi, parce que la
+  rotation et les droits sont ceux du journal. Sur systemd, le message atterrit dans le
+  journal. Sur Alpine, il va au syslog de la machine si un démon écoute.
+subcommands:
+  - name: "-t"
+    summary: Pose une étiquette retrouvable dans le journal.
+    explanation: >-
+      `logger -t sauvegarde "copie terminée"` se relit avec `journalctl -t sauvegarde`
+      sur systemd. Sur Alpine, le message va au syslog si un démon écoute.
+    examples:
+      - title: Étiquette
+        command: logger -t catalogue "test du journal"
+        comment: journalctl -t catalogue -n 5 la retrouve sur systemd.
+  - name: "-p"
+    summary: Choisit facilité et priorité.
+    explanation: >-
+      `-p user.notice` sert aux filtres. `user.warning` est plus visible. La priorité se
+      relit avec `journalctl -p`.
+    examples:
+      - title: Notice
+        command: logger -p user.notice -t catalogue "rien d’urgent"
+        comment: Une ligne de priorité notice.
+see_also:
+  - journalctl
+  - dmesg
+examples:
+  - title: Une ligne étiquetée
+    command: logger -t catalogue "test du journal"
+    comment: "Sur systemd : journalctl -t catalogue -n 5 la retrouve."
+  - title: Priorité
+    command: logger -p user.notice -t catalogue "rien d’urgent"
+    comment: La priorité sert aux filtres, par exemple journalctl -p notice.
+status: courante
+package:
+  debian: bsdutils
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: busybox

@@ -1,0 +1,101 @@
+name: pacman
+themes:
+  - paquets
+summary: Installe et met à jour les paquets sur Arch Linux.
+explanation: >-
+  `pacman` est le gestionnaire d’Arch. La mise à jour complète est `-Syu`. `-Sy` seul,
+  sans `-u`, mélange des versions et casse des dépendances. Les opérations se lisent par
+  famille : `-S` installe, `-R` retire, `-Q` interroge ce qui est là, `-F` cherche un
+  fichier dans les dépôts.
+pitfalls:
+  - >-
+    pacman -Sy sans mise à jour du système désynchronise les versions. La mise à jour
+    complète est pacman -Syu.
+subcommands:
+  - name: "-Syu"
+    summary: Synchronise les dépôts et met tout le système à jour.
+    explanation: >-
+      `-S` est la famille installation, `-y` télécharge les bases fraîches, `-u` met à
+      jour les paquets installés. Les trois ensemble sont la commande habituelle. Un
+      paquet ignoré dans /etc/pacman.conf ne bougera pas. Lisez les messages en fin de
+      transaction : un paquet peut demander une action manuelle.
+    pitfalls:
+      - >-
+        `pacman -Sy` sans mise à jour du reste désynchronise les versions. La forme
+        complète est pacman -Syu.
+    examples:
+      - title: Mettre à jour
+        command: sudo pacman -Syu
+        comment: Base des dépôts, puis paquets installés.
+        families:
+          - arch
+  - name: "-S"
+    summary: Installe un paquet depuis les dépôts.
+    explanation: >-
+      `-S` installe le nom demandé et ses dépendances. Plusieurs noms se donnent à la
+      suite. `-Ss` cherche dans les dépôts sans installer. `-Si` affiche la fiche
+      distante. Le paquet doit être dans un dépôt activé de /etc/pacman.conf.
+    examples:
+      - title: Installer
+        command: sudo pacman -S curl
+        comment: Confirme la taille avant de télécharger.
+        families:
+          - arch
+      - title: Chercher
+        command: pacman -Ss curl
+        comment: Noms et descriptions dans les dépôts. Rien n’est installé.
+        families:
+          - arch
+  - name: "-Rns"
+    summary: >-
+      Retire un paquet, ses dépendances devenues inutiles et ses fichiers de
+      configuration.
+    explanation: >-
+      `-R` retire, `-n` efface les fichiers de configuration sauvegardés, `-s` retire
+      les dépendances qui n’étaient tirées que par lui. `-R` seul laisse la
+      configuration. Regardez la liste : `-s` peut remonter plus haut que le paquet
+      nommé.
+    examples:
+      - title: Retirer complètement
+        command: sudo pacman -Rns curl
+        comment: Paquet, configuration et dépendances orphelines.
+        families:
+          - arch
+  - name: "-Q"
+    summary: Interroge les paquets installés.
+    explanation: >-
+      `-Q` liste ce qui est installé. `-Qo /usr/bin/ls` dit quel paquet possède ce
+      fichier. `-Qi` détaille un paquet installé. `-Qe` ne garde que les paquets
+      explicitement demandés, pas les dépendances. `-Qu` liste ce qu’une mise à jour
+      changerait, sans la lancer.
+    examples:
+      - title: Propriétaire d’un fichier
+        command: pacman -Qo /usr/bin/ls
+        comment: Le paquet installé qui fournit ce chemin.
+        families:
+          - arch
+      - title: Ce qui serait mis à jour
+        command: pacman -Qu
+        comment: Nécessite une base récente. pacman -Syu fait la mise à jour elle-même.
+        families:
+          - arch
+see_also:
+  - apt
+  - dnf
+  - zypper
+examples:
+  - title: Mettre le système à jour
+    command: sudo pacman -Syu
+    comment: Synchronise les dépôts et met à jour les paquets installés.
+    families:
+      - arch
+  - title: Qui fournit un fichier
+    command: pacman -Qo /usr/bin/ls
+    comment: Paquet propriétaire du chemin, s’il est installé.
+    families:
+      - arch
+status: absente
+overrides:
+  arch:
+    status: spécifique
+    package: pacman

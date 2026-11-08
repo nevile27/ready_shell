@@ -1,0 +1,51 @@
+name: lsblk
+themes:
+  - disques
+summary: Liste les disques, les partitions et leurs points de montage.
+explanation: >-
+  lsblk lit sysfs et montre l’arbre bloc : disque, partitions, LVM, boucles. -f ajoute
+  système de fichiers et UUID, -o NAME,SIZE,TYPE,MOUNTPOINTS choisit les colonnes. Ce
+  n’est pas une lecture de la table des partitions au sens de fdisk : un disque sans
+  système de fichiers apparaît quand même. lsblk ne modifie rien.
+subcommands:
+  - name: "-f"
+    summary: Ajoute système de fichiers et UUID.
+    explanation: >-
+      `lsblk` lit sysfs et ne modifie rien. `-f` montre le type, le label et l’UUID.
+      `-o` choisit les colonnes.
+    examples:
+      - title: Identifiants
+        command: lsblk -f
+        comment: Nom, type, UUID et point de montage.
+  - name: "-o"
+    summary: Choisit les colonnes.
+    explanation: >-
+      `NAME,SIZE,TYPE,MOUNTPOINTS` suffit souvent. `-J` écrit du JSON sur les versions
+      récentes, plus stable pour un script que le texte aligné.
+    examples:
+      - title: Colonnes
+        command: lsblk -o NAME,SIZE,TYPE,MOUNTPOINTS
+        comment: La taille et l’endroit où c’est monté.
+see_also:
+  - blkid
+  - findmnt
+  - fdisk
+examples:
+  - title: Arbre des disques
+    command: lsblk -f
+    comment: Nom, type de système de fichiers, UUID et montage.
+  - title: Colonnes courtes
+    command: lsblk -o NAME,SIZE,TYPE,MOUNTPOINTS
+    comment: Assez pour voir où est monté chaque périphérique.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

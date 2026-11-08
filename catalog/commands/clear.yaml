@@ -1,0 +1,42 @@
+name: clear
+themes:
+  - shell
+summary: Efface l’écran du terminal.
+explanation: >-
+  clear envoie la séquence qui vide l’affichage du terminal. L’historique de défilement
+  de l’émulateur peut conserver les lignes plus haut. Ce n’est pas une destruction de
+  données. tput reset va plus loin et réinitialise le terminal quand l’affichage est
+  corrompu.
+subcommands:
+  - name: écran
+    summary: Vide la zone visible du terminal.
+    explanation: >-
+      `clear` envoie la séquence qui efface l’affichage. L’historique de défilement de
+      l’émulateur peut garder les lignes plus haut. `reset` va plus loin si le terminal
+      est déréglé.
+    examples:
+      - title: Effacer
+        command: clear
+        comment: Le prompt revient en haut de la zone visible.
+see_also:
+  - tput
+examples:
+  - title: Écran vide
+    command: clear
+    comment: Replace le prompt en haut de la zone visible.
+  - title: Terminal déréglé
+    command: tput reset
+    comment: >-
+      Réinitialise les modes du terminal. À utiliser si les caractères s’affichent
+      n’importe comment.
+status: courante
+package:
+  debian: ncurses-bin
+  redhat: ncurses
+  suse: ncurses-utils
+  arch: ncurses
+  alpine: ncurses
+overrides:
+  alpine:
+    package: busybox
+    note: BusyBox fournit clear. Le paquet ncurses apporte la version complète et tput.

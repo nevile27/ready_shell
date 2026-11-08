@@ -1,0 +1,47 @@
+name: uptime
+themes:
+  - processus
+summary: Affiche depuis quand le système tourne, et la charge.
+explanation: >-
+  uptime écrit l’heure, la durée depuis le démarrage, le nombre d’utilisateurs et la
+  charge moyenne sur 1, 5 et 15 minutes. La charge compte les processus prêts à calculer
+  ou bloqués sur le disque, pas un pourcentage de CPU. Sur une machine à quatre cœurs,
+  une charge de 4 peut être un plein emploi, pas un blocage. -p, sur procps, écrit la
+  durée en mots.
+subcommands:
+  - name: charge
+    summary: Durée depuis le démarrage et charge moyenne.
+    explanation: >-
+      La charge compte les processus prêts ou bloqués sur le disque, sur 1, 5 et 15
+      minutes. Ce n’est pas un pourcentage de CPU.
+    examples:
+      - title: Résumé
+        command: uptime
+        comment: Heure, durée, utilisateurs et charge.
+  - name: "-p"
+    summary: Écrit la durée en mots, version procps.
+    explanation: >-
+      `-p` donne « up 3 days ». BusyBox peut ignorer cette option. `-s` écrit la date de
+      démarrage.
+    examples:
+      - title: En mots
+        command: uptime -p
+        comment: La durée seulement, si procps fournit -p.
+see_also:
+  - top
+  - w
+  - free
+examples:
+  - title: Résumé
+    command: uptime
+    comment: "Une ligne : heure, uptime, utilisateurs, charge."
+  - title: Durée seule, procps
+    command: uptime -p
+    comment: Par exemple « up 3 days, 2 hours ». BusyBox peut ignorer -p.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: busybox

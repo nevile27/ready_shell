@@ -1,0 +1,45 @@
+name: patch
+themes:
+  - texte
+summary: Applique un diff unifié à des fichiers.
+explanation: >-
+  patch lit un diff, en général produit par diff -u, et modifie les fichiers qu’il
+  désigne. -p1 retire le premier niveau de répertoire du chemin, ce que font presque
+  tous les projets. --dry-run montre ce qui se passerait sans écrire. -R tente
+  d’inverser le correctif. Un rejet est laissé dans un fichier .rej quand le contexte ne
+  correspond plus.
+subcommands:
+  - name: "-p"
+    summary: Retire des niveaux de répertoire du diff.
+    explanation: >-
+      `-p1` retire le premier composant, ce que font presque tous les projets. On lance
+      `patch` depuis la racine que le diff attend.
+    examples:
+      - title: Essai
+        command: patch --dry-run -p1 < correctif.diff
+        comment: Dit si le correctif s’applique. Les sources ne changent pas.
+  - name: "-R"
+    summary: Tente d’inverser le correctif.
+    explanation: >-
+      `-R` défait un patch déjà appliqué. Un rejet est laissé dans un fichier `.rej`
+      quand le contexte ne correspond plus.
+    examples:
+      - title: Défaire
+        command: patch -R -p1 < correctif.diff
+        comment: Inverse le correctif si les fichiers sont encore dans l’état patché.
+see_also:
+  - diff
+examples:
+  - title: Essai sans écriture
+    command: patch --dry-run -p1 < correctif.diff
+    comment: Dit si le correctif s’applique. Les sources ne changent pas.
+  - title: Appliquer
+    command: patch -p1 < correctif.diff
+    comment: Modifie les fichiers. À lancer depuis la racine que le diff attend.
+status: courante
+package:
+  debian: patch
+  redhat: patch
+  suse: patch
+  arch: patch
+  alpine: patch

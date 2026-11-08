@@ -1,0 +1,44 @@
+name: ash
+themes:
+  - shell
+summary: Shell de BusyBox, et /bin/sh sur Alpine.
+explanation: >-
+  ash est le shell POSIX embarqué dans BusyBox. Alpine l’utilise comme /bin/sh. Il
+  connaît les constructions POSIX courantes et une partie des habitudes Almquist, pas le
+  langage bash. Sur une image Alpine minimale, c’est souvent le seul shell présent.
+subcommands:
+  - name: "-n"
+    summary: Vérifie la syntaxe sans lancer le script.
+    explanation: >-
+      `ash -n` est le contrôle du `/bin/sh` d’Alpine. Les constructions propres à bash
+      sont refusées.
+    examples:
+      - title: Contrôle
+        command: ash -n script.sh
+        comment: Code 0 si ash accepterait le fichier.
+  - name: "-c"
+    summary: Exécute une chaîne dans ash.
+    explanation: "`ash -c` lance BusyBox ash, le shell des images Alpine minimales."
+    examples:
+      - title: Chaîne
+        command: ash -c 'echo ok'
+        comment: Écrit ok via l’applet ash.
+see_also:
+  - sh
+  - bash
+  - dash
+examples:
+  - title: Lancer le shell d’Alpine
+    command: ash
+    comment: Ouvre ash. Sur Alpine, sh fait déjà cela.
+    families:
+      - alpine
+  - title: Vérifier une syntaxe POSIX
+    command: ash -n script.sh
+    comment: Refuse les constructions propres à bash avant de lancer le script sur Alpine.
+status: absente
+overrides:
+  alpine:
+    status: spécifique
+    package: busybox
+    note: /bin/sh est ash. bash est un paquet séparé.

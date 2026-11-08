@@ -1,0 +1,50 @@
+name: rmdir
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Supprime un répertoire vide.
+explanation: >-
+  rmdir refuse de supprimer un répertoire qui contient encore un nom, y compris un
+  fichier caché. C’est le garde-fou quand on ne veut pas de rm -r. rmdir -p retire aussi
+  les parents devenus vides. Pour un répertoire non vide, il faut rm -r, en sachant ce
+  qu’il contient.
+subcommands:
+  - name: vide
+    summary: Supprime un répertoire qui ne contient plus rien.
+    explanation: >-
+      `rmdir` refuse un répertoire qui a encore un nom, y compris un fichier caché.
+      C’est le garde-fou quand on ne veut pas de `rm -r`.
+    examples:
+      - title: Un vide
+        command: rmdir /tmp/vide
+        comment: Échoue si /tmp/vide contient encore quelque chose.
+  - name: "-p"
+    summary: Retire aussi les parents devenus vides.
+    explanation: >-
+      `rmdir -p a/b/c` retire c, puis b, puis a, tant que chacun est vide. Il s’arrête
+      au premier qui ne l’est pas.
+    examples:
+      - title: Parents
+        command: rmdir -p /tmp/a/b/c
+        comment: Remonte tant que les répertoires sont vides.
+see_also:
+  - rm
+  - mkdir
+examples:
+  - title: Répertoire vide
+    command: rmdir /tmp/vide
+    comment: Échoue si /tmp/vide contient encore quelque chose.
+  - title: Parents vides
+    command: rmdir -p /tmp/a/b/c
+    comment: Retire c, puis b, puis a, tant que chacun est vide.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

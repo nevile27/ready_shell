@@ -1,0 +1,45 @@
+name: systemd-resolve
+themes:
+  - reseau
+  - services
+summary: Ancien nom de resolvectl. Les versions actuelles de systemd ne s’utilisent plus ainsi.
+explanation: >-
+  systemd-resolve query nom était le vocabulaire des premières versions de
+  systemd-resolved. Le nom a été remplacé par resolvectl. Sur Debian 13, Ubuntu 26.04,
+  RHEL 10, Fedora 45, openSUSE Leap 16 et Arch en novembre 2026, on appelle resolvectl.
+  Un script qui invoque encore systemd-resolve est à modifier. Alpine n’a jamais eu
+  cette commande comme outil du système.
+subcommands:
+  - name: query
+    summary: Ancien nom. La commande actuelle est resolvectl.
+    explanation: >-
+      `systemd-resolve` a été remplacé par `resolvectl query`. Sur les versions de
+      novembre 2026, l’ancien nom n’est plus là.
+    examples:
+      - title: Forme actuelle
+        command: resolvectl query exemple.fr
+        comment: Passe par le cache de systemd-resolved.
+see_also:
+  - resolvectl
+  - dig
+replaced_by: resolvectl
+examples:
+  - title: Forme actuelle
+    command: resolvectl query exemple.fr
+    comment: Remplace systemd-resolve exemple.fr.
+    families:
+      - debian
+      - redhat
+      - suse
+      - arch
+  - title: Ancien nom
+    command: systemd-resolve exemple.fr
+    comment: >-
+      Ne fait plus partie des versions actuelles. Attendez-vous à « commande introuvable
+      ».
+status: retirée
+package: systemd
+overrides:
+  alpine:
+    status: absente
+    note: Pas de systemd. Le remplaçant resolvectl n’y est pas non plus l’outil du système.

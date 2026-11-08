@@ -1,0 +1,82 @@
+name: ssh
+themes:
+  - reseau
+summary: Ouvre une session ou lance une commande sur une autre machine, chiffrée.
+explanation: >-
+  `ssh` ouvre une session ou lance une commande sur une autre machine. La première
+  connexion demande de vérifier l’empreinte du serveur. La configuration durable est
+  dans ~/.ssh/config. `scp` et `sftp` utilisent le même service.
+subcommands:
+  - name: session
+    label: ssh utilisateur@hôte
+    summary: Ouvre un shell distant.
+    explanation: >-
+      `ssh utilisateur@hôte` connecte et lance le shell de connexion du compte distant.
+      `exit` revient. Un nom défini dans ~/.ssh/config permet d’écrire seulement `ssh
+      nom`. L’empreinte annoncée à la première visite se compare à celle que
+      l’administrateur du serveur a publiée.
+    examples:
+      - title: Session
+        command: ssh user@hote
+        comment: Remplacez user et hote. exit quitte la session distante.
+  - name: commande
+    label: ssh utilisateur@hôte commande
+    summary: Lance une commande distante et revient.
+    explanation: >-
+      La commande se cite en un seul argument pour que le shell local ne l’interprète
+      pas. Le code de retour est celui de la commande distante. Il n’y a pas de shell
+      interactif : les alias du compte distant ne sont en général pas là.
+    examples:
+      - title: Noyau distant
+        command: ssh user@hote 'uname -r'
+        comment: Affiche la version du noyau de l’autre machine.
+  - name: "-i"
+    summary: Choisit le fichier de clé privée.
+    explanation: >-
+      `-i` désigne la clé à présenter. Sans cette option, le client essaie les clés par
+      défaut de ~/.ssh. `-o IdentitiesOnly=yes` évite d’en proposer d’autres. La clé
+      publique correspondante doit être dans authorized_keys du compte distant.
+    examples:
+      - title: Une clé précise
+        command: ssh -i ~/.ssh/id_ed25519 user@hote
+        comment: N’utilise que cette clé pour cette connexion.
+  - name: "-p"
+    summary: Change le port du serveur.
+    explanation: >-
+      `-p` est le port SSH, 22 s’il n’est pas dit. Ce n’est pas la même lettre que pour
+      `scp`, qui utilise `-P` majuscule. Le port durable se pose avec `Port` dans
+      ~/.ssh/config.
+    examples:
+      - title: Port 2222
+        command: ssh -p 2222 user@hote
+        comment: Connecte le serveur qui écoute sur 2222.
+  - name: "-L"
+    summary: Ouvre un tunnel du local vers un port atteint par le serveur.
+    explanation: >-
+      `-L 8080:127.0.0.1:80` fait écouter votre machine sur 8080 et renvoie ces
+      connexions vers le port 80 vu par le serveur SSH. `-N` n’ouvre pas de shell,
+      seulement le tunnel. `-J bastion` passe d’abord par une machine relais.
+    examples:
+      - title: Tunnel local
+        command: ssh -N -L 8080:127.0.0.1:80 user@hote
+        comment: >-
+          http://127.0.0.1:8080 sur votre machine arrive au port 80 du serveur. Ctrl+C
+          ferme le tunnel.
+see_also:
+  - scp
+  - sftp
+  - ssh-keygen
+examples:
+  - title: Session
+    command: ssh user@hote
+    comment: Remplacez user et hote. exit quitte la session distante.
+  - title: Une commande
+    command: ssh user@hote 'uname -r'
+    comment: Affiche le noyau distant sans laisser de shell ouvert.
+status: courante
+package:
+  debian: openssh-client
+  redhat: openssh-clients
+  suse: openssh-clients
+  arch: openssh
+  alpine: openssh-client

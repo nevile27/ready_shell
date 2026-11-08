@@ -1,0 +1,43 @@
+name: ftp
+themes:
+  - reseau
+summary: Client FTP historique. Le protocole circule en clair, y compris le mot de passe.
+explanation: >-
+  ftp hote ouvre une session sur le port 21. Identifiant et mot de passe passent sans
+  chiffrement, et le mode actif complique les pare-feu. Les versions actuelles ne
+  l’installent pas par défaut. Pour déposer des fichiers sur une machine que vous
+  administrez, sftp ou scp passent par SSH. curl sait encore parler ftp:// quand il faut
+  interroger un miroir public anonyme.
+subcommands:
+  - name: session
+    summary: Ancien client, trafic en clair.
+    explanation: >-
+      `ftp` envoie identifiant et mot de passe sans chiffrement. Pour une machine que
+      vous administrez, `sftp` passe par SSH. `curl` sait encore parler `ftp://` pour un
+      miroir public anonyme.
+    examples:
+      - title: À la place
+        command: sftp user@hote
+        comment: Session chiffrée. bye quitte.
+see_also:
+  - sftp
+  - curl
+  - scp
+replaced_by: sftp
+examples:
+  - title: À la place, avec chiffrement
+    command: sftp user@hote
+    comment: Session de transfert sur SSH. Le mot de passe ou la clé ne passent pas en clair.
+  - title: Miroir public
+    command: curl -O ftp://exemple.test/fichier
+    comment: Téléchargement anonyme ponctuel. Ne mettez pas de mot de passe dans l’URL.
+status: obsolète
+package:
+  debian: ftp
+  redhat: ftp
+  suse: ftp
+  arch: inetutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: "BusyBox peut contenir un client ftp. Il a le même défaut : pas de chiffrement."

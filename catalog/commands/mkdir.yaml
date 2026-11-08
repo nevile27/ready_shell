@@ -1,0 +1,49 @@
+name: mkdir
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Crée un répertoire.
+explanation: >-
+  mkdir nom crée un répertoire. -p crée les parents manquants et ne s’arrête pas si le
+  chemin existe déjà. -m fixe les droits au moment de la création, avant que umask ne
+  soit la seule règle. mkdir ne crée pas un fichier : pour cela, touch ou une
+  redirection.
+subcommands:
+  - name: "-p"
+    summary: Crée les parents manquants et n’échoue pas s’ils existent.
+    explanation: "`mkdir -p` est la forme des scripts. Relancer la commande ne produit pas d’erreur."
+    examples:
+      - title: Toute la chaîne
+        command: mkdir -p "$HOME/travail/2026/11"
+        comment: Crée travail, 2026 et 11 si besoin.
+  - name: "-m"
+    summary: Pose les droits au moment de la création.
+    explanation: >-
+      `-m 700` ne dépend pas seulement du umask. Les droits s’appliquent au répertoire
+      créé, pas aux parents déjà là.
+    examples:
+      - title: Répertoire privé
+        command: mkdir -m 700 "$HOME/prive"
+        comment: Accessible seulement à son propriétaire.
+see_also:
+  - rmdir
+  - install
+  - umask
+examples:
+  - title: Parents compris
+    command: mkdir -p "$HOME/travail/2026/11"
+    comment: Crée toute la chaîne. Relancer la commande ne produit pas d’erreur.
+  - title: Droits dès la création
+    command: mkdir -m 700 "$HOME/prive"
+    comment: Le répertoire naît accessible seulement à son propriétaire.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

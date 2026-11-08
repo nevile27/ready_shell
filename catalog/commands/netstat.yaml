@@ -1,0 +1,41 @@
+name: netstat
+themes:
+  - reseau
+summary: Ancien tableau des sockets et des routes. Remplacé par ss et ip.
+explanation: >-
+  netstat -tulpn listait les ports en écoute. netstat -rn montrait les routes, netstat
+  -i les compteurs d’interfaces. Tout cela vient de net-tools, non installé par défaut
+  sur les familles actuelles. ss -tulpn reprend les sockets, ip route les routes, ip -s
+  link les compteurs. BusyBox fournit encore un netstat limité sur Alpine.
+subcommands:
+  - name: "-tulpn"
+    summary: Ancienne liste des ports. La forme actuelle est ss.
+    explanation: >-
+      `netstat -tulpn` listait l’écoute. `ss -tulpn` fait ce travail. `netstat -rn`
+      montrait les routes : c’est `ip route`.
+    examples:
+      - title: Ports
+        command: sudo ss -tulpn
+        comment: Remplace netstat -tulpn.
+see_also:
+  - ss
+  - ip
+  - ifconfig
+replaced_by: ss
+examples:
+  - title: Ports en écoute
+    command: sudo ss -tulpn
+    comment: Remplace netstat -tulpn.
+  - title: Routes
+    command: ip route
+    comment: Remplace netstat -rn.
+status: obsolète
+package:
+  debian: net-tools
+  redhat: net-tools
+  suse: net-tools
+  arch: net-tools
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox limitée. ss vient du paquet iproute2.

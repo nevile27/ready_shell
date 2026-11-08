@@ -1,0 +1,53 @@
+name: du
+themes:
+  - fichiers
+  - disques
+tags:
+  - coreutils
+summary: Estime l’espace occupé par une arborescence.
+explanation: >-
+  du résume la place utilisée par les fichiers qu’il peut lire. -s ne garde que le
+  total, -h l’écrit en Ko, Mo ou Go. -x reste sur le même système de fichiers et n’entre
+  pas dans les autres montages. du compte les blocs alloués, pas toujours la taille
+  logique : un fichier creux occupe moins que sa taille affichée par ls. Pour l’espace
+  libre du disque entier, c’est df.
+subcommands:
+  - name: "-s"
+    summary: N’écrit que le total.
+    explanation: >-
+      `du -sh répertoire` résume la place utilisée. `-h` rend la taille lisible. `-x` ne
+      traverse pas les autres systèmes de fichiers.
+    examples:
+      - title: Total
+        command: du -sh /var
+        comment: Une ligne pour tout /var.
+  - name: "-d"
+    summary: Limite la profondeur.
+    explanation: >-
+      `-d 1` ne montre qu’un niveau. `--apparent-size` compte la taille logique, pas les
+      blocs alloués. Un fichier creux occupe moins que `ls` ne l’annonce.
+    examples:
+      - title: Un niveau
+        command: du -h -d 1 /var
+        comment: La taille de chaque répertoire directement dans /var.
+see_also:
+  - df
+  - ls
+  - find
+examples:
+  - title: Total d’un répertoire
+    command: du -sh /var
+    comment: Une seule ligne, taille lisible, pour tout /var.
+  - title: Le plus gros en premier
+    command: du -h -d 1 /var | sort -h
+    comment: Un niveau de profondeur, trié par taille. sort -h est une extension GNU.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

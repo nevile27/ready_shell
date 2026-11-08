@@ -1,0 +1,61 @@
+name: timeout
+themes:
+  - shell
+tags:
+  - coreutils
+summary: Arrête une commande si elle dépasse une durée.
+explanation: >-
+  timeout 10s commande envoie SIGTERM au bout de dix secondes. Le suffixe s, m ou h
+  précise l’unité ; un nombre seul est lu en secondes. Le code de retour 124 signifie
+  que le délai a été atteint. --signal peut changer le signal, et --kill-after en ajoute
+  un second si le processus ignore le premier.
+subcommands:
+  - name: durée
+    summary: Envoie SIGTERM si la commande dépasse le délai.
+    explanation: >-
+      `timeout 10s commande` s’arrête au bout de dix secondes. Le code 124 signifie que
+      le délai a été atteint. Un nombre seul est lu en secondes.
+    examples:
+      - title: Borner
+        command: timeout 5s ping -c 10 127.0.0.1
+        comment: ping s’arrête à cinq secondes même s’il n’a pas fini.
+  - name: "--kill-after"
+    summary: Ajoute un SIGKILL si le processus ignore le premier signal.
+    explanation: >-
+      `--kill-after` attend encore après le SIGTERM. Utile pour une commande qui attrape
+      le premier signal et ne sort pas.
+    examples:
+      - title: Forcer ensuite
+        command: timeout --kill-after=3s 10s sleep 30
+        comment: SIGTERM à dix secondes, puis SIGKILL trois secondes plus tard.
+  - name: "--signal"
+    summary: Choisit le signal envoyé au délai.
+    explanation: >-
+      Par défaut c’est TERM. `--signal=HUP` en envoie un autre. Le nom se donne sans le
+      préfixe SIG.
+    examples:
+      - title: SIGHUP
+        command: timeout --signal=HUP 5s sleep 30
+        comment: Au bout de cinq secondes, sleep reçoit HUP.
+see_also:
+  - kill
+  - wait
+examples:
+  - title: Borner une attente
+    command: timeout 5s ping -c 10 127.0.0.1
+    comment: ping s’arrête au bout de cinq secondes même s’il n’a pas fini ses dix essais.
+  - title: Forcer ensuite
+    command: timeout --kill-after=3s 10s commande
+    comment: >-
+      SIGTERM à dix secondes, puis SIGKILL trois secondes plus tard si la commande est
+      encore là. Version GNU.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils ajoute les options GNU, dont --foreground.

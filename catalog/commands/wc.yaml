@@ -1,0 +1,52 @@
+name: wc
+themes:
+  - texte
+tags:
+  - coreutils
+summary: Compte les lignes, les mots et les octets.
+explanation: >-
+  wc fichier écrit trois nombres : lignes, mots, octets, puis le nom. -l ne garde que
+  les lignes, -w les mots, -c les octets, -m les caractères. Sur une entrée vide, le
+  compte est zéro. wc compte les sauts de ligne : un fichier d’une ligne sans saut final
+  peut annoncer zéro ligne.
+subcommands:
+  - name: "-l"
+    summary: Compte les lignes.
+    explanation: >-
+      `wc` sans option écrit lignes, mots et octets. `-l` ne garde que les lignes. Un
+      fichier sans saut de ligne final peut annoncer une ligne de moins.
+    examples:
+      - title: Lignes
+        command: wc -l /etc/passwd
+        comment: Le nombre de lignes, donc d’entrées.
+  - name: "-c"
+    summary: Compte les octets.
+    explanation: >-
+      `-m` compte les caractères, qui diffèrent des octets dans l’UTF-8. `-w` compte les
+      mots.
+    examples:
+      - title: Octets
+        command: wc -c /etc/hostname
+        comment: La taille en octets.
+see_also:
+  - cat
+  - ls
+examples:
+  - title: Nombre de comptes
+    command: wc -l /etc/passwd
+    comment: Écrit le nombre de lignes, donc en pratique le nombre d’entrées.
+  - title: Depuis un tube
+    command: grep -c ':' /etc/passwd
+    comment: >-
+      grep -c compte les lignes qui correspondent. wc -l compterait toutes les lignes
+      d’un fichier.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

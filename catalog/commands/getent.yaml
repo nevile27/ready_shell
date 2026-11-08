@@ -1,0 +1,64 @@
+name: getent
+themes:
+  - utilisateurs
+summary: "Interroge les bases du système : comptes, groupes, hôtes."
+explanation: >-
+  getent passwd ada lit le compte via Name Service Switch, donc /etc/passwd mais aussi
+  un annuaire si la machine en a un. getent group dev et getent hosts exemple.fr font de
+  même pour les groupes et les noms. C’est le bon outil dans un script, plutôt que de
+  découper /etc/passwd, qui est incomplet dès qu’un compte vient d’ailleurs. Un nom
+  absent donne un code de retour non nul et aucune ligne.
+subcommands:
+  - name: passwd
+    summary: Lit un compte via le Name Service Switch.
+    explanation: >-
+      `getent passwd ada` voit /etc/passwd et un annuaire si la machine en a un.
+      Découper /etc/passwd rate les comptes qui viennent d’ailleurs.
+    examples:
+      - title: root
+        command: getent passwd root
+        comment: La ligne du compte, d’où qu’elle vienne.
+  - name: group
+    summary: Lit un groupe.
+    explanation: >-
+      `getent group dev` écrit le nom, le GID et les membres. Rien et un code non nul si
+      le groupe n’existe pas.
+    examples:
+      - title: Groupe
+        command: getent group sudo
+        comment: Les membres, sur Debian et Ubuntu où ce groupe existe.
+  - name: hosts
+    summary: Résout un nom comme la machine le fait.
+    explanation: >-
+      `getent hosts` passe par nsswitch, fichiers hosts et DNS compris. `dig` interroge
+      le DNS seul.
+    examples:
+      - title: localhost
+        command: getent hosts localhost
+        comment: L’adresse que cette machine utilise vraiment.
+see_also:
+  - id
+  - dig
+  - groups
+examples:
+  - title: Un compte
+    command: getent passwd root
+    comment: La ligne passwd de root, d’où qu’elle vienne.
+  - title: Résolution d’un nom
+    command: getent hosts localhost
+    comment: >-
+      L’adresse que la machine utilise vraiment, fichiers hosts et DNS compris selon
+      nsswitch.conf.
+status: courante
+package:
+  debian: libc-bin
+  redhat: glibc
+  suse: glibc
+  arch: glibc
+  alpine: musl
+overrides:
+  alpine:
+    package: musl-utils
+    note: >-
+      getent est dans musl-utils. Les bases consultées restent passwd, group, hosts, et
+      les autres bases NSS disponibles.

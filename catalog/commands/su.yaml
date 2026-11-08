@@ -1,0 +1,50 @@
+name: su
+themes:
+  - utilisateurs
+summary: Ouvre un shell sous un autre compte.
+explanation: >-
+  su - ada démarre un shell de connexion pour ada, avec son environnement. su ada sans
+  tiret garde une partie de l’environnement actuel, ce qui surprend les chemins et la
+  locale. su - sans nom vise root. su demande le mot de passe de la cible, pas le vôtre,
+  sauf si vous êtes déjà root. Pour lancer une commande d’administration en gardant une
+  trace, sudo est le dispositif des familles qui l’installent ; Alpine penche vers doas.
+subcommands:
+  - name: "-"
+    summary: Ouvre un shell de connexion.
+    explanation: >-
+      `su -` vise root et charge son environnement. `su - ada` vise ada. Sans le tiret,
+      une partie de votre environnement reste, ce qui surprend les chemins.
+    examples:
+      - title: Root
+        command: su -
+        comment: Demande le mot de passe de root.
+  - name: "-c"
+    summary: Lance une commande puis revient.
+    explanation: >-
+      `su - ada -c 'id'` n’ouvre pas de shell durable. Le mot de passe demandé est celui
+      de la cible, sauf si vous êtes déjà root.
+    examples:
+      - title: Une commande
+        command: su - ada -c 'id'
+        comment: Affiche l’identité d’ada, puis revient.
+see_also:
+  - sudo
+  - doas
+examples:
+  - title: Shell de connexion de root
+    command: su -
+    comment: Demande le mot de passe de root et charge son profil.
+  - title: Une commande
+    command: su - ada -c 'id'
+    comment: Lance id en tant qu’ada, puis revient. Le mot de passe d’ada est demandé.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    package: shadow
+    note: Souvent le paquet shadow. BusyBox a aussi un su plus court.

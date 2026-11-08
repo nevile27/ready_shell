@@ -1,0 +1,51 @@
+name: touch
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Crée un fichier vide ou met à jour sa date.
+explanation: >-
+  touch fichier crée un fichier vide s’il n’existe pas, sans modifier son contenu s’il
+  existe. Il met à jour la date de modification. -r aligne la date sur celle d’un autre
+  fichier, -d fixe une date donnée sur les coreutils GNU. touch ne crée pas les
+  répertoires parents.
+subcommands:
+  - name: créer
+    summary: Crée un fichier vide ou rafraîchit sa date.
+    explanation: >-
+      `touch fichier` ne modifie pas le contenu s’il existe. Il ne crée pas les
+      répertoires parents.
+    examples:
+      - title: Fichier vide
+        command: touch "$HOME/nouveau.txt"
+        comment: Crée le fichier ou met à jour sa date.
+  - name: "-r"
+    summary: Reprend la date d’un autre fichier.
+    explanation: >-
+      `-d` fixe une date donnée sur les coreutils GNU. BusyBox n’a pas toujours `-d`.
+      `-t` utilise le format [[CC]AA]MMJJhhmm[.ss].
+    examples:
+      - title: Même date
+        command: touch -r /etc/hostname note.txt
+        comment: note.txt reçoit les dates de /etc/hostname.
+see_also:
+  - mkdir
+  - stat
+  - date
+examples:
+  - title: Fichier vide
+    command: touch "$HOME/nouveau.txt"
+    comment: Crée le fichier s’il manque, ou rafraîchit sa date.
+  - title: Date explicite, version GNU
+    command: touch -d '2026-11-08 09:00' note.txt
+    comment: Pose cette date de modification. BusyBox n’a pas forcément -d.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: busybox
+overrides:
+  alpine:
+    note: Applet BusyBox. Le paquet coreutils apporte les options GNU longues.

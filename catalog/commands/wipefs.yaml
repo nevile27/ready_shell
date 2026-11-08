@@ -1,0 +1,58 @@
+name: wipefs
+themes:
+  - disques
+summary: Affiche ou efface les signatures de système de fichiers.
+explanation: >-
+  wipefs /dev/sdb1 liste les signatures reconnues sans les effacer. wipefs -a les retire
+  : mkfs pourra ensuite repartir proprement, et les données ne sont plus identifiées par
+  leur en-tête. Ce n’est pas un effacement sécurisé du contenu. On l’utilise quand un
+  ancien RAID, un LVM ou un système de fichiers fantôme empêche un nouveau mkfs.
+  Vérifiez le nom du périphérique dans lsblk.
+pitfalls:
+  - >-
+    wipefs -a rend le système de fichiers invisible. Sans sauvegarde, considérez les
+    données comme perdues.
+subcommands:
+  - name: lire
+    summary: Liste les signatures sans les effacer.
+    explanation: >-
+      `wipefs` sans `-a` est une lecture. On l’utilise quand un ancien système de
+      fichiers empêche un nouveau `mkfs`.
+    examples:
+      - title: Voir
+        command: sudo wipefs /dev/sdb1
+        comment: Type et décalage de chaque signature.
+  - name: "-a"
+    summary: Retire les signatures.
+    explanation: >-
+      `-a` rend le système de fichiers invisible. Ce n’est pas un effacement sécurisé du
+      contenu. Vérifiez le nom dans `lsblk`.
+    examples:
+      - title: Effacer les en-têtes
+        command: sudo wipefs -a /dev/sdb1
+        comment: À réserver à un périphérique que vous réinitialisez.
+    pitfalls:
+      - Sans sauvegarde, considérez les données comme perdues.
+see_also:
+  - mkfs
+  - blkid
+  - lsblk
+examples:
+  - title: Voir les signatures
+    command: sudo wipefs /dev/sdb1
+    comment: Lecture seule. Montre type et décalage de chaque signature.
+  - title: Les retirer
+    command: sudo wipefs -a /dev/sdb1
+    comment: Efface les signatures. À réserver à un périphérique que vous réinitialisez.
+status: courante
+package:
+  debian: util-linux
+  redhat: util-linux
+  suse: util-linux
+  arch: util-linux
+  alpine: util-linux
+overrides:
+  alpine:
+    note: >-
+      Paquet util-linux. L’image minimale BusyBox n’a qu’un sous-ensemble (mount,
+      umount).

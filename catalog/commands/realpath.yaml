@@ -1,0 +1,49 @@
+name: realpath
+themes:
+  - fichiers
+tags:
+  - coreutils
+summary: Écrit le chemin absolu canonique d’un fichier.
+explanation: >-
+  realpath fichier résout ., .. et les liens symboliques, puis écrit un chemin absolu.
+  -m accepte un chemin dont le dernier élément n’existe pas encore, ce qui sert à
+  normaliser une destination avant de la créer. C’est le complément de readlink -f, avec
+  des options plus explicites sur les coreutils GNU.
+subcommands:
+  - name: canonique
+    summary: Résout ., .. et les liens.
+    explanation: >-
+      `realpath fichier` écrit un chemin absolu. Le dernier élément doit exister, sauf
+      avec `-m`.
+    examples:
+      - title: Parent
+        command: realpath ..
+        comment: Le répertoire parent, liens résolus.
+  - name: "-m"
+    summary: Normalise même si le fichier n’existe pas encore.
+    explanation: "`-e` exige que tous les composants existent. `-m` accepte une destination à créer."
+    examples:
+      - title: Chemin futur
+        command: realpath -m "$HOME/futur/note.txt"
+        comment: Normalise le chemin sans exiger que note.txt existe.
+see_also:
+  - readlink
+  - pwd
+  - ln
+examples:
+  - title: Chemin canonique
+    command: realpath ..
+    comment: Écrit le répertoire parent en chemin absolu, liens résolus.
+  - title: Même si le fichier manque
+    command: realpath -m "$HOME/futur/note.txt"
+    comment: Normalise le chemin sans exiger que note.txt existe déjà.
+status: courante
+package:
+  debian: coreutils
+  redhat: coreutils
+  suse: coreutils
+  arch: coreutils
+  alpine: coreutils
+overrides:
+  alpine:
+    note: Pas dans l’applet BusyBox habituelle. Le paquet coreutils le fournit.

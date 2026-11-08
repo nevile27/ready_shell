@@ -1,0 +1,36 @@
+name: w
+themes:
+  - utilisateurs
+summary: Montre les sessions et ce que chacune est en train de lancer.
+explanation: >-
+  w reprend who et ajoute la charge ainsi que la commande en cours de chaque session. -h
+  retire l’en-tête, -s raccourcit. Une session inactive depuis longtemps se voit à la
+  colonne IDLE. w ne voit pas les processus détachés de tout terminal.
+subcommands:
+  - name: sessions
+    summary: Sessions et commande en cours.
+    explanation: >-
+      `w` reprend `who` et ajoute la charge ainsi que ce que chaque terminal exécute.
+      `-h` retire l’en-tête. `-s` raccourcit.
+    examples:
+      - title: Détail
+        command: w
+        comment: Charge, puis une ligne par session.
+see_also:
+  - who
+  - uptime
+  - ps
+examples:
+  - title: Sessions et commandes
+    command: w
+    comment: En-tête de charge, puis une ligne par utilisateur connecté.
+  - title: Sans en-tête
+    command: w -h
+    comment: Seulement les lignes de sessions, plus simple à relire.
+status: courante
+package:
+  debian: procps
+  redhat: procps-ng
+  suse: procps
+  arch: procps-ng
+  alpine: busybox

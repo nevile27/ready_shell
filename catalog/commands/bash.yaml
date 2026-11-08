@@ -1,0 +1,67 @@
+name: bash
+themes:
+  - shell
+summary: Shell interactif et langage des scripts sur la plupart des familles.
+explanation: >-
+  bash est le shell de connexion habituel. Sur Red Hat, SUSE et Arch, /bin/sh pointe
+  aussi vers bash. Sur Debian et Ubuntu, /bin/sh est dash : un script qui commence par
+  #!/bin/sh n’a pas les tableaux, [[ ]], ni les substitutions de processus. Sur Alpine,
+  /bin/sh est ash ; bash s’installe à part. Les extensions bash se demandent
+  explicitement avec #!/usr/bin/env bash.
+pitfalls:
+  - >-
+    Un script testé dans un terminal bash peut casser sous /bin/sh de Debian, Ubuntu ou
+    Alpine. Gardez le shebang aligné avec les constructions réellement utilisées.
+subcommands:
+  - name: "--version"
+    summary: Affiche la version de bash.
+    explanation: >-
+      `bash --version` écrit la version et la licence. Cela ne dit pas ce que pointe
+      `/bin/sh`. Sur Debian et Ubuntu, `/bin/sh` est dash.
+    examples:
+      - title: Version
+        command: bash --version
+        comment: La première ligne porte le numéro de version.
+  - name: "-c"
+    summary: Exécute une chaîne, puis quitte.
+    explanation: >-
+      `bash -c` lance les commandes passées en argument dans un bash, même si le shell
+      courant est un autre. Les quotes simples empêchent le shell actuel de les
+      interpréter.
+    examples:
+      - title: Une commande
+        command: bash -c 'printf "%s\n" "$BASH_VERSION"'
+        comment: Affiche la version du bash lancé, pas celle du shell parent.
+  - name: "-l"
+    summary: Démarre un shell de connexion.
+    explanation: >-
+      `bash -l` lit les fichiers de connexion, `/etc/profile` puis `~/.bash_profile`. Un
+      shell ordinaire lit plutôt `~/.bashrc`. Utile pour vérifier ce qu’une nouvelle
+      session charge.
+    examples:
+      - title: Connexion
+        command: bash -l
+        comment: Ouvre un bash de connexion. exit revient au shell précédent.
+  - name: "-x"
+    summary: Trace chaque commande avant de l’exécuter.
+    explanation: >-
+      `bash -x script` écrit les commandes développées sur l’erreur. On voit les valeurs
+      des variables. Le script s’exécute vraiment.
+    examples:
+      - title: Tracer un script
+        command: bash -x script.sh
+        comment: Chaque ligne précède son exécution, avec un signe +.
+see_also:
+  - sh
+  - dash
+  - ash
+  - zsh
+examples:
+  - title: Version du shell interactif
+    command: bash --version
+    comment: Affiche la version de bash, pas celle de /bin/sh.
+  - title: Lancer une commande dans bash
+    command: bash -c 'printf "%s\n" "$BASH_VERSION"'
+    comment: "Utile pour vérifier qu’un script #!/usr/bin/env bash verra bien bash."
+status: courante
+package: bash
